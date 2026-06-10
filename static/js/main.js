@@ -87,20 +87,35 @@ document.addEventListener('DOMContentLoaded', function () {
     const color = document.querySelector('.color-btn.selected')?.dataset.color || '';
     const qty = parseInt(document.querySelector('.qty-input')?.value || 1);
 
+    const originalContent = addBtn.innerHTML;
+    addBtn.disabled = true;
+    addBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
     fetch('/panier/ajouter/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRFToken': getCookie('csrftoken'),
+        'X-CSRFToken': document.querySelector('meta[name="csrf-token"]')?.content || getCookie('csrftoken'),
         'X-Requested-With': 'XMLHttpRequest',
       },
       body: JSON.stringify({ product_id: productId, quantity: qty, size, color })
     })
-    .then(r => r.json())
+    .then(r => {
+      if (!r.ok) throw new Error('Erreur ' + r.status);
+      return r.json();
+    })
     .then(data => {
       if (data.success) {
         updateCartBadge(data.cart_count);
+        showToast(data.message || 'Article ajouté au panier', 'success');
       }
+    })
+    .catch(() => {
+      showToast('Impossible d\'ajouter au panier. Réessayez.', 'error');
+    })
+    .finally(() => {
+      addBtn.disabled = false;
+      addBtn.innerHTML = originalContent;
     });
   });
 
@@ -316,4 +331,33 @@ function updateCartBadge(count) {
 function updateCartTotal(total) {
   const el = document.getElementById('cartTotal');
   if (el) el.textContent = formatPrice(total) + ' FCFA';
+}
+
+function showToast(message, type) {
+  const existing = document.getElementById('cartToast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.id = 'cartToast';
+  const bg = type === 'success' ? 'var(--success, #28a745)' : '#dc3545';
+  const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+  toast.style.cssText = `
+    position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);
+    background:${bg};color:#fff;padding:.85rem 1.5rem;
+    font-size:.9rem;font-weight:600;z-index:9999;
+    display:flex;align-items:center;gap:.6rem;
+    box-shadow:0 4px 20px rgba(0,0,0,.25);
+    animation:slideUp .3s ease;
+  `;
+  toast.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
+
+  if (!document.getElementById('toastStyle')) {
+    const s = document.createElement('style');
+    s.id = 'toastStyle';
+    s.textContent = '@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}';
+    document.head.appendChild(s);
+  }
+
+  document.body.appendChild(toast);
+  setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity .4s'; setTimeout(() => toast.remove(), 400); }, 3000);
 }

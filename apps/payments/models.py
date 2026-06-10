@@ -6,6 +6,7 @@ class Payment(models.Model):
     PROVIDER_CHOICES = [
         ('wave', 'Wave'),
         ('orange_money', 'Orange Money'),
+        ('stripe', 'Carte bancaire (Stripe)'),
         ('paydunya', 'PayDunya'),
         ('cash', 'Espèces'),
     ]
