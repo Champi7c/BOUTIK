@@ -129,6 +129,10 @@ def checkout(request):
         cart.clear()
 
         request.session['last_order_id'] = order.id
+
+        if payment_method == 'stripe':
+            return redirect('payments:stripe_checkout', order_number=order.order_number)
+
         return redirect('orders:confirmation', order_number=order.order_number)
 
     DELIVERY_FEE = 1500

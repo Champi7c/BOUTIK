@@ -1,6 +1,11 @@
-/* ===== RESPONSIVE GLOBAL — Bright Looks ===== */
+/* ===================================================
+   BRIGHT LOOKS — Responsive Mobile-First
+   =================================================== */
 
-img, video, svg {
+/* ===== BASE UNIVERSELLE ===== */
+*, *::before, *::after { box-sizing: border-box; }
+
+img, video, svg, iframe {
   max-width: 100%;
   height: auto;
 }
@@ -11,175 +16,267 @@ img, video, svg {
   -webkit-overflow-scrolling: touch;
 }
 
+/* ===== NAVBAR ===== */
+.navbar-inner {
+  height: 64px;
+}
+
+/* ===== MESSAGES FLOTTANTS ===== */
 .messages-container {
   position: fixed;
-  top: 120px;
+  top: 80px;
   right: 1rem;
   left: 1rem;
   z-index: 2001;
-  max-width: 400px;
+  max-width: 420px;
   margin-left: auto;
   pointer-events: none;
 }
+.messages-container .alert { pointer-events: auto; }
 
-.messages-container .alert {
-  pointer-events: auto;
-}
-
-.cart-toast {
-  left: 1rem;
-  right: 1rem;
-  width: auto;
-  max-width: 400px;
-  margin-left: auto;
-}
-
+/* ===== GRILLES PRINCIPALES ===== */
 .products-layout {
   display: flex;
   gap: 2rem;
   align-items: flex-start;
 }
-
 .checkout-grid {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   gap: 2rem;
   align-items: start;
 }
-
 .wishlist-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
 }
-
 .profile-grid {
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 2rem;
 }
 
+/* Grilles du checkout — classes ajoutées dans le template */
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.delivery-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ===== TABLETTE ≤ 1024px ===== */
 @media (max-width: 1024px) {
-  .profile-grid {
-    grid-template-columns: 1fr;
-  }
-  .wishlist-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  .container { padding: 0 1.5rem; }
+  .navbar-inner { padding: 0 1.5rem; }
+  .products-grid { grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .profile-grid { grid-template-columns: 1fr; }
+  .wishlist-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
+/* ===== TABLETTE PETITE ≤ 900px ===== */
+@media (max-width: 900px) {
+  .navbar-menu { display: none; }
+  .hamburger { display: flex; }
+
+  .cart-grid { grid-template-columns: 1fr; }
+  .product-detail-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .product-images { position: static; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .info-grid { grid-template-columns: repeat(2, 1fr); }
+  .products-layout { flex-direction: column; }
+  .filters-sidebar { width: 100%; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .categories-grid { grid-template-columns: repeat(2, 1fr); }
+  .about-grid { grid-template-columns: 1fr; }
+  .promo-title { font-size: clamp(2rem, 6vw, 3.5rem); }
+  .checkout-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== MOBILE ≤ 768px ===== */
 @media (max-width: 768px) {
-  main {
-    padding-top: 110px;
-  }
+  /* Décalage pour la navbar fixe */
+  main { padding-top: 64px; }
 
-  .product-images {
-    position: static !important;
-  }
+  .section { padding: 3rem 0; }
+  .container { padding: 0 1rem; }
+  .navbar-inner { padding: 0 1rem; height: 60px; }
+  .site-logo--nav { height: 48px; max-width: 160px; }
 
-  .product-detail-grid {
-    gap: 2rem;
-  }
+  /* Footer */
+  .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+  .footer-bottom-links { justify-content: center; flex-wrap: wrap; gap: 0.75rem 1.25rem; }
 
+  /* Panier */
   .cart-item {
+    display: flex !important;
     flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem 0;
+    grid-template-columns: unset;
+    align-items: flex-start;
   }
+  .cart-item-img { width: 80px !important; height: 100px !important; flex-shrink: 0; }
+  .cart-item > div:nth-child(2) { flex: 1; min-width: 0; }
+  .cart-item > div:last-child { width: 100%; text-align: left !important; }
 
-  .messages-container {
-    top: 110px;
-    right: 0.75rem;
-    left: 0.75rem;
-  }
+  /* Checkout — formulaire */
+  .form-grid-2 { grid-template-columns: 1fr; }
+  .delivery-options-grid { grid-template-columns: 1fr; }
 
-  .cart-toast {
-    bottom: 5rem;
-    right: 0.75rem;
-    left: 0.75rem;
-  }
+  /* Checkout — récapitulatif */
+  .cart-summary { position: static !important; }
 
-  .whatsapp-btn {
-    bottom: 1.25rem;
-    right: 1rem;
-  }
+  /* Détail produit */
+  .product-images { position: static !important; }
+  .product-detail-grid { gap: 1.5rem; }
+  .product-thumbnails { gap: 0.4rem; }
+  .product-thumbnail { width: 64px; height: 64px; }
+  .add-to-cart-section { flex-direction: row; gap: 0.75rem; }
 
-  #scrollTop {
-    bottom: 5rem !important;
-    right: 1rem !important;
-  }
+  /* Grilles */
+  .info-grid { grid-template-columns: repeat(2, 1fr); }
+  .wishlist-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
 
-  .footer-bottom {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.75rem;
-  }
+  /* Messages / système */
+  .messages-container { top: 70px; right: 0.75rem; left: 0.75rem; }
 
-  .footer-bottom-links {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.75rem 1.25rem;
-  }
+  /* WhatsApp & scroll top */
+  .whatsapp-btn { bottom: 1.25rem; right: 1rem; }
+  #scrollTop { bottom: 5rem !important; right: 1rem !important; }
 
-  .contact-grid {
-    grid-template-columns: 1fr !important;
-  }
+  /* Contact / localisation */
+  .contact-grid { grid-template-columns: 1fr !important; }
+  .location-grid { grid-template-columns: 1fr; }
+  .location-map-wrap, .location-map { min-height: 280px; }
+  .location-info-actions { flex-direction: column; }
+  .location-info-actions .btn { width: 100%; justify-content: center; }
 
-  .location-grid {
-    grid-template-columns: 1fr;
-  }
+  /* Checkout table */
+  .cart-table thead { display: none; }
+  .cart-table tr { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 1rem 0; border-bottom: 1px solid #eee; }
+  [data-theme="dark"] .cart-table tr { border-color: #222; }
+  .cart-table td { border: none; padding: 0; }
 
-  .location-map-wrap,
-  .location-map {
-    min-height: 300px;
-  }
-
-  .location-info-actions {
-    flex-direction: column;
-  }
-
-  .location-info-actions .btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .checkout-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .filters-sidebar form > div[style*="grid-template-columns"] {
-    grid-template-columns: 1fr !important;
-  }
+  /* Hero */
+  .hero-stats { gap: 1.5rem; }
 }
 
+/* ===== PETIT MOBILE ≤ 600px ===== */
+@media (max-width: 600px) {
+  /* Grilles produits */
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .categories-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .info-grid { grid-template-columns: 1fr; }
+  .wishlist-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+
+  /* Hero */
+  .hero-buttons { flex-direction: column; gap: 0.75rem; }
+  .hero-title { font-size: 3.5rem; }
+
+  /* Sections */
+  .section-title { font-size: clamp(1.6rem, 6vw, 2.5rem); }
+  .page-header { padding: 2rem 0; }
+  .page-header-title { font-size: clamp(1.8rem, 6vw, 2.5rem); }
+
+  /* Carte produit */
+  .product-detail-info { padding: 0; }
+  .product-card-actions { opacity: 1 !important; }
+  .action-btn { width: 36px; height: 36px; }
+
+  /* Nav mobile */
+  .mobile-menu { padding: 1.5rem 1rem; }
+  .mobile-nav-link { font-size: 1.4rem; }
+
+  /* WhatsApp */
+  .whatsapp-btn { width: 50px; height: 50px; font-size: 1.4rem; }
+
+  /* Boutons CTA */
+  .btn-lg { padding: 0.85rem 1.4rem; font-size: 0.82rem; }
+
+  /* Checkout — options paiement */
+  .payment-option { padding: 0.85rem 1rem; }
+
+  /* Filtres */
+  .size-options { gap: 0.4rem; }
+  .color-options { gap: 0.4rem; }
+
+  /* Page panier — section vide */
+  .empty-state { padding: 3rem 1rem; }
+  .empty-state i { font-size: 3rem; }
+
+  /* Ticker */
+  .ticker-content { font-size: 0.65rem; letter-spacing: 1px; }
+}
+
+/* ===== TRÈS PETIT ≤ 480px ===== */
 @media (max-width: 480px) {
-  .ticker-content {
-    font-size: 0.65rem;
-    letter-spacing: 1px;
-  }
+  .navbar-actions { gap: 0.5rem; }
+  .nav-icon-btn { width: 34px; height: 34px; font-size: 1rem; }
+  .dark-toggle { width: 34px; height: 34px; }
 
-  .page-header {
-    padding: 2.5rem 1rem 2rem !important;
-  }
+  /* Grille produits : 2 colonnes serrées */
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+  .product-card-info { padding: 0.7rem; }
+  .product-card-name { font-size: 0.82rem; }
+  .price-current { font-size: 0.88rem; }
+  .product-card-add { padding: 0.5rem; font-size: 0.7rem; }
 
-  .btn, .btn-hero-primary {
-    min-height: 44px;
-  }
+  /* Boutons généraux */
+  .btn { padding: 0.75rem 1.25rem; font-size: 0.8rem; }
+  .btn-full { min-height: 48px; }
 
-  .product-card-actions {
-    opacity: 1;
-  }
+  /* Section header */
+  .section-header { margin-bottom: 2rem; }
 
-  .action-btn {
-    width: 36px;
-    height: 36px;
-  }
+  /* Footer */
+  .footer-grid { gap: 1.5rem; }
+
+  /* Checkout — nom/prénom en une colonne déjà gérée */
+  /* Cart summary toujours visible */
+  .cart-summary { padding: 1.25rem; }
+  .summary-total { font-size: 1rem; }
+
+  /* Page header */
+  .page-header { padding: 2.5rem 1rem 2rem !important; }
 }
 
-@media (max-width: 380px) {
-  .navbar-inner {
-    padding: 0 0.75rem;
-  }
+/* ===== ULTRA PETIT ≤ 400px ===== */
+@media (max-width: 400px) {
+  .products-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .categories-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+  .site-logo--nav { height: 42px; max-width: 140px; }
+  .navbar-inner { padding: 0 0.75rem; }
+  .navbar-actions { gap: 0.35rem; }
 
-  .navbar-actions {
-    gap: 0.35rem;
+  /* Cart item ultra-compact */
+  .cart-item-img { width: 70px !important; height: 85px !important; }
+}
+
+/* ===== TOUCH — boutons toujours cliquables ===== */
+@media (hover: none) and (pointer: coarse) {
+  /* Sur écran tactile, les actions des cartes sont toujours visibles */
+  .product-card-actions {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .new-card-actions {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+  /* Taille minimum des zones cliquables */
+  .size-btn, .color-btn, .qty-btn, .nav-icon-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .product-card-add {
+    min-height: 44px;
   }
 }

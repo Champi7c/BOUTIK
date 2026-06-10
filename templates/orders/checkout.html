@@ -28,7 +28,7 @@
         <h3 style="font-family:var(--font-title);font-size:1.3rem;letter-spacing:2px;margin-bottom:1.5rem">
           1. INFORMATIONS PERSONNELLES
         </h3>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div class="form-grid-2">
           <div class="form-group">
             <label class="form-label">Prénom</label>
             <input type="text" class="form-control" value="{{ user.first_name }}" name="first_name" placeholder="Votre prénom">
@@ -50,7 +50,7 @@
           2. MODE DE LIVRAISON
         </h3>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+        <div class="delivery-options-grid">
           <label class="payment-option {% if True %}selected{% endif %}">
             <input type="radio" name="delivery_type" value="livraison" checked>
             <div style="text-align:center">
@@ -105,6 +105,25 @@
             <div>
               <div style="font-weight:600">Orange Money</div>
               <div style="font-size:.78rem;color:#888">Paiement via Orange Money</div>
+            </div>
+          </div>
+        </label>
+
+        <label class="payment-option">
+          <input type="radio" name="payment_method" value="stripe">
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:50px;height:50px;background:#635bff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:1.1rem">
+              <i class="fas fa-credit-card"></i>
+            </div>
+            <div>
+              <div style="font-weight:600">Carte bancaire (Visa / Mastercard)</div>
+              <div style="font-size:.78rem;color:#888">Paiement sécurisé — Stripe</div>
+              <div style="display:flex;gap:.4rem;margin-top:.35rem">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/200px-Visa_Inc._logo.svg.png"
+                     alt="Visa" style="height:16px;object-fit:contain">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/200px-Mastercard-logo.svg.png"
+                     alt="Mastercard" style="height:16px;object-fit:contain">
+              </div>
             </div>
           </div>
         </label>

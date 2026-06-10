@@ -40,6 +40,7 @@ class Order(models.Model):
     PAYMENT_CHOICES = [
         ('wave', 'Wave'),
         ('orange_money', 'Orange Money'),
+        ('stripe', 'Carte bancaire (Visa / Mastercard)'),
         ('cash', 'Paiement à la livraison'),
     ]
 

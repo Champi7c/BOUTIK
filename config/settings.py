@@ -67,19 +67,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database — MySQL via phpMyAdmin (port 3308)
+# Database — SQLite
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'boutik',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '3308',
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -115,9 +107,8 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/compte/connexion/'
 
 # Allauth
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_LOGIN_METHODS = {'username', 'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 # Email (développement)
@@ -126,6 +117,12 @@ DEFAULT_FROM_EMAIL = 'thiambusiness44@gmail.com'
 
 # Session cart
 CART_SESSION_ID = 'cart'
+
+# Stripe — remplace par tes vraies clés depuis dashboard.stripe.com
+STRIPE_PUBLISHABLE_KEY = 'pk_test_REMPLACE_PAR_TA_CLE_PUBLIQUE'
+STRIPE_SECRET_KEY = 'sk_test_REMPLACE_PAR_TA_CLE_SECRETE'
+STRIPE_WEBHOOK_SECRET = 'whsec_REMPLACE_PAR_TON_SECRET_WEBHOOK'
+STRIPE_CURRENCY = 'xof'  # Franc CFA — ou 'eur' si XOF non disponible sur ton compte
 
 # Business info
 BOUTIQUE_TEL = '77 212 43 19'
