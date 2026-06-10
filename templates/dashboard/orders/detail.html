@@ -1,0 +1,102 @@
+{% extends 'dashboard/base_admin.html' %}
+{% load humanize %}
+
+{% block page_title %}Commande {{ order.order_number }}{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'dashboard:order_list' %}" class="dash-btn dash-btn-outline dash-btn-sm"><i class="fas fa-arrow-left"></i> Retour</a>
+{% endblock %}
+
+{% block dash_content %}
+
+<div class="dash-grid-2">
+  <div>
+    <!-- Articles -->
+    <div class="dash-panel">
+      <div class="dash-panel-header"><h2>Articles commandés</h2></div>
+      <div class="dash-panel-body">
+        <ul class="dash-order-items">
+          {% for item in items %}
+          <li class="dash-order-item">
+            {% if item.product.image %}
+            <img src="{{ item.product.image.url }}" alt="">
+            {% endif %}
+            <div style="flex:1">
+              <div style="font-weight:600">{{ item.product.name }}</div>
+              <div style="font-size:.78rem;color:#888">
+                Qté: {{ item.quantity }}
+                {% if item.size %} · Taille: {{ item.size }}{% endif %}
+                {% if item.color %} · Couleur: {{ item.color }}{% endif %}
+              </div>
+            </div>
+            <div style="font-weight:600;text-align:right">
+              {{ item.subtotal|intcomma }} FCFA
+              <div style="font-size:.72rem;color:#888">{{ item.unit_price|intcomma }} / unité</div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        <div style="margin-top:1rem;padding-top:1rem;border-top:2px solid #eee">
+          <div style="display:flex;justify-content:space-between;margin-bottom:.35rem;font-size:.9rem">
+            <span>Sous-total</span><span>{{ order.total|intcomma }} FCFA</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:.35rem;font-size:.9rem;color:#888">
+            <span>Frais livraison</span><span>{{ order.delivery_fee|intcomma }} FCFA</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:1.1rem;font-weight:700">
+            <span>Total</span><span style="color:var(--dash-accent)">{{ order.grand_total|intcomma }} FCFA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <!-- Infos client -->
+    <div class="dash-panel">
+      <div class="dash-panel-header"><h2>Client</h2></div>
+      <div class="dash-panel-body" style="font-size:.9rem">
+        <p><strong>{{ order.user.get_full_name|default:order.user.username }}</strong></p>
+        <p style="color:#888">{{ order.user.email }}</p>
+        <p><i class="fas fa-phone"></i> {{ order.phone }}</p>
+        <p style="margin-top:.75rem"><strong>Livraison :</strong> {{ order.get_delivery_type_display }}</p>
+        {% if order.delivery_address %}<p style="color:#666">{{ order.delivery_address }}</p>{% endif %}
+        <p style="margin-top:.75rem"><strong>Paiement :</strong> {{ order.get_payment_method_display }}</p>
+        {% if payment %}
+        <p style="font-size:.8rem;color:#888">Transaction: {{ payment.transaction_id|default:"—" }}</p>
+        {% endif %}
+        <p style="margin-top:.75rem;font-size:.8rem;color:#888">Créée le {{ order.created_at|date:"d/m/Y à H:i" }}</p>
+      </div>
+    </div>
+
+    <!-- Mise à jour statut -->
+    <div class="dash-panel" style="margin-top:1.5rem">
+      <div class="dash-panel-header"><h2>Mettre à jour</h2></div>
+      <div class="dash-panel-body">
+        <form method="post">
+          {% csrf_token %}
+          <div class="dash-field">
+            <label>{{ form.status.label }}</label>
+            {{ form.status }}
+          </div>
+          <div class="dash-field">
+            <label>{{ form.payment_status.label }}</label>
+            {{ form.payment_status }}
+          </div>
+          <div class="dash-field">
+            <label>{{ form.notes.label }}</label>
+            {{ form.notes }}
+          </div>
+          <button type="submit" class="dash-btn dash-btn-primary dash-btn-sm" style="width:100%;justify-content:center">
+            <i class="fas fa-save"></i> Enregistrer
+          </button>
+        </form>
+        <p style="font-size:.75rem;color:#888;margin-top:.75rem">
+          <i class="fas fa-info-circle"></i> L'annulation remet automatiquement le stock en place.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

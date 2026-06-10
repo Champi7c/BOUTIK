@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Commande — Bright Looks{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-header-title">Commande</h1>
+    <p class="page-header-sub">
+      <span style="color:var(--accent)">1. Panier</span> →
+      <strong style="color:var(--white)">2. Livraison & Paiement</strong> →
+      3. Confirmation
+    </p>
+  </div>
+</div>
+
+<div class="container" style="padding:3rem 2rem 5rem">
+  <form method="POST" id="checkoutForm">
+    {% csrf_token %}
+    <div class="cart-grid">
+
+      <!-- FORMULAIRE -->
+      <div>
+
+        <!-- Infos personnelles -->
+        <h3 style="font-family:var(--font-title);font-size:1.3rem;letter-spacing:2px;margin-bottom:1.5rem">
+          1. INFORMATIONS PERSONNELLES
+        </h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div class="form-group">
+            <label class="form-label">Prénom</label>
+            <input type="text" class="form-control" value="{{ user.first_name }}" name="first_name" placeholder="Votre prénom">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nom</label>
+            <input type="text" class="form-control" value="{{ user.last_name }}" name="last_name" placeholder="Votre nom">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Téléphone *</label>
+          <input type="tel" class="form-control" name="phone" required
+                 value="{{ user.profile.phone }}"
+                 placeholder="Ex: 77 000 00 00">
+        </div>
+
+        <!-- Livraison -->
+        <h3 style="font-family:var(--font-title);font-size:1.3rem;letter-spacing:2px;margin:2rem 0 1.5rem">
+          2. MODE DE LIVRAISON
+        </h3>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+          <label class="payment-option {% if True %}selected{% endif %}">
+            <input type="radio" name="delivery_type" value="livraison" checked>
+            <div style="text-align:center">
+              <i class="fas fa-truck" style="font-size:1.5rem;margin-bottom:.5rem"></i>
+              <div style="font-weight:600;font-size:.85rem">Livraison à domicile</div>
+              <div style="font-size:.75rem;color:#888;margin-top:.25rem">1 500 FCFA</div>
+            </div>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="delivery_type" value="ouest_foire">
+            <div style="text-align:center">
+              <i class="fas fa-store" style="font-size:1.5rem;margin-bottom:.5rem"></i>
+              <div style="font-weight:600;font-size:.85rem">Retrait Ouest Foire</div>
+              <div style="font-size:.75rem;color:#28a745;margin-top:.25rem">Gratuit</div>
+            </div>
+          </label>
+        </div>
+
+        <div id="deliveryAddressField">
+          <div class="form-group">
+            <label class="form-label">Adresse de livraison *</label>
+            <textarea class="form-control" name="delivery_address" rows="3"
+                      placeholder="Numéro, rue, quartier, ville..."
+                      >{{ user.profile.address }}</textarea>
+          </div>
+        </div>
+
+        <!-- Paiement -->
+        <h3 style="font-family:var(--font-title);font-size:1.3rem;letter-spacing:2px;margin:2rem 0 1.5rem">
+          3. MODE DE PAIEMENT
+        </h3>
+
+        <label class="payment-option selected">
+          <input type="radio" name="payment_method" value="wave" checked>
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:50px;height:50px;background:#3B5BDB;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:.8rem">
+              Wave
+            </div>
+            <div>
+              <div style="font-weight:600">Wave</div>
+              <div style="font-size:.78rem;color:#888">Paiement instantané par Wave</div>
+            </div>
+          </div>
+        </label>
+
+        <label class="payment-option">
+          <input type="radio" name="payment_method" value="orange_money">
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:50px;height:50px;background:#FF6B00;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:.65rem;text-align:center">
+              Orange Money
+            </div>
+            <div>
+              <div style="font-weight:600">Orange Money</div>
+              <div style="font-size:.78rem;color:#888">Paiement via Orange Money</div>
+            </div>
+          </div>
+        </label>
+
+        <label class="payment-option">
+          <input type="radio" name="payment_method" value="cash">
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:50px;height:50px;background:#28a745;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem">
+              <i class="fas fa-money-bill"></i>
+            </div>
+            <div>
+              <div style="font-weight:600">Paiement à la livraison</div>
+              <div style="font-size:.78rem;color:#888">Payez en espèces à la réception</div>
+            </div>
+          </div>
+        </label>
+
+        <!-- Notes -->
+        <div class="form-group" style="margin-top:1.5rem">
+          <label class="form-label">Notes (optionnel)</label>
+          <textarea class="form-control" name="notes" rows="2"
+                    placeholder="Instructions spéciales pour la livraison..."></textarea>
+        </div>
+      </div>
+
+      <!-- RÉCAPITULATIF -->
+      <div class="cart-summary">
+        <h3 style="font-family:var(--font-title);font-size:1.2rem;letter-spacing:2px;margin-bottom:1.5rem;border-bottom:1px solid var(--gray-border);padding-bottom:1rem">
+          VOTRE COMMANDE
+        </h3>
+
+        {% for item in cart %}
+        <div style="display:flex;gap:.75rem;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--gray-border)">
+          <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}"
+               style="width:60px;height:75px;object-fit:cover;flex-shrink:0"
+               onerror="this.src='{% static 'images/placeholder.jpg' %}'">
+          <div style="flex:1">
+            <div style="font-size:.88rem;font-weight:600;margin-bottom:.2rem">{{ item.product.name }}</div>
+            {% if item.size %}<div style="font-size:.75rem;color:#888">Taille: {{ item.size }}</div>{% endif %}
+            <div style="font-size:.82rem;margin-top:.25rem">{{ item.quantity }} × {{ item.price|add:0|intcomma }} FCFA</div>
+          </div>
+          <div style="font-weight:600;font-size:.9rem;white-space:nowrap">
+            {{ item.total_price|intcomma }} FCFA
+          </div>
+        </div>
+        {% endfor %}
+
+        <div class="summary-row">
+          <span>Sous-total</span>
+          <span>{{ cart_total|intcomma }} FCFA</span>
+        </div>
+        <div class="summary-row" id="deliveryFeeRow">
+          <span>Livraison</span>
+          <span id="deliveryFeeDisplay">1 500 FCFA</span>
+        </div>
+
+        <div class="summary-total">
+          <span>Total</span>
+          <span id="grandTotal">{{ cart_total|add:delivery_fee|intcomma }} FCFA</span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg" style="margin-top:1.5rem">
+          <i class="fas fa-check"></i> Confirmer la commande
+        </button>
+
+        <p style="font-size:.75rem;color:#aaa;text-align:center;margin-top:1rem">
+          <i class="fas fa-lock"></i> Commande sécurisée
+        </p>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const cartTotal = {{ cart_total }};
+const deliveryFee = {{ delivery_fee }};
+
+document.querySelectorAll('[name="delivery_type"]').forEach(radio => {
+  radio.addEventListener('change', function () {
+    const isLivraison = this.value === 'livraison';
+    document.getElementById('deliveryAddressField').style.display = isLivraison ? 'block' : 'none';
+    const fee = isLivraison ? deliveryFee : 0;
+    document.getElementById('deliveryFeeDisplay').textContent = isLivraison ? '1 500 FCFA' : 'Gratuit';
+    document.getElementById('deliveryFeeRow').querySelector('span:last-child').style.color = isLivraison ? '' : 'var(--success)';
+    document.getElementById('grandTotal').textContent = (cartTotal + fee).toLocaleString('fr-FR') + ' FCFA';
+  });
+});
+</script>
+{% endblock %}

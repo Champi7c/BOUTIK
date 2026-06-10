@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}À Propos — Bright Looks{% endblock %}
+
+{% block content %}
+
+<!-- HERO À PROPOS -->
+<div style="height:60vh;min-height:400px;background:var(--ink, #1a1a1a);display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden">
+  <div style="position:absolute;inset:0;background:url('{% static 'images/about-bg.jpg' %}') center/cover no-repeat;opacity:.2"></div>
+  <div style="position:relative;z-index:1;padding:0 2rem">
+    <div class="section-subtitle" style="color:rgba(255,255,255,.5)">Notre Histoire</div>
+    <a href="/" style="display:inline-block">{% include 'partials/brand_logo.html' with logo_class='site-logo--auth' %}</a>
+    <p style="color:rgba(255,255,255,.6);font-size:1rem;margin-top:1rem;max-width:500px;margin-left:auto;margin-right:auto">
+      Dakar Sénégal to the world — livraison mondiale
+    </p>
+  </div>
+</div>
+
+<div class="container" style="padding:5rem 2rem">
+
+  <!-- HISTOIRE -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:5rem">
+    <div>
+      <div class="section-subtitle">Notre Histoire</div>
+      <h2 class="section-title" style="margin-bottom:1.5rem">La Naissance de Bright Looks</h2>
+      <p style="line-height:1.9;color:#444;margin-bottom:1rem;font-size:.95rem">
+        Bright Looks est née d'une passion profonde pour la mode urbaine et le streetwear authentique.
+        Fondée à Dakar, au cœur du Sénégal, notre marque s'est donné pour mission de proposer
+        des pièces de qualité qui reflètent l'identité urbaine africaine contemporaine.
+      </p>
+      <p style="line-height:1.9;color:#444;margin-bottom:1.5rem;font-size:.95rem">
+        Depuis Ouest Foire, notre boutique est devenue un point de rencontre pour
+        tous ceux qui aiment s'habiller avec style, sans compromis sur la qualité.
+      </p>
+      <div style="display:flex;gap:2rem">
+        <div style="text-align:center">
+          <div style="font-family:var(--font-title);font-size:2.5rem;color:var(--ink, #1a1a1a)">2+</div>
+          <div style="font-size:.8rem;color:#888;letter-spacing:1.5px;text-transform:uppercase">Boutiques</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-family:var(--font-title);font-size:2.5rem;color:var(--ink, #1a1a1a)">500+</div>
+          <div style="font-size:.8rem;color:#888;letter-spacing:1.5px;text-transform:uppercase">Produits</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-family:var(--font-title);font-size:2.5rem;color:var(--ink, #1a1a1a)">1K+</div>
+          <div style="font-size:.8rem;color:#888;letter-spacing:1.5px;text-transform:uppercase">Clients</div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--ink, #1a1a1a);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:2rem">
+      <img src="{% static 'images/logo.jpg' %}" alt="Bright Looks"
+           style="width:100%;max-width:320px;height:auto;object-fit:contain">
+    </div>
+  </div>
+
+  <!-- VALEURS -->
+  <div style="background:var(--ink, #1a1a1a);color:white;padding:4rem;margin-bottom:5rem;text-align:center">
+    <div class="section-subtitle" style="color:rgba(255,255,255,.4)">Ce qui nous définit</div>
+    <h2 class="section-title" style="color:white;margin-bottom:3rem">Nos Valeurs</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem">
+      <div>
+        <div style="width:60px;height:60px;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:1.5rem;color:var(--accent)">
+          <i class="fas fa-award"></i>
+        </div>
+        <h3 style="font-family:var(--font-title);font-size:1.3rem;letter-spacing:2px;margin-bottom:.75rem">Qualité</h3>
+        <p style="color:rgba(255,255,255,.6);font-size:.875rem;line-height:1.8">
+          Chaque pièce est sélectionnée avec soin pour garantir une qualité irréprochable.
+        </p>
+      </div>
+      <div>
+        <div style="width:60px;height:60px;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:1.5rem;color:var(--accent)">
+          <i class="fas fa-heart"></i>
+        </div>
+        <h3 style="font-family:var(--font-title);font-size:1.3rem;letter-spacing:2px;margin-bottom:.75rem">Passion</h3>
+        <p style="color:rgba(255,255,255,.6);font-size:.875rem;line-height:1.8">
+          La mode est notre passion. Nous vivons et respirons le streetwear au quotidien.
+        </p>
+      </div>
+      <div>
+        <div style="width:60px;height:60px;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:1.5rem;color:var(--accent)">
+          <i class="fas fa-users"></i>
+        </div>
+        <h3 style="font-family:var(--font-title);font-size:1.3rem;letter-spacing:2px;margin-bottom:.75rem">Communauté</h3>
+        <p style="color:rgba(255,255,255,.6);font-size:.875rem;line-height:1.8">
+          Bright Looks, c'est avant tout une communauté de passionnés de mode à Dakar.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="text-align:center">
+    <div class="section-subtitle">Rejoignez-nous</div>
+    <h2 class="section-title" style="margin-bottom:1.5rem">Prêt à Shopper ?</h2>
+    <p style="color:#666;margin-bottom:2rem;max-width:400px;margin-left:auto;margin-right:auto">
+      Découvrez notre collection complète et trouvez votre prochain outfit.
+    </p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="{% url 'store:product_list' %}" class="btn btn-primary btn-lg">
+        <i class="fas fa-shopping-bag"></i> Voir la collection
+      </a>
+      <a href="{% url 'store:contact' %}" class="btn btn-outline btn-lg">
+        <i class="fas fa-envelope"></i> Nous contacter
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

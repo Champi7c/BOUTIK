@@ -1,0 +1,68 @@
+{% load static %}
+{% load humanize %}
+<div class="product-card">
+  <div class="product-card-image">
+    <a href="{{ product.get_absolute_url }}">
+      {% if product.image %}
+      <img data-src="{{ product.image.url }}" src="{% static 'images/placeholder.jpg' %}" alt="{{ product.name }}" loading="lazy" class="lazy">
+      {% else %}
+      <img src="{% static 'images/placeholder.jpg' %}" alt="{{ product.name }}">
+      {% endif %}
+    </a>
+
+    <!-- Badges -->
+    {% if product.is_new and not product.discount_price %}
+    <span class="product-badge badge-new">Nouveau</span>
+    {% endif %}
+    {% if product.discount_price %}
+    <span class="product-badge badge-promo">-{{ product.discount_percent }}%</span>
+    {% endif %}
+    {% if not product.is_in_stock %}
+    <span class="product-badge badge-rupture" style="top:auto;bottom:.75rem">Épuisé</span>
+    {% endif %}
+
+    <!-- Actions -->
+    <div class="product-card-actions">
+      <button class="action-btn {% if user.is_authenticated %}{% endif %}"
+              data-wishlist data-product-id="{{ product.id }}"
+              title="Ajouter aux favoris">
+        <i class="{% if product.id in wishlist_ids %}fas{% else %}far{% endif %} fa-heart"></i>
+      </button>
+      <a href="{{ product.get_absolute_url }}" class="action-btn" title="Voir le produit">
+        <i class="fas fa-eye"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="product-card-info">
+    <div class="product-card-cat">{{ product.category.name }}</div>
+    <a href="{{ product.get_absolute_url }}" class="product-card-name">{{ product.name }}</a>
+
+    {% if product.average_rating > 0 %}
+    <div class="stars" style="margin-bottom:.35rem;font-size:.75rem">
+      {% for i in "12345" %}
+        {% if forloop.counter <= product.average_rating %}★{% else %}☆{% endif %}
+      {% endfor %}
+      <span style="color:#888;font-size:.72rem">({{ product.reviews.count }})</span>
+    </div>
+    {% endif %}
+
+    <div class="product-card-price">
+      <span class="price-current">{{ product.current_price|intcomma }} FCFA</span>
+      {% if product.discount_price %}
+      <span class="price-original">{{ product.price|intcomma }}</span>
+      <span class="price-discount">-{{ product.discount_percent }}%</span>
+      {% endif %}
+    </div>
+
+    {% if product.is_in_stock %}
+    <button class="product-card-add" data-add-cart data-product-id="{{ product.id }}">
+      <i class="fas fa-shopping-bag"></i> Ajouter au panier
+    </button>
+    {% else %}
+    <button class="product-card-add" disabled style="opacity:.4;cursor:not-allowed">
+      Épuisé
+    </button>
+    {% endif %}
+  </div>
+</div>

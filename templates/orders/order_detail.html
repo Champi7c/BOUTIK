@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Commande #{{ order.order_number }} — Bright Looks{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-header-title">Commande #{{ order.order_number }}</h1>
+    <p class="page-header-sub">{{ order.created_at|date:"d/m/Y à H:i" }}</p>
+  </div>
+</div>
+
+<div class="container" style="padding:3rem 2rem 5rem;max-width:900px">
+
+  <!-- Suivi -->
+  <div style="margin-bottom:3rem;background:var(--gray-light);padding:2rem">
+    <h3 style="font-family:var(--font-title);font-size:1.1rem;letter-spacing:2px;margin-bottom:1.5rem">SUIVI DE COMMANDE</h3>
+    <div style="display:flex;gap:0;position:relative">
+      {% for step, label in order.STATUS %}
+      <div style="flex:1;text-align:center;position:relative">
+        <div style="width:32px;height:32px;border-radius:50%;margin:0 auto .5rem;display:flex;align-items:center;justify-content:center;
+          {% if order.status == step or forloop.counter <= order.STATUS|length %}background:var(--mauve-dark);color:white;{% else %}background:#ddd;color:#999;{% endif %}
+          font-size:.75rem;z-index:1;position:relative">
+          {{ forloop.counter }}
+        </div>
+        <div style="font-size:.72rem;font-weight:{% if order.status == step %}700{% else %}400{% endif %};
+          color:{% if order.status == step %}var(--mauve-dark){% else %}#999{% endif %};
+          letter-spacing:.5px">{{ label }}</div>
+        {% if not forloop.last %}
+        <div style="position:absolute;top:16px;left:50%;right:-50%;height:2px;background:#ddd;z-index:0"></div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Articles -->
+  <div style="border:1px solid var(--gray-border);padding:2rem;margin-bottom:2rem">
+    <h3 style="font-family:var(--font-title);font-size:1.1rem;letter-spacing:2px;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:1px solid var(--gray-border)">
+      ARTICLES
+    </h3>
+    {% for item in order.items.all %}
+    <div style="display:flex;gap:1rem;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--gray-border)">
+      <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}"
+           style="width:70px;height:85px;object-fit:cover">
+      <div style="flex:1">
+        <a href="{{ item.product.get_absolute_url }}" style="font-weight:600;font-size:.9rem">{{ item.product.name }}</a>
+        {% if item.size %}<div style="font-size:.78rem;color:#888">Taille : {{ item.size }}</div>{% endif %}
+        <div style="font-size:.85rem;margin-top:.35rem">{{ item.quantity }} × {{ item.unit_price|intcomma }} FCFA</div>
+      </div>
+      <strong style="font-size:.95rem">{{ item.subtotal|intcomma }} FCFA</strong>
+    </div>
+    {% endfor %}
+
+    <div style="margin-top:1rem;text-align:right">
+      <div style="font-size:.9rem;margin-bottom:.5rem;color:#888">
+        Livraison : {% if order.delivery_fee %}{{ order.delivery_fee|intcomma }} FCFA{% else %}Gratuit{% endif %}
+      </div>
+      <div style="font-size:1.2rem;font-weight:700">Total : {{ order.grand_total|intcomma }} FCFA</div>
+    </div>
+  </div>
+
+  <a href="{% url 'orders:order_list' %}" class="btn btn-outline">
+    <i class="fas fa-arrow-left"></i> Retour aux commandes
+  </a>
+</div>
+{% endblock %}

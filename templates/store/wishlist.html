@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Mes Favoris — Bright Looks{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-header-title">Mes Favoris</h1>
+    <p class="page-header-sub">{{ items|length }} article{{ items|length|pluralize }}</p>
+  </div>
+</div>
+
+<div class="container" style="padding:3rem 2rem 5rem">
+  {% if items %}
+  <div class="wishlist-grid">
+    {% for item in items %}
+    {% with product=item.product %}
+    {% include 'store/partials/product_card.html' %}
+    {% endwith %}
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <i class="far fa-heart"></i>
+    <h3>Aucun favori</h3>
+    <p>Vous n'avez pas encore ajouté de produits à vos favoris.</p>
+    <a href="{% url 'store:product_list' %}" class="btn btn-primary">Découvrir nos produits</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

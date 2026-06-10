@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block dash_title %}Dashboard{% endblock %} — Bright Looks Admin</title>
+  <link rel="icon" href="{% static 'images/logo.jpg' %}" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  {% block dash_extra_css %}{% endblock %}
+</head>
+<body>
+<div class="dash-layout">
+
+  <!-- Sidebar -->
+  <aside class="dash-sidebar" id="dashSidebar">
+    <div class="dash-sidebar-brand">
+      <a href="{% url 'dashboard:index' %}">Bright Looks</a>
+      <small>Panneau gérant</small>
+    </div>
+
+    <nav class="dash-nav">
+      <div class="dash-nav-section">Principal</div>
+      <a href="{% url 'dashboard:index' %}" class="dash-nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+        <i class="fas fa-chart-pie"></i> Vue d'ensemble
+      </a>
+
+      <div class="dash-nav-section">Catalogue</div>
+      <a href="{% url 'dashboard:product_list' %}" class="dash-nav-link {% if 'product' in request.resolver_match.url_name %}active{% endif %}">
+        <i class="fas fa-tshirt"></i> Produits
+      </a>
+      <a href="{% url 'dashboard:product_create' %}" class="dash-nav-link">
+        <i class="fas fa-plus-circle"></i> Ajouter produit
+      </a>
+      <a href="{% url 'dashboard:stock_list' %}" class="dash-nav-link {% if request.resolver_match.url_name == 'stock_list' %}active{% endif %}">
+        <i class="fas fa-boxes"></i> Stock
+      </a>
+      <a href="{% url 'dashboard:category_list' %}" class="dash-nav-link {% if 'category' in request.resolver_match.url_name %}active{% endif %}">
+        <i class="fas fa-tags"></i> Catégories
+      </a>
+      <a href="{% url 'dashboard:variants_list' %}" class="dash-nav-link {% if 'variant' in request.resolver_match.url_name or 'size' in request.resolver_match.url_name or 'color' in request.resolver_match.url_name %}active{% endif %}">
+        <i class="fas fa-palette"></i> Tailles &amp; couleurs
+      </a>
+
+      <div class="dash-nav-section">Ventes</div>
+      <a href="{% url 'dashboard:order_list' %}" class="dash-nav-link {% if 'order' in request.resolver_match.url_name %}active{% endif %}">
+        <i class="fas fa-shopping-bag"></i> Commandes
+      </a>
+      <a href="{% url 'dashboard:customer_list' %}" class="dash-nav-link {% if 'customer' in request.resolver_match.url_name %}active{% endif %}">
+        <i class="fas fa-users"></i> Clients
+      </a>
+
+      <div class="dash-nav-section">Contenu</div>
+      <a href="{% url 'dashboard:review_list' %}" class="dash-nav-link {% if 'review' in request.resolver_match.url_name %}active{% endif %}">
+        <i class="fas fa-star"></i> Avis clients
+      </a>
+      <a href="{% url 'dashboard:banner_list' %}" class="dash-nav-link {% if 'banner' in request.resolver_match.url_name %}active{% endif %}">
+        <i class="fas fa-image"></i> Bannières
+      </a>
+    </nav>
+
+    <div class="dash-sidebar-footer">
+      <a href="/" target="_blank"><i class="fas fa-external-link-alt"></i> Voir le site</a>
+      <a href="{% url 'admin:index' %}" target="_blank"><i class="fas fa-cog"></i> Admin Django</a>
+      <a href="{% url 'dashboard:logout' %}"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="dash-main">
+    <header class="dash-topbar">
+      <div style="display:flex;align-items:center;gap:1rem">
+        <button class="dash-mobile-toggle" id="dashToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+        <h1>{% block page_title %}Dashboard{% endblock %}</h1>
+      </div>
+      <div class="dash-topbar-actions">
+        {% block topbar_actions %}{% endblock %}
+        <span style="font-size:.8rem;color:#888">{{ request.user.get_full_name|default:request.user.username }}</span>
+      </div>
+    </header>
+
+    <div class="dash-content">
+      {% if messages %}
+      <div class="dash-messages">
+        {% for message in messages %}
+        <div class="dash-alert {% if message.tags == 'error' %}error{% elif message.tags == 'warning' %}warning{% else %}success{% endif %}">
+          <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% else %}check-circle{% endif %}"></i>
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% block dash_content %}{% endblock %}
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('dashToggle')?.addEventListener('click', () => {
+  document.getElementById('dashSidebar').classList.toggle('open');
+});
+</script>
+{% block dash_extra_js %}{% endblock %}
+</body>
+</html>

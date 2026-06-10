@@ -1,0 +1,28 @@
+{% extends 'dashboard/base_admin.html' %}
+
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block dash_content %}
+<div class="dash-panel">
+  <div class="dash-panel-header"><h2>{{ title }}</h2></div>
+  <div class="dash-panel-body">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="dash-form-grid">
+        {% for field in form %}
+        <div class="dash-field {% if field.name == 'subtitle' or field.name == 'image' %}full{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if banner.image and field.name == 'image' %}<img src="{{ banner.image.url }}" class="dash-img-preview" alt="">{% endif %}
+          {{ field.errors }}
+        </div>
+        {% endfor %}
+      </div>
+      <div style="margin-top:1.5rem;display:flex;gap:.75rem">
+        <button type="submit" class="dash-btn dash-btn-primary"><i class="fas fa-save"></i> Enregistrer</button>
+        <a href="{% url 'dashboard:banner_list' %}" class="dash-btn dash-btn-outline">Annuler</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

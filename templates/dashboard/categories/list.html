@@ -1,0 +1,49 @@
+{% extends 'dashboard/base_admin.html' %}
+
+{% block page_title %}Catégories{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'dashboard:category_create' %}" class="dash-btn dash-btn-primary dash-btn-sm"><i class="fas fa-plus"></i> Ajouter</a>
+{% endblock %}
+
+{% block dash_content %}
+
+<div class="dash-panel">
+  <div class="dash-panel-body no-pad">
+    <div class="dash-table-wrap">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Parent</th>
+            <th>Produits</th>
+            <th>Ordre</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cat in categories %}
+          <tr>
+            <td style="font-weight:600">{{ cat.name }}</td>
+            <td>{{ cat.parent.name|default:"—" }}</td>
+            <td>{{ cat.products.count }}</td>
+            <td>{{ cat.order }}</td>
+            <td>{% if cat.is_active %}<span class="dash-badge success">Active</span>{% else %}<span class="dash-badge muted">Inactive</span>{% endif %}</td>
+            <td>
+              <a href="{% url 'dashboard:category_edit' cat.pk %}" class="dash-btn dash-btn-outline dash-btn-sm"><i class="fas fa-edit"></i></a>
+              <form method="post" action="{% url 'dashboard:category_delete' cat.pk %}" style="display:inline" onsubmit="return confirm('Supprimer « {{ cat.name }} » ?')">{% csrf_token %}
+                <button type="submit" class="dash-btn dash-btn-danger dash-btn-sm"><i class="fas fa-trash"></i></button>
+              </form>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6" style="text-align:center;padding:3rem;color:#888">Aucune catégorie</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

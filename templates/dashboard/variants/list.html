@@ -1,0 +1,76 @@
+{% extends 'dashboard/base_admin.html' %}
+
+{% block page_title %}Tailles &amp; couleurs{% endblock %}
+
+{% block dash_content %}
+
+<div class="dash-grid-2">
+  <!-- Tailles -->
+  <div class="dash-panel">
+    <div class="dash-panel-header"><h2>Tailles ({{ sizes|length }})</h2></div>
+    <div class="dash-panel-body">
+      <form method="post" style="display:flex;gap:.5rem;margin-bottom:1.25rem">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add_size">
+        <input type="text" name="name" placeholder="Ex: XL" class="dash-input" required>
+        <input type="number" name="order" value="0" min="0" class="dash-input" style="max-width:80px">
+        <button type="submit" class="dash-btn dash-btn-primary dash-btn-sm"><i class="fas fa-plus"></i></button>
+      </form>
+      <div class="dash-table-wrap">
+        <table class="dash-table">
+          <thead><tr><th>Nom</th><th>Ordre</th><th></th></tr></thead>
+          <tbody>
+            {% for size in sizes %}
+            <tr>
+              <td style="font-weight:600">{{ size.name }}</td>
+              <td>{{ size.order }}</td>
+              <td>
+                <form method="post" action="{% url 'dashboard:size_delete' size.pk %}" onsubmit="return confirm('Supprimer {{ size.name }} ?')">{% csrf_token %}
+                  <button type="submit" class="dash-btn dash-btn-danger dash-btn-sm"><i class="fas fa-trash"></i></button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Couleurs -->
+  <div class="dash-panel">
+    <div class="dash-panel-header"><h2>Couleurs ({{ colors|length }})</h2></div>
+    <div class="dash-panel-body">
+      <form method="post" style="display:flex;gap:.5rem;margin-bottom:1.25rem;align-items:center">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add_color">
+        <input type="text" name="name" placeholder="Ex: Noir" class="dash-input" required>
+        <input type="color" name="hex_code" value="#000000" style="width:44px;height:38px;border:1px solid #ddd;padding:2px">
+        <button type="submit" class="dash-btn dash-btn-primary dash-btn-sm"><i class="fas fa-plus"></i></button>
+      </form>
+      <div class="dash-table-wrap">
+        <table class="dash-table">
+          <thead><tr><th>Couleur</th><th>Code</th><th></th></tr></thead>
+          <tbody>
+            {% for color in colors %}
+            <tr>
+              <td style="display:flex;align-items:center;gap:.5rem;font-weight:600">
+                <span style="width:20px;height:20px;background:{{ color.hex_code }};border:1px solid #ddd;display:inline-block"></span>
+                {{ color.name }}
+              </td>
+              <td style="font-size:.8rem;color:#888">{{ color.hex_code }}</td>
+              <td>
+                <form method="post" action="{% url 'dashboard:color_delete' color.pk %}" onsubmit="return confirm('Supprimer {{ color.name }} ?')">{% csrf_token %}
+                  <button type="submit" class="dash-btn dash-btn-danger dash-btn-sm"><i class="fas fa-trash"></i></button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

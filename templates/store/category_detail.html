@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category.name }} — Bright Looks{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+  <div class="container">
+    {% if category.image %}
+    <div style="position:absolute;inset:0;overflow:hidden">
+      <img src="{{ category.image.url }}" alt="{{ category.name }}" style="width:100%;height:100%;object-fit:cover;opacity:.2">
+    </div>
+    {% endif %}
+    <div style="position:relative">
+      <h1 class="page-header-title">{{ category.name }}</h1>
+      {% if category.description %}
+      <p class="page-header-sub">{{ category.description }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Sous-catégories -->
+{% if subcategories %}
+<div style="background:var(--gray-light);padding:1.5rem 0;border-bottom:1px solid var(--gray-border)">
+  <div class="container" style="display:flex;gap:.75rem;flex-wrap:wrap;align-items:center">
+    <a href="{% url 'store:category' category.slug %}" class="btn btn-primary btn-sm">
+      Tout {{ category.name }}
+    </a>
+    {% for sub in subcategories %}
+    <a href="{% url 'store:category' sub.slug %}" class="btn btn-outline btn-sm">{{ sub.name }}</a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<div class="container" style="padding:3rem 2rem 5rem">
+
+  <!-- Toolbar -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem">
+    <p style="color:#888;font-size:.85rem">
+      <strong style="color:var(--mauve-deep)">{{ products|length }}</strong> produit{{ products|length|pluralize }}
+    </p>
+    <select id="sortSelect" class="form-control" style="width:auto;font-size:.82rem;padding:.4rem .8rem">
+      <option value="nouveau">Nouveautés</option>
+      <option value="populaire">Populaires</option>
+      <option value="prix_asc">Prix croissant</option>
+      <option value="prix_desc">Prix décroissant</option>
+    </select>
+  </div>
+
+  {% if products %}
+  <div class="products-grid">
+    {% for product in products %}
+    {% include 'store/partials/product_card.html' %}
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <i class="fas fa-tshirt"></i>
+    <h3>Aucun produit dans cette catégorie</h3>
+    <p>Revenez bientôt pour découvrir nos nouveautés.</p>
+    <a href="{% url 'store:product_list' %}" class="btn btn-primary">Voir tout le catalogue</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

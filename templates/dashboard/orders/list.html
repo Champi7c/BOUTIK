@@ -1,0 +1,71 @@
+{% extends 'dashboard/base_admin.html' %}
+{% load humanize %}
+
+{% block page_title %}Commandes{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'dashboard:export_orders' %}" class="dash-btn dash-btn-outline dash-btn-sm"><i class="fas fa-download"></i> Export CSV</a>
+{% endblock %}
+
+{% block dash_content %}
+
+<div class="dash-filter-tabs">
+  <a href="{% url 'dashboard:order_list' %}" class="dash-filter-tab {% if not status %}active{% endif %}">Toutes ({{ total_orders }})</a>
+  {% for code, label, count in status_tabs %}
+  <a href="?status={{ code }}" class="dash-filter-tab {% if status == code %}active{% endif %}">{{ label }} ({{ count }})</a>
+  {% endfor %}
+</div>
+
+<form method="get" class="dash-filters">
+  {% if status %}<input type="hidden" name="status" value="{{ status }}">{% endif %}
+  <input type="text" name="q" value="{{ q }}" placeholder="N° commande, client, téléphone..." class="dash-input">
+  <button type="submit" class="dash-btn dash-btn-primary dash-btn-sm"><i class="fas fa-search"></i></button>
+</form>
+
+<div class="dash-panel">
+  <div class="dash-panel-body no-pad">
+    <div class="dash-table-wrap">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>N° Commande</th>
+            <th>Client</th>
+            <th>Téléphone</th>
+            <th>Total</th>
+            <th>Livraison</th>
+            <th>Paiement</th>
+            <th>Statut</th>
+            <th>Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td style="font-weight:600">{{ order.order_number }}</td>
+            <td>{{ order.user.get_full_name|default:order.user.username }}</td>
+            <td>{{ order.phone }}</td>
+            <td style="font-weight:600">{{ order.grand_total|intcomma }} FCFA</td>
+            <td style="font-size:.8rem">{{ order.get_delivery_type_display }}</td>
+            <td style="font-size:.8rem">{{ order.get_payment_method_display }}</td>
+            <td><span class="dash-badge {% if order.status == 'delivered' %}success{% elif order.status == 'cancelled' %}danger{% else %}warning{% endif %}">{{ order.get_status_display }}</span></td>
+            <td style="font-size:.8rem;color:#888">{{ order.created_at|date:"d/m/Y H:i" }}</td>
+            <td><a href="{% url 'dashboard:order_detail' order.pk %}" class="dash-btn dash-btn-outline dash-btn-sm">Détail</a></td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="9" style="text-align:center;padding:3rem;color:#888">Aucune commande</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if orders.has_other_pages %}
+    <div class="dash-pagination">
+      {% if orders.has_previous %}<a href="?page={{ orders.previous_page_number }}&status={{ status }}&q={{ q }}">‹</a>{% endif %}
+      <span class="current">{{ orders.number }} / {{ orders.paginator.num_pages }}</span>
+      {% if orders.has_next %}<a href="?page={{ orders.next_page_number }}&status={{ status }}&q={{ q }}">›</a>{% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

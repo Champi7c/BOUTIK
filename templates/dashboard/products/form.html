@@ -1,0 +1,99 @@
+{% extends 'dashboard/base_admin.html' %}
+{% load static %}
+
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'dashboard:product_list' %}" class="dash-btn dash-btn-outline dash-btn-sm"><i class="fas fa-arrow-left"></i> Retour</a>
+{% endblock %}
+
+{% block dash_content %}
+
+<div class="dash-panel">
+  <div class="dash-panel-header"><h2>{{ title }}</h2></div>
+  <div class="dash-panel-body">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="dash-form-grid">
+        <div class="dash-field">
+          <label for="id_name">{{ form.name.label }}</label>
+          {{ form.name }}
+          {{ form.name.errors }}
+        </div>
+        <div class="dash-field">
+          <label for="id_category">{{ form.category.label }}</label>
+          {{ form.category }}
+          {{ form.category.errors }}
+        </div>
+        <div class="dash-field full">
+          <label for="id_description">{{ form.description.label }}</label>
+          {{ form.description }}
+          {{ form.description.errors }}
+        </div>
+        <div class="dash-field">
+          <label for="id_price">{{ form.price.label }}</label>
+          {{ form.price }}
+          {{ form.price.errors }}
+        </div>
+        <div class="dash-field">
+          <label for="id_discount_price">{{ form.discount_price.label }}</label>
+          {{ form.discount_price }}
+          {{ form.discount_price.errors }}
+        </div>
+        <div class="dash-field">
+          <label for="id_stock">{{ form.stock.label }}</label>
+          {{ form.stock }}
+          {{ form.stock.errors }}
+        </div>
+        <div class="dash-field">
+          <label>Options</label>
+          <div class="dash-check-row">
+            <label>{{ form.is_active }} {{ form.is_active.label }}</label>
+            <label>{{ form.is_new }} {{ form.is_new.label }}</label>
+            <label>{{ form.is_featured }} {{ form.is_featured.label }}</label>
+          </div>
+        </div>
+        <div class="dash-field">
+          <label for="id_image">{{ form.image.label }}</label>
+          {{ form.image }}
+          {% if product.image %}<img src="{{ product.image.url }}" class="dash-img-preview" alt="">{% endif %}
+          {{ form.image.errors }}
+        </div>
+        <div class="dash-field">
+          <label for="id_image2">{{ form.image2.label }}</label>
+          {{ form.image2 }}
+          {% if product.image2 %}<img src="{{ product.image2.url }}" class="dash-img-preview" alt="">{% endif %}
+        </div>
+        <div class="dash-field">
+          <label for="id_image3">{{ form.image3.label }}</label>
+          {{ form.image3 }}
+          {% if product.image3 %}<img src="{{ product.image3.url }}" class="dash-img-preview" alt="">{% endif %}
+        </div>
+        <div class="dash-field full">
+          <label>{{ form.sizes.label }}</label>
+          <div class="dash-checkboxes">{{ form.sizes }}</div>
+        </div>
+        <div class="dash-field full">
+          <label>{{ form.colors.label }}</label>
+          <div class="dash-checkboxes">{{ form.colors }}</div>
+        </div>
+      </div>
+
+      <div style="margin-top:1.5rem;display:flex;gap:.75rem;flex-wrap:wrap">
+        <button type="submit" class="dash-btn dash-btn-primary">
+          <i class="fas fa-save"></i> {% if is_create %}Créer le produit{% else %}Enregistrer{% endif %}
+        </button>
+        <a href="{% url 'dashboard:product_list' %}" class="dash-btn dash-btn-outline">Annuler</a>
+      </div>
+    </form>
+    {% if not is_create %}
+    <form method="post" action="{% url 'dashboard:product_delete' product.pk %}" style="margin-top:1rem" onsubmit="return confirm('Supprimer définitivement ce produit ?')">
+      {% csrf_token %}
+      <button type="submit" class="dash-btn dash-btn-danger"><i class="fas fa-trash"></i> Supprimer définitivement</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

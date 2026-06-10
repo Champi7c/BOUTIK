@@ -1,0 +1,75 @@
+{% extends 'dashboard/base_admin.html' %}
+{% load humanize %}
+
+{% block page_title %}Client — {{ customer.username }}{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'dashboard:customer_list' %}" class="dash-btn dash-btn-outline dash-btn-sm"><i class="fas fa-arrow-left"></i> Retour</a>
+{% endblock %}
+
+{% block dash_content %}
+
+<div class="dash-grid-2">
+  <div class="dash-panel">
+    <div class="dash-panel-header"><h2>Informations</h2></div>
+    <div class="dash-panel-body">
+      <form method="post">
+        {% csrf_token %}
+        <div class="dash-form-grid">
+          <div class="dash-field">
+            <label>{{ form.first_name.label }}</label>
+            {{ form.first_name }}
+          </div>
+          <div class="dash-field">
+            <label>{{ form.last_name.label }}</label>
+            {{ form.last_name }}
+          </div>
+          <div class="dash-field full">
+            <label>{{ form.email.label }}</label>
+            {{ form.email }}
+          </div>
+          <div class="dash-field full">
+            <div class="dash-check-row">
+              <label>{{ form.is_active }} {{ form.is_active.label }}</label>
+              <label>{{ form.is_staff }} {{ form.is_staff.label }}</label>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="dash-btn dash-btn-primary dash-btn-sm"><i class="fas fa-save"></i> Enregistrer</button>
+      </form>
+      <div style="margin-top:1.5rem;font-size:.85rem;color:#666">
+        <p><strong>Téléphone :</strong> {{ customer.profile.phone|default:"—" }}</p>
+        <p><strong>Adresse :</strong> {{ customer.profile.address|default:"—" }}</p>
+        <p><strong>Ville :</strong> {{ customer.profile.city|default:"—" }}</p>
+        <p><strong>Inscrit le :</strong> {{ customer.date_joined|date:"d/m/Y H:i" }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash-panel">
+    <div class="dash-panel-header"><h2>Commandes récentes</h2></div>
+    <div class="dash-panel-body no-pad">
+      <div class="dash-table-wrap">
+        <table class="dash-table">
+          <thead>
+            <tr><th>N°</th><th>Total</th><th>Statut</th><th>Date</th></tr>
+          </thead>
+          <tbody>
+            {% for order in orders %}
+            <tr>
+              <td><a href="{% url 'dashboard:order_detail' order.pk %}">{{ order.order_number }}</a></td>
+              <td>{{ order.grand_total|intcomma }} FCFA</td>
+              <td><span class="dash-badge warning">{{ order.get_status_display }}</span></td>
+              <td style="font-size:.8rem;color:#888">{{ order.created_at|date:"d/m/Y" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" style="text-align:center;padding:2rem;color:#888">Aucune commande</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

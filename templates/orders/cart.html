@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Mon Panier — Bright Looks{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-header-title">Mon Panier</h1>
+    <p class="page-header-sub">{{ cart|length }} article{{ cart|length|pluralize }}</p>
+  </div>
+</div>
+
+<div class="container" style="padding:3rem 2rem 5rem">
+  {% if not cart.is_empty %}
+  <div class="cart-grid">
+
+    <!-- ARTICLES -->
+    <div>
+      {% for item in cart %}
+      <div class="cart-item" data-cart-row="{{ item.key }}">
+        <!-- Image -->
+        <a href="{{ item.product.get_absolute_url }}">
+          <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}"
+               class="cart-item-img" onerror="this.src='{% static 'images/placeholder.jpg' %}'">
+        </a>
+
+        <!-- Infos -->
+        <div>
+          <a href="{{ item.product.get_absolute_url }}" class="cart-item-name">
+            {{ item.product.name }}
+          </a>
+          <div class="cart-item-meta">
+            {% if item.size %}Taille : {{ item.size }} &nbsp;|&nbsp; {% endif %}
+            {% if item.color %}Couleur : {{ item.color }} &nbsp;|&nbsp; {% endif %}
+            Prix unitaire : {{ item.price|add:0|intcomma }} FCFA
+          </div>
+
+          <!-- Quantité -->
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div class="qty-selector" style="margin-bottom:0">
+              <button class="qty-btn" onclick="changeCartQty('{{ item.key }}', -1)" style="font-size:.9rem">−</button>
+              <input type="number" class="qty-input" value="{{ item.quantity }}" min="1"
+                     data-cart-qty data-key="{{ item.key }}" style="width:50px;font-size:.9rem">
+              <button class="qty-btn" onclick="changeCartQty('{{ item.key }}', 1)" style="font-size:.9rem">+</button>
+            </div>
+            <button data-remove-cart data-key="{{ item.key }}"
+                    style="background:none;border:none;color:#888;cursor:pointer;font-size:.8rem;text-decoration:underline">
+              Supprimer
+            </button>
+          </div>
+        </div>
+
+        <!-- Prix total -->
+        <div style="text-align:right">
+          <strong style="font-size:1.05rem" data-item-total="{{ item.key }}">
+            {{ item.total_price|intcomma }} FCFA
+          </strong>
+        </div>
+      </div>
+      {% endfor %}
+
+      <div style="margin-top:2rem;display:flex;gap:1rem">
+        <a href="{% url 'store:product_list' %}" class="btn btn-outline">
+          <i class="fas fa-arrow-left"></i> Continuer les achats
+        </a>
+      </div>
+    </div>
+
+    <!-- RÉCAPITULATIF -->
+    <div class="cart-summary">
+      <h3 style="font-family:var(--font-title);font-size:1.4rem;letter-spacing:2px;margin-bottom:1.5rem;border-bottom:1px solid var(--gray-border);padding-bottom:1rem">
+        RÉCAPITULATIF
+      </h3>
+
+      <div class="summary-row">
+        <span>Sous-total</span>
+        <span id="cartTotal">{{ cart.get_total|intcomma }} FCFA</span>
+      </div>
+      <div class="summary-row">
+        <span>Livraison</span>
+        <span style="color:#888;font-size:.82rem">Calculée à l'étape suivante</span>
+      </div>
+
+      <div class="summary-total">
+        <span>Total</span>
+        <span>{{ cart.get_total|intcomma }} FCFA</span>
+      </div>
+
+      <a href="{% url 'orders:checkout' %}" class="btn btn-primary btn-full btn-lg" style="margin-top:1.5rem">
+        <i class="fas fa-lock"></i> Passer la commande
+      </a>
+
+      <div style="margin-top:1.5rem;text-align:center">
+        <div style="display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:.75rem">
+          <img src="{% static 'images/wave-logo.png' %}" alt="Wave" style="height:28px;object-fit:contain" onerror="this.style.display='none'">
+          <img src="{% static 'images/orange-money-logo.png' %}" alt="Orange Money" style="height:28px;object-fit:contain" onerror="this.style.display='none'">
+          <span style="font-size:.8rem;color:#888">Wave &amp; Orange Money acceptés</span>
+        </div>
+        <p style="font-size:.78rem;color:#aaa">
+          <i class="fas fa-lock" style="color:#888"></i> Paiement 100% sécurisé
+        </p>
+      </div>
+
+      <!-- Commander WhatsApp -->
+      <a href="https://wa.me/221772124319?text=Bonjour, je souhaite commander des articles."
+         class="btn btn-outline btn-full" target="_blank" rel="noopener"
+         style="margin-top:1rem;border-color:#25D366;color:#25D366">
+        <i class="fab fa-whatsapp"></i> Commander via WhatsApp
+      </a>
+    </div>
+  </div>
+
+  {% else %}
+  <div class="empty-state">
+    <i class="fas fa-shopping-bag"></i>
+    <h3>Votre panier est vide</h3>
+    <p>Découvrez notre collection et ajoutez vos articles préférés.</p>
+    <a href="{% url 'store:product_list' %}" class="btn btn-primary btn-lg">Voir le catalogue</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function changeCartQty(key, delta) {
+  const input = document.querySelector(`[data-key="${key}"]`);
+  if (!input) return;
+  const newQty = Math.max(1, parseInt(input.value) + delta);
+  input.value = newQty;
+  input.dispatchEvent(new Event('change'));
+}
+</script>
+{% endblock %}

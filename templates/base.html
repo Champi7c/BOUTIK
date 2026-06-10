@@ -1,0 +1,256 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{% block meta_description %}Bright Looks — Mode streetwear urbaine à Dakar. Chaussures, vêtements et accessoires. Livraison mondiale.{% endblock %}">
+  <title>{% block title %}Bright Looks{% endblock %} | Dakar Sénégal</title>
+  <link rel="icon" href="{% static 'images/logo.jpg' %}" type="image/jpeg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+  <div class="navbar-inner">
+
+    <!-- Logo -->
+    <a href="/" class="navbar-logo">{% include 'partials/brand_logo.html' with logo_class='site-logo--nav' %}</a>
+
+    <!-- Desktop Menu -->
+    <ul class="navbar-menu">
+      <li class="nav-item">
+        <a href="{% url 'store:home' %}" class="nav-link {% if page == 'home' %}active{% endif %}">Accueil</a>
+      </li>
+      {% for cat in menu_categories %}
+      <li class="nav-item">
+        <a href="{% url 'store:category' cat.slug %}" class="nav-link">
+          {{ cat.name }}
+          {% if cat.children.all %}<i class="fas fa-chevron-down" style="font-size:.6rem"></i>{% endif %}
+        </a>
+        {% if cat.children.all %}
+        <div class="dropdown-menu">
+          {% for sub in cat.children.all %}
+          <a href="{% url 'store:category' sub.slug %}" class="dropdown-item">{{ sub.name }}</a>
+          {% endfor %}
+          <a href="{% url 'store:category' cat.slug %}" class="dropdown-item" style="color:var(--purple);border-top:1px solid var(--gray-border);margin-top:.5rem;padding-top:.75rem">
+            Voir tout — {{ cat.name }}
+          </a>
+        </div>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+
+    <!-- Actions -->
+    <div class="navbar-actions">
+      <button class="nav-icon-btn" id="searchToggle" title="Rechercher">
+        <i class="fas fa-search"></i>
+      </button>
+      <button class="dark-toggle" id="darkToggle" title="Mode sombre">
+        <i class="fas fa-moon"></i>
+      </button>
+
+      {% if user.is_authenticated and not user.is_staff %}
+      <a href="{% url 'store:wishlist' %}" class="nav-icon-btn" title="Favoris">
+        <i class="far fa-heart"></i>
+      </a>
+      <a href="{% url 'accounts:profile' %}" class="nav-icon-btn" title="Mon compte">
+        <i class="far fa-user"></i>
+      </a>
+      {% elif not user.is_authenticated %}
+      <a href="{% url 'accounts:login' %}" class="nav-icon-btn" title="Connexion">
+        <i class="far fa-user"></i>
+      </a>
+      {% endif %}
+
+      <a href="{% url 'orders:cart' %}" class="nav-icon-btn" title="Panier">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="cart-badge" {% if cart_count == 0 %}style="display:none"{% endif %}>{{ cart_count }}</span>
+      </a>
+
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+  </div>
+</nav>
+
+<!-- ===== TICKER BAR ===== -->
+<div class="ticker-bar">
+  <span class="ticker-content">
+    ✦ <strong>Bright Looks</strong> — Ouest Foire, Dakar &nbsp;&nbsp;&nbsp;
+    ✦ LIVRAISON MONDIALE &nbsp;&nbsp;&nbsp;
+    ✦ WAVE &amp; ORANGE MONEY &nbsp;&nbsp;&nbsp;
+    ✦ <a href="{{ boutique_whatsapp_url }}?text=Bonjour Bright Looks, " style="color:inherit"><strong>+221 77 212 43 19</strong></a> (WhatsApp) &nbsp;&nbsp;&nbsp;
+    ✦ <strong>Bright Looks</strong> — Ouest Foire, Dakar
+  </span>
+</div>
+
+<!-- ===== SEARCH BAR ===== -->
+<div class="search-bar" id="searchBar">
+  <i class="fas fa-search" style="color:#888"></i>
+  <input type="text" class="search-input" id="searchInput" placeholder="Rechercher chaussures, vêtements...">
+  <button onclick="document.getElementById('searchBar').classList.remove('active')" style="background:none;border:none;color:#888;font-size:1.2rem;cursor:pointer">
+    <i class="fas fa-times"></i>
+  </button>
+  <div class="search-results" id="searchResults"></div>
+</div>
+
+<!-- ===== MOBILE MENU ===== -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="{% url 'store:home' %}" class="mobile-nav-link">Accueil</a>
+  {% for cat in menu_categories %}
+  <a href="{% url 'store:category' cat.slug %}" class="mobile-nav-link">{{ cat.name }}</a>
+  {% endfor %}
+  <a href="{% url 'store:product_list' %}?promo=1" class="mobile-nav-link" style="color:var(--purple-light)">Soldes</a>
+  <a href="{% url 'store:contact' %}" class="mobile-nav-link">Contact</a>
+  {% if user.is_authenticated and not user.is_staff %}
+  <a href="{% url 'accounts:profile' %}" class="mobile-nav-link">Mon Compte</a>
+  <a href="{% url 'accounts:logout' %}" class="mobile-nav-link">Déconnexion</a>
+  {% elif not user.is_authenticated %}
+  <a href="{% url 'accounts:login' %}" class="mobile-nav-link">Connexion</a>
+  <a href="{% url 'accounts:register' %}" class="mobile-nav-link">Inscription</a>
+  {% endif %}
+</div>
+
+<!-- ===== MESSAGES ===== -->
+{% if messages %}
+<div class="messages-container">
+  {% for message in messages %}
+  <div class="alert alert-{% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% elif message.tags == 'warning' %}warning{% else %}info{% endif %}">
+    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %}"></i>
+    {{ message }}
+    <button class="alert-dismiss" style="margin-left:auto;background:none;border:none;cursor:pointer;font-size:.9rem">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- ===== MAIN CONTENT ===== -->
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-grid">
+    <!-- Brand -->
+    <div>
+      <a href="/" class="footer-brand-logo">{% include 'partials/brand_logo.html' with logo_class='site-logo--footer' %}</a>
+      <p class="footer-desc">
+        Bright Looks — Dakar Sénégal to the world. Streetwear urbain, livraison mondiale.
+      </p>
+      {% include 'partials/social_links.html' %}
+    </div>
+
+    <!-- Navigation -->
+    <div>
+      <h4 class="footer-title">Navigation</h4>
+      <ul class="footer-links">
+        <li><a href="{% url 'store:home' %}"><i class="fas fa-chevron-right" style="font-size:.6rem"></i> Accueil</a></li>
+        <li><a href="{% url 'store:product_list' %}"><i class="fas fa-chevron-right" style="font-size:.6rem"></i> Catalogue</a></li>
+        <li><a href="{% url 'store:product_list' %}?nouveau=1"><i class="fas fa-chevron-right" style="font-size:.6rem"></i> Nouveautés</a></li>
+        <li><a href="{% url 'store:product_list' %}?promo=1"><i class="fas fa-chevron-right" style="font-size:.6rem"></i> Soldes</a></li>
+        <li><a href="{% url 'store:about' %}"><i class="fas fa-chevron-right" style="font-size:.6rem"></i> À propos</a></li>
+        <li><a href="{% url 'store:contact' %}"><i class="fas fa-chevron-right" style="font-size:.6rem"></i> Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Mon Compte -->
+    <div>
+      <h4 class="footer-title">Mon Compte</h4>
+      <ul class="footer-links">
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'accounts:profile' %}"><i class="fas fa-chevron-right" style="font-size:.6rem"></i> Mon profil</a></li>
+        <li><a href="{% url 'orders:order_list' %}"><i class="fas fa-chevron-right" style="font-size:.6rem"></i> Mes commandes</a></li>
+        <li><a href="{% url 'store:wishlist' %}"><i class="fas fa-chevron-right" style="font-size:.6rem"></i> Mes favoris</a></li>
+        <li><a href="{% url 'orders:cart' %}"><i class="fas fa-chevron-right" style="font-size:.6rem"></i> Mon panier</a></li>
+        {% else %}
+        <li><a href="{% url 'accounts:login' %}"><i class="fas fa-chevron-right" style="font-size:.6rem"></i> Connexion</a></li>
+        <li><a href="{% url 'accounts:register' %}"><i class="fas fa-chevron-right" style="font-size:.6rem"></i> Inscription</a></li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div>
+      <h4 class="footer-title">Contact</h4>
+      <div class="footer-contact-item">
+        <i class="fab fa-whatsapp"></i>
+        <a href="{{ boutique_whatsapp_url }}?text=Bonjour Bright Looks, " target="_blank" rel="noopener">+221 77 212 43 19</a>
+      </div>
+      <div class="footer-contact-item">
+        <i class="fas fa-envelope"></i>
+        <a href="mailto:thiambusiness44@gmail.com">thiambusiness44@gmail.com</a>
+      </div>
+      <div class="footer-contact-item">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>
+          {{ boutique_location }}
+          {% if boutique_plus_code %}
+          <br><a href="{{ boutique_maps_url }}" target="_blank" rel="noopener" style="color:var(--mauve-light)">{{ boutique_plus_code }}</a>
+          {% endif %}
+        </span>
+      </div>
+      <div class="footer-contact-item">
+        <i class="fas fa-clock"></i>
+        <span>Lun – Sam : 9h00 – 19h00</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; {% now "Y" %} Bright Looks. Tous droits réservés.</p>
+    <div class="footer-bottom-links">
+      <a href="#">Mentions légales</a>
+      <a href="#">Politique de confidentialité</a>
+      <a href="#">CGV</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== WHATSAPP ===== -->
+<a href="{{ boutique_whatsapp_url }}?text=Bonjour Bright Looks, je souhaite commander..."
+   class="whatsapp-btn" target="_blank" rel="noopener" title="Commander sur WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- ===== SCROLL TOP ===== -->
+<button id="scrollTop" style="position:fixed;bottom:5.5rem;right:2rem;width:42px;height:42px;background:var(--ink,#1a1a1a);color:var(--white);border:none;cursor:pointer;display:none;align-items:center;justify-content:center;font-size:.9rem;z-index:998;transition:all .3s">
+  <i class="fas fa-arrow-up"></i>
+</button>
+<style>#scrollTop.visible{display:flex}</style>
+
+<!-- Dark mode init (avant main.js pour éviter le flash) -->
+<script>
+(function(){
+  const saved = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  const icon = document.getElementById('darkToggle');
+  if(icon) icon.innerHTML = saved === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+})();
+</script>
+
+<!-- JS -->
+<script src="{% static 'js/main.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

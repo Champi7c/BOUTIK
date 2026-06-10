@@ -1,0 +1,60 @@
+<section class="section location-section" id="localisation" aria-labelledby="location-heading">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-subtitle">Où nous trouver</div>
+      <h2 class="section-title" id="location-heading">Notre boutique</h2>
+    </div>
+
+    <div class="location-grid">
+      <div class="location-info">
+        <div class="location-info-card">
+          <div class="location-info-icon"><i class="fas fa-store"></i></div>
+          <div>
+            <h3 class="location-info-title">Bright Looks</h3>
+            <p class="location-info-text">Ouest Foire, Dakar, Sénégal</p>
+            {% if boutique_plus_code %}
+            <p class="location-plus-code">
+              <i class="fas fa-map-pin" aria-hidden="true"></i>
+              <span>{{ boutique_plus_code }}</span>
+            </p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="location-info-card">
+          <div class="location-info-icon"><i class="fas fa-clock"></i></div>
+          <div>
+            <h3 class="location-info-title">Horaires</h3>
+            <p class="location-info-text">{{ boutique_horaires|default:"Lundi – Samedi : 9h00 – 19h00" }}</p>
+            <p class="location-info-muted">Dimanche : fermé</p>
+          </div>
+        </div>
+
+        <div class="location-info-actions">
+          {% if boutique_maps_url %}
+          <a href="{{ boutique_maps_url }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-directions"></i> Itinéraire Google Maps
+          </a>
+          {% endif %}
+          <a href="{{ boutique_whatsapp_url }}?text=Bonjour Bright Looks, je souhaite venir à la boutique."
+             class="btn btn-outline" target="_blank" rel="noopener">
+            <i class="fab fa-whatsapp"></i> Nous contacter
+          </a>
+        </div>
+      </div>
+
+      <div class="location-map-wrap">
+        {% if boutique_maps_embed %}
+        <iframe
+          class="location-map"
+          title="Carte Bright Looks — {{ boutique_plus_code }}, Dakar"
+          src="{{ boutique_maps_embed }}"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen>
+        </iframe>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>

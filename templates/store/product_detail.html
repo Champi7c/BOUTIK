@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}{{ product.name }} — Bright Looks{% endblock %}
+{% block meta_description %}{{ product.description|truncatechars:160 }}{% endblock %}
+
+{% block content %}
+
+<!-- BREADCRUMB -->
+<div class="container">
+  <nav class="breadcrumb">
+    <a href="{% url 'store:home' %}">Accueil</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="{% url 'store:category' product.category.slug %}">{{ product.category.name }}</a>
+    <span class="breadcrumb-sep">/</span>
+    <span style="color:var(--mauve-deep)">{{ product.name }}</span>
+  </nav>
+</div>
+
+<!-- PRODUIT DETAIL -->
+<div class="container" style="padding-bottom:5rem">
+  <div class="product-detail-grid">
+
+    <!-- IMAGES -->
+    <div class="product-images">
+      <div class="product-main-img">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" id="mainProductImg">
+        {% else %}
+        <img src="{% static 'images/placeholder.jpg' %}" alt="{{ product.name }}" id="mainProductImg">
+        {% endif %}
+      </div>
+      <div class="product-thumbnails">
+        {% if product.image %}
+        <div class="product-thumbnail active">
+          <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        </div>
+        {% endif %}
+        {% if product.image2 %}
+        <div class="product-thumbnail">
+          <img src="{{ product.image2.url }}" alt="{{ product.name }} 2">
+        </div>
+        {% endif %}
+        {% if product.image3 %}
+        <div class="product-thumbnail">
+          <img src="{{ product.image3.url }}" alt="{{ product.name }} 3">
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- INFOS -->
+    <div class="product-info-section">
+
+      <div class="product-info-cat">{{ product.category.name }}</div>
+      <h1 class="product-info-name">{{ product.name }}</h1>
+
+      <!-- Rating -->
+      {% if product.average_rating > 0 %}
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+        <div class="stars">
+          {% for i in "12345" %}
+            {% if forloop.counter <= product.average_rating %}★{% else %}☆{% endif %}
+          {% endfor %}
+        </div>
+        <span style="font-size:.82rem;color:#888">{{ product.average_rating }}/5 ({{ reviews|length }} avis)</span>
+      </div>
+      {% endif %}
+
+      <!-- Prix -->
+      <div class="product-info-price">
+        <span class="current">{{ product.current_price|intcomma }} FCFA</span>
+        {% if product.discount_price %}
+        <span class="original">{{ product.price|intcomma }} FCFA</span>
+        <span class="discount-tag">-{{ product.discount_percent }}%</span>
+        {% endif %}
+      </div>
+
+      <!-- Stock -->
+      {% if product.is_in_stock %}
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1.5rem;font-size:.85rem">
+        <i class="fas fa-check-circle" style="color:var(--success)"></i>
+        <span style="color:var(--success);font-weight:600">En stock</span>
+        {% if product.stock <= 5 %}
+        <span style="color:#dc3545;font-size:.78rem">(Plus que {{ product.stock }} disponible{{ product.stock|pluralize }})</span>
+        {% endif %}
+      </div>
+      {% else %}
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1.5rem;font-size:.85rem">
+        <i class="fas fa-times-circle" style="color:#dc3545"></i>
+        <span style="color:#dc3545;font-weight:600">Rupture de stock</span>
+      </div>
+      {% endif %}
+
+      <!-- Tailles -->
+      {% if product.sizes.all %}
+      <div>
+        <p class="option-title">Taille</p>
+        <div class="sizes-grid">
+          {% for size in product.sizes.all %}
+          <button class="size-btn" data-size="{{ size.name }}">{{ size.name }}</button>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Couleurs -->
+      {% if product.colors.all %}
+      <div>
+        <p class="option-title">Couleur</p>
+        <div class="colors-grid">
+          {% for color in product.colors.all %}
+          <button class="color-btn" data-color="{{ color.name }}"
+                  style="background:{{ color.hex_code }}"
+                  title="{{ color.name }}"></button>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Quantité -->
+      <p class="option-title">Quantité</p>
+      <div class="qty-selector">
+        <button class="qty-btn" id="qtyMinus"><i class="fas fa-minus"></i></button>
+        <input type="number" class="qty-input" value="1" min="1" max="{{ product.stock }}">
+        <button class="qty-btn" id="qtyPlus"><i class="fas fa-plus"></i></button>
+      </div>
+
+      <!-- CTA -->
+      <div class="add-to-cart-section">
+        {% if product.is_in_stock %}
+        <button class="btn btn-primary btn-lg" style="flex:1" data-add-cart data-product-id="{{ product.id }}">
+          <i class="fas fa-shopping-bag"></i> Ajouter au panier
+        </button>
+        {% else %}
+        <button class="btn btn-primary btn-lg" style="flex:1;opacity:.5" disabled>
+          Épuisé
+        </button>
+        {% endif %}
+
+        <button class="action-btn {% if is_wishlisted %}wishlisted{% endif %}"
+                style="width:54px;height:54px;border:2px solid var(--gray-border)"
+                data-wishlist data-product-id="{{ product.id }}"
+                title="Ajouter aux favoris">
+          <i class="{% if is_wishlisted %}fas{% else %}far{% endif %} fa-heart" style="font-size:1.1rem"></i>
+        </button>
+      </div>
+
+      <!-- Paiements acceptés -->
+      <div class="pay-methods">
+        <div class="pay-badge" title="Wave">
+          <img src="{% static 'images/wave.png' %}" alt="Wave">
+        </div>
+        <div class="pay-badge" title="Orange Money">
+          <img src="{% static 'images/orangemoney.png' %}" alt="Orange Money">
+        </div>
+        <div class="pay-badge" title="PayPal">
+          <img src="{% static 'images/paypal.png' %}" alt="PayPal">
+        </div>
+        <a class="pay-badge" title="Commander via WhatsApp"
+           href="https://wa.me/221772124319?text=Bonjour, je souhaite commander: {{ product.name }} ({{ product.current_price|intcomma }} FCFA)"
+           target="_blank" rel="noopener">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="12" fill="#25D366"/>
+            <path d="M24 9C15.72 9 9 15.72 9 24c0 2.56.66 4.96 1.82 7.05L9 39l8.18-1.79A14.9 14.9 0 0024 39c8.28 0 15-6.72 15-15S32.28 9 24 9zm0 27c-2.1 0-4.08-.56-5.79-1.54l-.41-.25-4.26 1.01 1.04-4.14-.27-.43A12 12 0 1124 36zm6.31-8.95c-.34-.17-2.02-1-2.34-1.11-.32-.12-.55-.17-.78.17-.23.34-.87 1.1-1.07 1.33-.2.23-.4.26-.74.08-.34-.17-1.44-.53-2.74-1.69-1.01-.9-1.7-2.02-1.9-2.36-.2-.34-.02-.52.15-.7.15-.15.34-.4.52-.6.17-.2.23-.34.34-.57.12-.23.06-.43-.03-.6-.08-.17-.78-1.87-1.07-2.57-.28-.67-.57-.58-.78-.59H17.9c-.23 0-.6.08-.91.43-.32.34-1.21 1.18-1.21 2.88 0 1.7 1.24 3.34 1.41 3.57.17.23 2.44 3.72 5.9 5.22.82.35 1.46.56 1.96.72.82.26 1.57.22 2.16.13.66-.1 2.02-.83 2.31-1.62.28-.8.28-1.48.2-1.63-.09-.14-.32-.23-.66-.4z"
+                  fill="white"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Meta -->
+      <div class="product-meta">
+        <div class="meta-item">
+          <span class="meta-label">Réf. :</span>
+          <span>TSW-{{ product.id|stringformat:"04d" }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Catégorie :</span>
+          <a href="{% url 'store:category' product.category.slug %}" style="text-decoration:underline">
+            {{ product.category.name }}
+          </a>
+        </div>
+        {% if product.is_new %}
+        <div class="meta-item">
+          <span class="meta-label">Statut :</span>
+          <span style="background:var(--mauve-dark);color:var(--white);padding:.15rem .6rem;font-size:.7rem;font-weight:700;letter-spacing:1px">NOUVEAU</span>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Description -->
+      <div style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--gray-border)">
+        <h3 style="font-family:var(--font-title);font-size:1.2rem;letter-spacing:2px;margin-bottom:1rem">DESCRIPTION</h3>
+        <p style="line-height:1.8;color:#444;font-size:.92rem">{{ product.description }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AVIS CLIENTS -->
+<div style="background:var(--gray-light);padding:4rem 0">
+  <div class="container">
+    <h2 class="section-title" style="margin-bottom:.5rem">Avis Clients</h2>
+    <p class="section-subtitle">{{ reviews|length }} avis pour ce produit</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start">
+
+      <!-- Liste des avis -->
+      <div>
+        {% for review in reviews %}
+        <div style="background:var(--white);padding:1.5rem;margin-bottom:1rem;border-left:3px solid var(--mauve-medium)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem">
+            <div>
+              <strong style="font-size:.9rem">{{ review.user.first_name|default:review.user.username }}</strong>
+              <div class="stars" style="font-size:.85rem">
+                {% for i in "12345" %}
+                  {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
+                {% endfor %}
+              </div>
+            </div>
+            <span style="font-size:.75rem;color:#888">{{ review.created_at|date:"d/m/Y" }}</span>
+          </div>
+          {% if review.comment %}
+          <p style="font-size:.875rem;color:#444;line-height:1.7">{{ review.comment }}</p>
+          {% endif %}
+        </div>
+        {% empty %}
+        <div style="text-align:center;padding:3rem;color:#888">
+          <i class="fas fa-star" style="font-size:2.5rem;margin-bottom:1rem;opacity:.2"></i>
+          <p>Aucun avis pour ce produit. Soyez le premier !</p>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Formulaire avis -->
+      <div style="background:var(--white);padding:2rem">
+        <h3 style="font-family:var(--font-title);font-size:1.2rem;letter-spacing:2px;margin-bottom:1.5rem">LAISSER UN AVIS</h3>
+        {% if user.is_authenticated %}
+          {% if user_review %}
+          <p style="color:#888;font-size:.875rem">Vous avez déjà laissé un avis pour ce produit.</p>
+          {% else %}
+          <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label class="form-label">Note *</label>
+              <div style="display:flex;gap:.5rem">
+                {% for i in "12345" %}
+                <button type="button" class="star-rating-btn" data-rating="{{ forloop.counter }}"
+                        style="background:none;border:none;font-size:1.8rem;cursor:pointer;color:#ddd;transition:color .2s">
+                  ★
+                </button>
+                {% endfor %}
+              </div>
+              <input type="hidden" name="rating" id="ratingInput">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Commentaire</label>
+              <textarea name="comment" class="form-control" placeholder="Partagez votre expérience..." rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">Publier l'avis</button>
+          </form>
+          {% endif %}
+        {% else %}
+        <p style="color:#888;font-size:.875rem">
+          <a href="{% url 'accounts:login' %}?next={{ request.path }}" style="text-decoration:underline">Connectez-vous</a>
+          pour laisser un avis.
+        </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUITS SIMILAIRES -->
+{% if related %}
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-subtitle">Dans la même catégorie</div>
+      <h2 class="section-title">Vous aimerez aussi</h2>
+    </div>
+    <div class="products-grid">
+      {% for product in related %}
+      {% include 'store/partials/product_card.html' %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const starBtns = document.querySelectorAll('.star-rating-btn');
+  const ratingInput = document.getElementById('ratingInput');
+  starBtns.forEach(btn => {
+    btn.addEventListener('mouseover', () => {
+      const r = parseInt(btn.dataset.rating);
+      starBtns.forEach((b, i) => b.style.color = i < r ? 'var(--accent)' : '#ddd');
+    });
+    btn.addEventListener('click', () => {
+      ratingInput.value = btn.dataset.rating;
+      starBtns.forEach((b, i) => b.style.color = i < parseInt(btn.dataset.rating) ? 'var(--accent)' : '#ddd');
+    });
+  });
+  document.querySelector('.star-rating-btn')?.parentElement?.addEventListener('mouseleave', () => {
+    const selected = parseInt(ratingInput?.value || 0);
+    starBtns.forEach((b, i) => b.style.color = i < selected ? 'var(--accent)' : '#ddd');
+  });
+</script>
+{% endblock %}

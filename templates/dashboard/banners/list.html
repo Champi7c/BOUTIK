@@ -1,0 +1,52 @@
+{% extends 'dashboard/base_admin.html' %}
+
+{% block page_title %}Bannières{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'dashboard:banner_create' %}" class="dash-btn dash-btn-primary dash-btn-sm"><i class="fas fa-plus"></i> Ajouter</a>
+{% endblock %}
+
+{% block dash_content %}
+
+<div class="dash-panel">
+  <div class="dash-panel-body no-pad">
+    <div class="dash-table-wrap">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Titre</th>
+            <th>Lien</th>
+            <th>Ordre</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for banner in banners %}
+          <tr>
+            <td>{% if banner.image %}<img src="{{ banner.image.url }}" style="width:80px;height:45px;object-fit:cover" alt="">{% endif %}</td>
+            <td>
+              <div style="font-weight:600">{{ banner.title }}</div>
+              <div style="font-size:.75rem;color:#888">{{ banner.subtitle }}</div>
+            </td>
+            <td style="font-size:.8rem">{{ banner.link|default:"—" }}</td>
+            <td>{{ banner.order }}</td>
+            <td>{% if banner.is_active %}<span class="dash-badge success">Active</span>{% else %}<span class="dash-badge muted">Inactive</span>{% endif %}</td>
+            <td>
+              <a href="{% url 'dashboard:banner_edit' banner.pk %}" class="dash-btn dash-btn-outline dash-btn-sm"><i class="fas fa-edit"></i></a>
+              <form method="post" action="{% url 'dashboard:banner_delete' banner.pk %}" style="display:inline" onsubmit="return confirm('Supprimer cette bannière ?')">{% csrf_token %}
+                <button type="submit" class="dash-btn dash-btn-danger dash-btn-sm"><i class="fas fa-trash"></i></button>
+              </form>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6" style="text-align:center;padding:3rem;color:#888">Aucune bannière</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

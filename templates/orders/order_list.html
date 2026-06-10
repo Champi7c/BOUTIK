@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Mes Commandes — Bright Looks{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-header-title">Mes Commandes</h1>
+  </div>
+</div>
+
+<div class="container" style="padding:3rem 2rem 5rem">
+  {% if orders %}
+  <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse">
+      <thead>
+        <tr style="border-bottom:2px solid var(--mauve-medium)">
+          <th style="text-align:left;padding:.75rem;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase">N° Commande</th>
+          <th style="text-align:left;padding:.75rem;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase">Date</th>
+          <th style="text-align:left;padding:.75rem;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase">Total</th>
+          <th style="text-align:left;padding:.75rem;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase">Statut</th>
+          <th style="text-align:left;padding:.75rem;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        <tr style="border-bottom:1px solid var(--gray-border)">
+          <td style="padding:.9rem .75rem;font-weight:600;font-size:.88rem">{{ order.order_number }}</td>
+          <td style="padding:.9rem .75rem;font-size:.85rem;color:#666">{{ order.created_at|date:"d/m/Y" }}</td>
+          <td style="padding:.9rem .75rem;font-weight:600;font-size:.9rem">{{ order.grand_total|intcomma }} FCFA</td>
+          <td style="padding:.9rem .75rem">
+            <span style="display:inline-block;padding:.25rem .75rem;font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:
+              {% if order.status == 'delivered' %}#d4edda;color:#1a6b1a
+              {% elif order.status == 'cancelled' %}#f8d7da;color:#8b1a1a
+              {% elif order.status == 'shipped' %}#cce5ff;color:#004085
+              {% else %}#fff3cd;color:#856404{% endif %}
+            ">
+              {{ order.get_status_display }}
+            </span>
+          </td>
+          <td style="padding:.9rem .75rem">
+            <a href="{% url 'orders:order_detail' order.order_number %}" style="font-size:.82rem;text-decoration:underline">
+              Voir détail
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <i class="fas fa-box-open"></i>
+    <h3>Aucune commande</h3>
+    <p>Vous n'avez pas encore passé de commande.</p>
+    <a href="{% url 'store:product_list' %}" class="btn btn-primary">Découvrir nos produits</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'dashboard/base_admin.html' %}
+{% load humanize static %}
+
+{% block page_title %}Gestion du stock{% endblock %}
+
+{% block dash_content %}
+
+<div class="dash-stats" style="margin-bottom:1.5rem">
+  <div class="dash-stat">
+    <div class="dash-stat-icon orange"><i class="fas fa-exclamation-triangle"></i></div>
+    <div>
+      <div class="dash-stat-label">Stock bas (≤{{ low_threshold }})</div>
+      <div class="dash-stat-value">{{ low_count }}</div>
+    </div>
+  </div>
+  <div class="dash-stat">
+    <div class="dash-stat-icon red"><i class="fas fa-times-circle"></i></div>
+    <div>
+      <div class="dash-stat-label">Rupture de stock</div>
+      <div class="dash-stat-value">{{ out_count }}</div>
+    </div>
+  </div>
+</div>
+
+<form method="get" class="dash-filters">
+  <input type="text" name="q" value="{{ q }}" placeholder="Rechercher un produit..." class="dash-input">
+  <button type="submit" class="dash-btn dash-btn-primary dash-btn-sm"><i class="fas fa-search"></i></button>
+  <a href="{% url 'dashboard:stock_list' %}" class="dash-btn dash-btn-outline dash-btn-sm {% if not filter_type %}active{% endif %}">Tous</a>
+  <a href="?filter=low" class="dash-btn dash-btn-outline dash-btn-sm {% if filter_type == 'low' %}active{% endif %}">Stock bas</a>
+  <a href="?filter=out" class="dash-btn dash-btn-outline dash-btn-sm {% if filter_type == 'out' %}active{% endif %}">Rupture</a>
+</form>
+
+<form method="post">
+  {% csrf_token %}
+  <div class="dash-panel">
+    <div class="dash-panel-header">
+      <h2>Inventaire</h2>
+      <button type="submit" class="dash-btn dash-btn-primary dash-btn-sm">
+        <i class="fas fa-save"></i> Enregistrer les stocks
+      </button>
+    </div>
+    <div class="dash-panel-body no-pad">
+      <div class="dash-table-wrap">
+        <table class="dash-table">
+          <thead>
+            <tr>
+              <th>Produit</th>
+              <th>Catégorie</th>
+              <th>Prix</th>
+              <th>Ventes</th>
+              <th>Stock actuel</th>
+              <th>Nouveau stock</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+            <tr>
+              <td>
+                <div style="display:flex;gap:.75rem;align-items:center">
+                  {% if product.image %}<img src="{{ product.image.url }}" class="product-thumb" alt="">{% endif %}
+                  <div>
+                    <div style="font-weight:600;font-size:.85rem">{{ product.name }}</div>
+                    {% if not product.is_active %}<span class="dash-badge muted">Inactif</span>{% endif %}
+                  </div>
+                </div>
+              </td>
+              <td>{{ product.category.name }}</td>
+              <td>{{ product.current_price|intcomma }} FCFA</td>
+              <td>{{ product.sales_count }}</td>
+              <td>
+                <span class="dash-badge {% if product.stock == 0 %}danger{% elif product.stock <= low_threshold %}warning{% else %}success{% endif %}">{{ product.stock }}</span>
+              </td>
+              <td>
+                <input type="number" name="stock_{{ product.pk }}" value="{{ product.stock }}" min="0"
+                       class="dash-input stock-input {% if product.stock == 0 %}out{% elif product.stock <= low_threshold %}low{% endif %}">
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" style="text-align:center;padding:3rem;color:#888">Aucun produit</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% if products.has_other_pages %}
+      <div class="dash-pagination">
+        {% if products.has_previous %}<a href="?page={{ products.previous_page_number }}&q={{ q }}&filter={{ filter_type }}">‹</a>{% endif %}
+        <span class="current">{{ products.number }} / {{ products.paginator.num_pages }}</span>
+        {% if products.has_next %}<a href="?page={{ products.next_page_number }}&q={{ q }}&filter={{ filter_type }}">›</a>{% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</form>
+
+{% endblock %}

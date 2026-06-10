@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Commande Confirmée #{{ order.order_number }} — Bright Looks{% endblock %}
+
+{% block content %}
+<div class="container" style="padding:5rem 2rem;max-width:700px">
+
+  <!-- Succès -->
+  <div style="text-align:center;margin-bottom:3rem">
+    <div style="width:90px;height:90px;background:var(--mauve-dark);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem">
+      <i class="fas fa-check" style="font-size:2.5rem;color:white"></i>
+    </div>
+    <h1 style="font-family:var(--font-title);font-size:2.5rem;letter-spacing:3px;margin-bottom:.5rem">
+      COMMANDE CONFIRMÉE
+    </h1>
+    <p style="color:#888">Merci {{ order.user.first_name|default:order.user.username }} pour votre commande !</p>
+    <div style="background:var(--gray-light);display:inline-block;padding:.5rem 1.5rem;margin-top:1rem">
+      <strong style="font-family:var(--font-title);font-size:1.2rem;letter-spacing:2px">
+        N° {{ order.order_number }}
+      </strong>
+    </div>
+  </div>
+
+  <!-- Statut commande -->
+  <div style="background:var(--mauve-dark);color:white;padding:1.5rem;margin-bottom:2rem;text-align:center">
+    <div style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:.25rem">Statut</div>
+    <div style="font-family:var(--font-title);font-size:1.5rem;letter-spacing:3px;color:var(--accent)">
+      {{ order.get_status_display|upper }}
+    </div>
+  </div>
+
+  <!-- Récapitulatif -->
+  <div style="border:1px solid var(--gray-border);padding:2rem;margin-bottom:2rem">
+    <h3 style="font-family:var(--font-title);font-size:1.1rem;letter-spacing:2px;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:1px solid var(--gray-border)">
+      RÉCAPITULATIF
+    </h3>
+
+    {% for item in order.items.all %}
+    <div style="display:flex;gap:1rem;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--gray-border)">
+      <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}"
+           style="width:65px;height:80px;object-fit:cover"
+           onerror="this.src='{% static 'images/placeholder.jpg' %}'">
+      <div style="flex:1">
+        <div style="font-weight:600;margin-bottom:.2rem">{{ item.product.name }}</div>
+        {% if item.size %}<div style="font-size:.78rem;color:#888">Taille : {{ item.size }}</div>{% endif %}
+        {% if item.color %}<div style="font-size:.78rem;color:#888">Couleur : {{ item.color }}</div>{% endif %}
+        <div style="font-size:.85rem;margin-top:.35rem">{{ item.quantity }} × {{ item.unit_price|intcomma }} FCFA</div>
+      </div>
+      <strong>{{ item.subtotal|intcomma }} FCFA</strong>
+    </div>
+    {% endfor %}
+
+    <div style="margin-top:1rem">
+      <div style="display:flex;justify-content:space-between;margin-bottom:.5rem;font-size:.9rem">
+        <span>Sous-total</span><span>{{ order.total|intcomma }} FCFA</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:.5rem;font-size:.9rem">
+        <span>Livraison</span>
+        <span>{% if order.delivery_fee %}{{ order.delivery_fee|intcomma }} FCFA{% else %}Gratuit{% endif %}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-weight:700;font-size:1.1rem;padding-top:.75rem;border-top:2px solid var(--mauve-medium)">
+        <span>Total</span><span>{{ order.grand_total|intcomma }} FCFA</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Infos livraison -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem">
+    <div style="border:1px solid var(--gray-border);padding:1.25rem">
+      <div style="font-size:.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.75rem;color:#888">
+        Livraison
+      </div>
+      <div style="font-size:.88rem;font-weight:600;margin-bottom:.25rem">{{ order.get_delivery_type_display }}</div>
+      {% if order.delivery_address %}
+      <div style="font-size:.82rem;color:#555">{{ order.delivery_address }}</div>
+      {% endif %}
+      <div style="font-size:.82rem;color:#888;margin-top:.5rem">Tel: {{ order.phone }}</div>
+    </div>
+    <div style="border:1px solid var(--gray-border);padding:1.25rem">
+      <div style="font-size:.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.75rem;color:#888">
+        Paiement
+      </div>
+      <div style="font-size:.88rem;font-weight:600">{{ order.get_payment_method_display }}</div>
+      <div style="font-size:.82rem;color:#888;margin-top:.5rem">{{ order.created_at|date:"d/m/Y à H:i" }}</div>
+    </div>
+  </div>
+
+  <!-- Paiement mobile -->
+  {% if order.payment_method in 'wave,orange_money' %}
+  <div style="background:var(--gray-light);border-left:4px solid var(--accent);padding:1.5rem;margin-bottom:2rem">
+    <div style="font-weight:700;font-size:.9rem;margin-bottom:.5rem">
+      <i class="fas fa-mobile-alt" style="color:var(--accent)"></i>
+      Effectuer votre paiement
+    </div>
+    {% if order.payment_method == 'wave' %}
+    <p style="font-size:.85rem;color:#555;margin-bottom:.75rem">
+      Envoyez <strong>{{ order.grand_total|intcomma }} FCFA</strong> via <strong>Wave</strong> au numéro :
+    </p>
+    <div style="font-family:var(--font-title);font-size:2rem;letter-spacing:3px">77 212 43 19</div>
+    {% else %}
+    <p style="font-size:.85rem;color:#555;margin-bottom:.75rem">
+      Envoyez <strong>{{ order.grand_total|intcomma }} FCFA</strong> via <strong>Orange Money</strong> au numéro :
+    </p>
+    <div style="font-family:var(--font-title);font-size:2rem;letter-spacing:3px">77 212 43 19</div>
+    {% endif %}
+    <p style="font-size:.78rem;color:#888;margin-top:.75rem">
+      Mentionnez votre numéro de commande : <strong>{{ order.order_number }}</strong>
+    </p>
+  </div>
+  {% endif %}
+
+  <!-- Actions -->
+  <div style="display:flex;gap:1rem;flex-wrap:wrap">
+    <a href="{% url 'orders:order_list' %}" class="btn btn-outline">
+      <i class="fas fa-list"></i> Mes commandes
+    </a>
+    <a href="{% url 'store:product_list' %}" class="btn btn-primary">
+      <i class="fas fa-shopping-bag"></i> Continuer mes achats
+    </a>
+    <a href="https://wa.me/221772124319?text=Bonjour, ma commande est le N° {{ order.order_number }}"
+       class="btn btn-outline" style="border-color:#25D366;color:#25D366" target="_blank" rel="noopener">
+      <i class="fab fa-whatsapp"></i> Contacter
+    </a>
+  </div>
+</div>
+{% endblock %}

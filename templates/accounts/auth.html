@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block auth_title %}Connexion{% endblock %} — Bright Looks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+  <style>
+    :root {
+      --primary:   #6A5294;
+      --secondary: #7B5EA7;
+      --accent:    #9B7BB8;
+      --accent2:   #A688C4;
+      --white:     #ffffff;
+      --gray:      #f2f2f2;
+      --gray-2:    #888888;
+      --font-title: 'Bebas Neue', sans-serif;
+      --font-body:  'Inter', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100vh;
+      overflow: hidden;
+      font-family: var(--font-body);
+    }
+
+    /* ===== CONTAINER ===== */
+    .container {
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ===== FOND ANIMÉ (remplace le vert par noir/or) ===== */
+    .container::before {
+      content: "";
+      position: absolute;
+      top: 0; right: 0;
+      height: 100vh;
+      width: 300vw;
+      transform: translate(35%, 0);
+      background-image: linear-gradient(-45deg, var(--primary) 0%, var(--secondary) 60%, var(--accent2) 100%);
+      transition: 1s ease-in-out;
+      z-index: 6;
+      box-shadow: rgba(0,0,0,0.5) 0px 5px 30px;
+      border-bottom-right-radius: max(50vw, 50vh);
+      border-top-left-radius: max(50vw, 50vh);
+    }
+    .container.sign-in::before  { transform: translate(0, 0);    right: 50%; }
+    .container.sign-up::before  { transform: translate(100%, 0); right: 50%; }
+
+    /* ===== ROWS ===== */
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      height: 100vh;
+    }
+    .col { width: 50%; }
+    .align-items-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .flex-col { flex-direction: column; }
+
+    /* ===== FORM WRAPPER ===== */
+    .form-wrapper {
+      width: 100%;
+      max-width: 28rem;
+    }
+
+    .form {
+      padding: 2rem 2.5rem;
+      background-color: var(--white);
+      border-radius: 0;
+      width: 100%;
+      box-shadow: rgba(0,0,0,0.2) 0px 8px 30px;
+      transform: scale(0);
+      transition: .5s ease-in-out;
+      transition-delay: 1s;
+    }
+    .container.sign-in .form.sign-in,
+    .container.sign-up .form.sign-up {
+      transform: scale(1);
+    }
+
+    /* Marque texte (sans logo image) */
+    .form-brand-title {
+      display: block;
+      font-family: var(--font-title);
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      text-decoration: none;
+      margin-bottom: 0.25rem;
+      line-height: 1;
+    }
+    .form-brand-title:hover {
+      color: var(--secondary);
+    }
+    .form-tagline {
+      font-size: .75rem;
+      color: var(--gray-2);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .form-title {
+      font-family: var(--font-title);
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ===== INPUT GROUP ===== */
+    .input-group {
+      position: relative;
+      width: 100%;
+      margin: .9rem 0;
+    }
+    .input-group i {
+      position: absolute;
+      top: 50%;
+      left: 1rem;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: var(--gray-2);
+      transition: color .3s;
+    }
+    .input-group input {
+      width: 100%;
+      padding: .85rem 1rem .85rem 3rem;
+      font-size: .9rem;
+      font-family: var(--font-body);
+      background-color: var(--gray);
+      border: 2px solid transparent;
+      outline: none;
+      transition: border .3s;
+      color: var(--primary);
+    }
+    .input-group input:focus {
+      border-color: var(--accent);
+      background: #fff;
+    }
+    .input-group input:focus + i,
+    .input-group i:has(+ input:focus) { color: var(--accent); }
+    .input-group input::placeholder { color: #bbb; }
+
+    /* ===== BOUTON ===== */
+    .form button[type="submit"] {
+      cursor: pointer;
+      width: 100%;
+      padding: .85rem 0;
+      border: 2px solid var(--primary);
+      background-color: var(--primary);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: .9rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      outline: none;
+      transition: all .3s;
+      margin-top: .5rem;
+    }
+    .form button[type="submit"]:hover {
+      background: var(--white);
+      color: var(--primary);
+    }
+
+    /* ===== TEXTES ===== */
+    .form p {
+      margin: .9rem 0 0;
+      font-size: .78rem;
+      color: var(--gray-2);
+    }
+    .form p b, .form p .pointer {
+      color: var(--accent);
+      cursor: pointer;
+      font-weight: 600;
+      transition: opacity .2s;
+    }
+    .form p b:hover, .form p .pointer:hover { opacity: .75; }
+
+    /* Grille 2 colonnes */
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .75rem;
+    }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin: 1rem 0;
+      color: #ccc;
+      font-size: .72rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e5e5e5;
+    }
+
+    /* ===== CONTENT SECTION (texte sur fond noir) ===== */
+    .content-row {
+      position: absolute;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 6;
+      width: 100%;
+    }
+    .text {
+      margin: 4rem;
+      color: var(--white);
+    }
+    .text h2 {
+      font-family: var(--font-title);
+      font-size: 4rem;
+      font-weight: 400;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      margin: 2rem 0 1rem;
+      transition: 1s ease-in-out;
+      line-height: 1;
+    }
+    .text h2 span { color: var(--accent); }
+    .text p {
+      font-size: .9rem;
+      font-weight: 400;
+      color: rgba(255,255,255,.6);
+      letter-spacing: 1px;
+      transition: 1s ease-in-out;
+      transition-delay: .2s;
+    }
+
+    /* Animations texte */
+    .text.sign-in h2, .text.sign-in p { transform: translateX(-250%); }
+    .text.sign-up h2, .text.sign-up p { transform: translateX(250%); }
+    .container.sign-in .text.sign-in h2,
+    .container.sign-in .text.sign-in p,
+    .container.sign-up .text.sign-up h2,
+    .container.sign-up .text.sign-up p { transform: translateX(0); }
+
+    /* Retour au site */
+    .back-link {
+      position: fixed;
+      top: 1.5rem;
+      left: 1.5rem;
+      z-index: 100;
+      color: rgba(255,255,255,.7);
+      font-size: .8rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      transition: color .3s;
+    }
+    .back-link:hover { color: var(--accent); }
+
+    /* Alerts */
+    .alert {
+      padding: .75rem 1rem;
+      margin-bottom: 1rem;
+      font-size: .78rem;
+      border-left: 3px solid;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .alert-error   { background: #fff0f0; border-color: #dc3545; color: #8b1a1a; }
+    .alert-success { background: #f0faf0; border-color: #28a745; color: #1a6b1a; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .container::before,
+      .container.sign-in::before,
+      .container.sign-up::before {
+        height: 100vh;
+        border-radius: 0;
+        z-index: 0;
+        transform: none;
+        right: 0;
+      }
+      .col {
+        width: 100%;
+        position: absolute;
+        padding: 1.5rem;
+        background-color: var(--white);
+        border-top-left-radius: 2rem;
+        border-top-right-radius: 2rem;
+        transform: translateY(100%);
+        transition: 1s ease-in-out;
+      }
+      .container.sign-in .col.sign-in,
+      .container.sign-up .col.sign-up {
+        transform: translateY(0);
+      }
+      .row { align-items: flex-end; }
+      .form, .form-wrapper { box-shadow: none; max-width: 100%; }
+      .content-row { align-items: flex-start !important; }
+      .content-row .col { transform: translateY(0); background: none; border-radius: 0; position: relative; }
+      .text { margin: 1.5rem; }
+      .text p { display: none; }
+      .text h2 { font-size: 2.5rem; margin: .5rem 0; }
+      .input-row { grid-template-columns: 1fr; gap: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Retour accueil -->
+<a href="/" class="back-link">
+  <i class="fas fa-arrow-left"></i> Retour au site
+</a>
+
+{% load static %}
+<div id="container" class="container">
+
+  <!-- ===== FORMS ===== -->
+  <div class="row">
+
+    <!-- INSCRIPTION -->
+    <div class="col align-items-center flex-col sign-up">
+      <div class="form-wrapper align-items-center">
+        <div class="form sign-up">
+          <a href="/" class="form-brand-title">Bright Looks</a>
+          <div class="form-tagline">Dakar Sénégal — Worldwide delivery</div>
+          <div class="form-title">Inscription</div>
+
+          {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif %}">
+            <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% else %}check-circle{% endif %}"></i>
+            {{ message }}
+          </div>
+          {% endfor %}
+          {% endif %}
+
+          <form method="POST" action="{% url 'accounts:register' %}">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="register">
+
+            <div class="input-row">
+              <div class="input-group">
+                <input type="text" name="first_name" placeholder="Prénom">
+                <i class='bx bxs-user'></i>
+              </div>
+              <div class="input-group">
+                <input type="text" name="last_name" placeholder="Nom">
+                <i class='bx bxs-user-detail'></i>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <input type="text" name="username" placeholder="Identifiant *" required>
+              <i class='bx bx-at'></i>
+            </div>
+
+            <div class="input-group">
+              <input type="email" name="email" placeholder="Email *" required>
+              <i class='bx bx-mail-send'></i>
+            </div>
+
+            <div class="input-group">
+              <input type="tel" name="phone" placeholder="Téléphone">
+              <i class='bx bx-phone'></i>
+            </div>
+
+            <div class="input-group">
+              <input type="password" name="password1" placeholder="Mot de passe *" required>
+              <i class='bx bxs-lock-alt'></i>
+            </div>
+
+            <div class="input-group">
+              <input type="password" name="password2" placeholder="Confirmer le mot de passe *" required>
+              <i class='bx bxs-lock'></i>
+            </div>
+
+            <p style="font-size:.72rem;color:#888;margin-bottom:1rem;line-height:1.5">
+              Mot de passe : 8 caractères minimum, évitez qu'il soit identique à votre identifiant ou email.
+            </p>
+
+            <button type="submit">
+              <i class="fas fa-user-plus"></i> Créer mon compte
+            </button>
+          </form>
+
+          <p>
+            <span>Déjà un compte ?</span>
+            <b onclick="toggle()" class="pointer"> Se connecter</b>
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- FIN INSCRIPTION -->
+
+    <!-- CONNEXION -->
+    <div class="col align-items-center flex-col sign-in">
+      <div class="form-wrapper align-items-center">
+        <div class="form sign-in">
+          <a href="/" class="form-brand-title">Bright Looks</a>
+          <div class="form-tagline">Dakar Sénégal — Worldwide delivery</div>
+          <div class="form-title">Connexion</div>
+
+          {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif %}">
+            <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% else %}check-circle{% endif %}"></i>
+            {{ message }}
+          </div>
+          {% endfor %}
+          {% endif %}
+
+          <form method="POST" action="{% url 'accounts:login' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">
+            {% csrf_token %}
+
+            <div class="input-group">
+              <input type="text" name="username" placeholder="Identifiant ou Email" required autofocus>
+              <i class='bx bxs-user'></i>
+            </div>
+
+            <div class="input-group">
+              <input type="password" name="password" id="pwdField" placeholder="Mot de passe" required>
+              <i class='bx bxs-lock-alt' id="pwdIcon" style="cursor:pointer" onclick="togglePwd()"></i>
+            </div>
+
+            <button type="submit">
+              <i class="fas fa-sign-in-alt"></i> Se connecter
+            </button>
+          </form>
+
+          <p>
+            <span>Pas encore de compte ?</span>
+            <b onclick="toggle()" class="pointer"> S'inscrire</b>
+          </p>
+
+          <p style="font-size:.72rem;color:#888;margin-top:1rem;line-height:1.5">
+            Compte gérant / admin ?
+            <a href="{% url 'dashboard:login' %}" style="color:var(--primary);font-weight:600">Connexion panneau de gestion</a>
+          </p>
+
+          <div class="divider">ou</div>
+          <a href="https://wa.me/221772124319?text=Bonjour, j'ai besoin d'aide pour me connecter."
+             target="_blank" rel="noopener"
+             style="display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:.78rem;color:#888;text-decoration:none;transition:color .3s"
+             onmouseover="this.style.color='#25D366'" onmouseout="this.style.color='#888'">
+            <i class="fab fa-whatsapp" style="font-size:1rem;color:#25D366"></i>
+            Aide via WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- FIN CONNEXION -->
+
+  </div>
+  <!-- FIN FORMS -->
+
+  <!-- ===== CONTENU SUR FOND NOIR ===== -->
+  <div class="row content-row">
+
+    <!-- Côté connexion -->
+    <div class="col align-items-center flex-col">
+      <div class="text sign-in">
+        <h2>Bon<br><span>Retour</span></h2>
+        <p>Connectez-vous pour accéder<br>à votre espace Bright Looks</p>
+      </div>
+    </div>
+
+    <!-- Côté inscription -->
+    <div class="col align-items-center flex-col">
+      <div class="text sign-up">
+        <h2>Rejoins<br><span>La Tribe</span></h2>
+        <p>Crée ton compte et accède<br>à toute la collection streetwear</p>
+      </div>
+    </div>
+
+  </div>
+  <!-- FIN CONTENU -->
+
+</div>
+
+<script>
+  const container = document.getElementById('container');
+
+  function toggle() {
+    container.classList.toggle('sign-in');
+    container.classList.toggle('sign-up');
+  }
+
+  function togglePwd() {
+    const f = document.getElementById('pwdField');
+    const i = document.getElementById('pwdIcon');
+    if (f.type === 'password') {
+      f.type = 'text';
+      i.className = 'bx bx-show';
+    } else {
+      f.type = 'password';
+      i.className = 'bx bxs-lock-alt';
+    }
+  }
+
+  // Démarrer sur sign-in ou sign-up selon la page
+  setTimeout(() => {
+    {% if initial_form == 'sign-up' %}
+    container.classList.add('sign-up');
+    {% else %}
+    container.classList.add('sign-in');
+    {% endif %}
+  }, 200);
+</script>
+
+</body>
+</html>

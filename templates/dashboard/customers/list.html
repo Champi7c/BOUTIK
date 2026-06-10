@@ -1,0 +1,52 @@
+{% extends 'dashboard/base_admin.html' %}
+
+{% block page_title %}Clients{% endblock %}
+
+{% block dash_content %}
+
+<form method="get" class="dash-filters">
+  <input type="text" name="q" value="{{ q }}" placeholder="Nom, email, identifiant..." class="dash-input">
+  <button type="submit" class="dash-btn dash-btn-primary dash-btn-sm"><i class="fas fa-search"></i></button>
+</form>
+
+<div class="dash-panel">
+  <div class="dash-panel-body no-pad">
+    <div class="dash-table-wrap">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Ville</th>
+            <th>Inscrit le</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for customer in customers %}
+          <tr>
+            <td style="font-weight:600">{{ customer.get_full_name|default:customer.username }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.profile.phone|default:"—" }}</td>
+            <td>{{ customer.profile.city|default:"—" }}</td>
+            <td style="font-size:.8rem;color:#888">{{ customer.date_joined|date:"d/m/Y" }}</td>
+            <td><a href="{% url 'dashboard:customer_detail' customer.pk %}" class="dash-btn dash-btn-outline dash-btn-sm">Voir</a></td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6" style="text-align:center;padding:3rem;color:#888">Aucun client</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if customers.has_other_pages %}
+    <div class="dash-pagination">
+      {% if customers.has_previous %}<a href="?page={{ customers.previous_page_number }}&q={{ q }}">‹</a>{% endif %}
+      <span class="current">{{ customers.number }} / {{ customers.paginator.num_pages }}</span>
+      {% if customers.has_next %}<a href="?page={{ customers.next_page_number }}&q={{ q }}">›</a>{% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

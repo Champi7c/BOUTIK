@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact — Bright Looks{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-header-title">Contact</h1>
+    <p class="page-header-sub">Nous sommes là pour vous</p>
+  </div>
+</div>
+
+<div class="container" style="padding:4rem 2rem 5rem">
+  <div class="contact-grid">
+
+    <!-- INFOS BOUTIQUE -->
+    <div>
+      <div class="section-subtitle">Bright Looks</div>
+      <h2 class="section-title" style="margin-bottom:2rem">Nos Coordonnées</h2>
+
+      <div class="contact-info-card">
+        <div class="contact-info-icon"><i class="fab fa-whatsapp"></i></div>
+        <div>
+          <div style="font-weight:700;font-size:.9rem;letter-spacing:1px;margin-bottom:.3rem">WHATSAPP</div>
+          <a href="{{ boutique_whatsapp_url }}?text=Bonjour Bright Looks, " style="font-size:1.1rem;font-weight:600" target="_blank" rel="noopener">+221 77 212 43 19</a>
+          <p style="font-size:.82rem;color:#888;margin-top:.25rem">Lun–Sam : 9h00 – 19h00</p>
+        </div>
+      </div>
+
+      <div class="contact-info-card">
+        <div class="contact-info-icon"><i class="fas fa-share-alt"></i></div>
+        <div>
+          <div style="font-weight:700;font-size:.9rem;letter-spacing:1px;margin-bottom:.75rem">RÉSEAUX SOCIAUX</div>
+          {% include 'partials/social_links.html' with social_variant='light' %}
+        </div>
+      </div>
+
+      <div class="contact-info-card">
+        <div class="contact-info-icon"><i class="fas fa-envelope"></i></div>
+        <div>
+          <div style="font-weight:700;font-size:.9rem;letter-spacing:1px;margin-bottom:.3rem">EMAIL</div>
+          <a href="mailto:thiambusiness44@gmail.com" style="font-size:1rem;font-weight:600">
+            thiambusiness44@gmail.com
+          </a>
+          <p style="font-size:.82rem;color:#888;margin-top:.25rem">Réponse sous 24h</p>
+        </div>
+      </div>
+
+      <div class="contact-info-card">
+        <div class="contact-info-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <div>
+          <div style="font-weight:700;font-size:.9rem;letter-spacing:1px;margin-bottom:.5rem">ADRESSE</div>
+          <strong>Ouest Foire</strong>
+          <p style="font-size:.82rem;color:#888;margin-top:.25rem">{{ boutique_location }}</p>
+          {% if boutique_plus_code %}
+          <p style="font-size:.82rem;margin-top:.5rem">
+            <a href="{{ boutique_maps_url }}" target="_blank" rel="noopener" style="font-weight:600;color:var(--mauve-dark)">
+              <i class="fas fa-map-pin"></i> {{ boutique_plus_code }}
+            </a>
+          </p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="contact-info-card">
+        <div class="contact-info-icon"><i class="fas fa-clock"></i></div>
+        <div>
+          <div style="font-weight:700;font-size:.9rem;letter-spacing:1px;margin-bottom:.3rem">HORAIRES</div>
+          <table style="font-size:.875rem">
+            <tr><td style="padding:.2rem .75rem .2rem 0;color:#888">Lundi – Samedi</td><td style="font-weight:600">9h00 – 19h00</td></tr>
+            <tr><td style="padding:.2rem .75rem .2rem 0;color:#888">Dimanche</td><td style="color:#dc3545">Fermé</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- WhatsApp CTA -->
+      <a href="{{ boutique_whatsapp_url }}?text=Bonjour Bright Looks, j'ai une question..."
+         class="btn btn-full btn-lg" target="_blank" rel="noopener"
+         style="background:#25D366;color:white;border-color:#25D366;margin-top:1rem">
+        <i class="fab fa-whatsapp" style="font-size:1.2rem"></i>
+        Discuter sur WhatsApp
+      </a>
+    </div>
+
+    <!-- FORMULAIRE -->
+    <div>
+      <div class="section-subtitle">Nous écrire</div>
+      <h2 class="section-title" style="margin-bottom:2rem">Envoyer un Message</h2>
+
+      <form method="POST" style="background:#fafafa;padding:2.5rem;border:1px solid #eee">
+        {% csrf_token %}
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div class="form-group">
+            <label class="form-label">Prénom *</label>
+            <input type="text" name="prenom" class="form-control" placeholder="Votre prénom" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nom *</label>
+            <input type="text" name="nom" class="form-control" placeholder="Votre nom" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email *</label>
+          <input type="email" name="email" class="form-control" placeholder="votre@email.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Téléphone</label>
+          <input type="tel" name="telephone" class="form-control" placeholder="77 000 00 00">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Sujet</label>
+          <select name="sujet" class="form-control">
+            <option value="">Sélectionner un sujet</option>
+            <option>Commande / Livraison</option>
+            <option>Retour / Échange</option>
+            <option>Information produit</option>
+            <option>Partenariat</option>
+            <option>Autre</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Message *</label>
+          <textarea name="message" class="form-control" rows="5"
+                    placeholder="Votre message..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg">
+          <i class="fas fa-paper-plane"></i> Envoyer le message
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% include 'partials/location_section.html' %}
+{% endblock %}

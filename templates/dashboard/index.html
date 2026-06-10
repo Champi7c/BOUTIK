@@ -1,0 +1,164 @@
+{% extends 'dashboard/base_admin.html' %}
+{% load humanize static %}
+
+{% block page_title %}Vue d'ensemble{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'dashboard:export_orders' %}" class="dash-btn dash-btn-outline dash-btn-sm">
+  <i class="fas fa-download"></i> Export CSV
+</a>
+<a href="{% url 'dashboard:product_create' %}" class="dash-btn dash-btn-primary dash-btn-sm">
+  <i class="fas fa-plus"></i> Nouveau produit
+</a>
+{% endblock %}
+
+{% block dash_content %}
+
+<div class="dash-stats">
+  <div class="dash-stat">
+    <div class="dash-stat-icon purple"><i class="fas fa-coins"></i></div>
+    <div>
+      <div class="dash-stat-label">Revenu (30 jours)</div>
+      <div class="dash-stat-value">{{ revenue_month|intcomma }}</div>
+      <div class="dash-stat-sub">FCFA</div>
+    </div>
+  </div>
+  <div class="dash-stat">
+    <div class="dash-stat-icon blue"><i class="fas fa-shopping-bag"></i></div>
+    <div>
+      <div class="dash-stat-label">Commandes</div>
+      <div class="dash-stat-value">{{ total_orders }}</div>
+      <div class="dash-stat-sub">{{ orders_today }} aujourd'hui · {{ orders_week }} cette semaine</div>
+    </div>
+  </div>
+  <div class="dash-stat">
+    <div class="dash-stat-icon green"><i class="fas fa-tshirt"></i></div>
+    <div>
+      <div class="dash-stat-label">Produits actifs</div>
+      <div class="dash-stat-value">{{ active_products }}</div>
+      <div class="dash-stat-sub">{{ total_products }} au total</div>
+    </div>
+  </div>
+  <div class="dash-stat">
+    <div class="dash-stat-icon orange"><i class="fas fa-boxes"></i></div>
+    <div>
+      <div class="dash-stat-label">Stock bas</div>
+      <div class="dash-stat-value">{{ low_stock_count }}</div>
+      <div class="dash-stat-sub">{{ out_of_stock_count }} en rupture</div>
+    </div>
+  </div>
+  <div class="dash-stat">
+    <div class="dash-stat-icon purple"><i class="fas fa-users"></i></div>
+    <div>
+      <div class="dash-stat-label">Clients</div>
+      <div class="dash-stat-value">{{ total_customers }}</div>
+      <div class="dash-stat-sub">{{ pending_orders }} commande(s) en attente</div>
+    </div>
+  </div>
+</div>
+
+<div class="dash-grid-2">
+  <!-- Commandes récentes -->
+  <div class="dash-panel">
+    <div class="dash-panel-header">
+      <h2>Commandes récentes</h2>
+      <a href="{% url 'dashboard:order_list' %}" class="dash-btn dash-btn-outline dash-btn-sm">Voir tout</a>
+    </div>
+    <div class="dash-panel-body no-pad">
+      <div class="dash-table-wrap">
+        <table class="dash-table">
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th>Client</th>
+              <th>Total</th>
+              <th>Statut</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in recent_orders %}
+            <tr>
+              <td><a href="{% url 'dashboard:order_detail' order.pk %}" style="font-weight:600;color:var(--dash-accent)">{{ order.order_number }}</a></td>
+              <td>{{ order.user.first_name|default:order.user.username }}</td>
+              <td style="font-weight:600">{{ order.grand_total|intcomma }} FCFA</td>
+              <td><span class="dash-badge {% if order.status == 'delivered' %}success{% elif order.status == 'cancelled' %}danger{% else %}warning{% endif %}">{{ order.get_status_display }}</span></td>
+              <td style="color:#888;font-size:.8rem">{{ order.created_at|date:"d/m/Y H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" style="text-align:center;padding:2rem;color:#888">Aucune commande</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Colonne droite -->
+  <div>
+    <!-- Statuts commandes -->
+    <div class="dash-panel">
+      <div class="dash-panel-header"><h2>Statuts commandes</h2></div>
+      <div class="dash-panel-body">
+        <div style="display:flex;flex-direction:column;gap:.5rem">
+          <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.35rem 0;border-bottom:1px solid #eee">
+            <span>En attente</span><strong>{{ status_counts.pending|default:0 }}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.35rem 0;border-bottom:1px solid #eee">
+            <span>Confirmées</span><strong>{{ status_counts.confirmed|default:0 }}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.35rem 0;border-bottom:1px solid #eee">
+            <span>En préparation</span><strong>{{ status_counts.preparing|default:0 }}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.35rem 0;border-bottom:1px solid #eee">
+            <span>Expédiées</span><strong>{{ status_counts.shipped|default:0 }}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.35rem 0;border-bottom:1px solid #eee">
+            <span>Livrées</span><strong style="color:var(--dash-success)">{{ status_counts.delivered|default:0 }}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.35rem 0">
+            <span>Annulées</span><strong style="color:var(--dash-danger)">{{ status_counts.cancelled|default:0 }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stock bas -->
+    <div class="dash-panel" style="margin-top:1.5rem">
+      <div class="dash-panel-header">
+        <h2>Stock bas (≤5)</h2>
+        <a href="{% url 'dashboard:stock_list' %}?filter=low" class="dash-btn dash-btn-outline dash-btn-sm">Gérer</a>
+      </div>
+      <div class="dash-panel-body">
+        {% for product in low_stock %}
+        <div style="display:flex;gap:.75rem;align-items:center;padding:.6rem 0;border-bottom:1px solid #eee">
+          {% if product.image %}
+          <img src="{{ product.image.url }}" style="width:36px;height:44px;object-fit:cover" alt="">
+          {% endif %}
+          <div style="flex:1;min-width:0;font-size:.82rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ product.name }}</div>
+          <span style="font-weight:700;color:{% if product.stock == 0 %}var(--dash-danger){% else %}var(--dash-warning){% endif %}">{{ product.stock }}</span>
+        </div>
+        {% empty %}
+        <p style="color:#888;font-size:.85rem;text-align:center;padding:1rem"><i class="fas fa-check-circle" style="color:var(--dash-success)"></i> Stocks OK</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Top ventes -->
+    <div class="dash-panel" style="margin-top:1.5rem">
+      <div class="dash-panel-header"><h2>Top ventes</h2></div>
+      <div class="dash-panel-body">
+        {% for product in top_products %}
+        <div style="display:flex;justify-content:space-between;padding:.4rem 0;font-size:.85rem;border-bottom:1px solid #eee">
+          <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:70%">{{ product.name }}</span>
+          <strong>{{ product.sales_count }} vendus</strong>
+        </div>
+        {% empty %}
+        <p style="color:#888;font-size:.85rem">Pas encore de ventes</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
