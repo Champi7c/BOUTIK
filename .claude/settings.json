@@ -21,7 +21,8 @@
       "Bash(python generate_sql.py)",
       "PowerShell([System.Environment]::GetEnvironmentVariable\\('DB_HOST', 'User'\\); [System.Environment]::GetEnvironmentVariable\\('DB_HOST', 'Machine'\\); $env:DB_HOST)",
       "PowerShell([System.Environment]::SetEnvironmentVariable\\('DB_HOST', $null, 'User'\\); [System.Environment]::SetEnvironmentVariable\\('DB_HOST', $null, 'Machine'\\); Write-Output \"DB_HOST supprime\")",
-      "PowerShell([System.Environment]::GetEnvironmentVariable\\('DB_HOST', 'User'\\); [System.Environment]::GetEnvironmentVariable\\('DB_HOST', 'Machine'\\))"
+      "PowerShell([System.Environment]::GetEnvironmentVariable\\('DB_HOST', 'User'\\); [System.Environment]::GetEnvironmentVariable\\('DB_HOST', 'Machine'\\))",
+      "PowerShell(Get-PSDrive C | Select-Object @{N='Total_GB';E={[math]::Round\\(\\($_.Used+$_.Free\\)/1GB,1\\)}}, @{N='Used_GB';E={[math]::Round\\($_.Used/1GB,1\\)}}, @{N='Free_MB';E={[math]::Round\\($_.Free/1MB,0\\)}})"
     ]
   }
 }

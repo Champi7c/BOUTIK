@@ -35,6 +35,12 @@ dataLayer.push({
 });
 </script>
 {% endif %}
+<script>
+// Ouvre WhatsApp automatiquement 1 seconde après l'arrivée sur la page
+setTimeout(function() {
+  window.open('{{ wa_url|escapejs }}', '_blank');
+}, 1000);
+</script>
 {% endblock %}
 
 {% block content %}

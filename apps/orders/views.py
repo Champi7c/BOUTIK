@@ -14,7 +14,7 @@ WHATSAPP_NUMBER = '221785309874'
 
 
 def build_whatsapp_url(order):
-    """Construit l'URL WhatsApp avec le récapitulatif complet + liens photos des articles."""
+    """Construit l'URL WhatsApp avec le récapitulatif complet de la commande."""
     def fmt(amount):
         return f"{int(amount):,}".replace(',', ' ')
 
@@ -27,7 +27,6 @@ def build_whatsapp_url(order):
         f"📞 Tél : {order.phone}",
         "",
         "📦 ARTICLES :",
-        "",
     ]
     for item in order.items.all():
         details = []
@@ -36,13 +35,12 @@ def build_whatsapp_url(order):
         if item.color:
             details.append(f"Couleur: {item.color}")
         suffix = f" ({', '.join(details)})" if details else ""
-        lines.append(f"  • {item.product.name} × {item.quantity}{suffix}")
-        lines.append(f"    Prix : {fmt(item.subtotal)} FCFA")
-        if site_url and item.product.image:
-            lines.append(f"    🖼️ {site_url}{item.product.image.url}")
-        lines.append("")
+        lines.append(f"  • {item.product.name} x{item.quantity}{suffix} — {fmt(item.subtotal)} FCFA")
+        if site_url:
+            lines.append(f"    👉 {site_url}/produit/{item.product.slug}/")
 
     lines += [
+        "",
         f"💰 Sous-total : {fmt(order.total)} FCFA",
     ]
     if order.delivery_fee:
