@@ -71,6 +71,24 @@ dataLayer.push({
 });
 </script>
 {% endif %}
+<script>
+  const starBtns = document.querySelectorAll('.star-rating-btn');
+  const ratingInput = document.getElementById('ratingInput');
+  starBtns.forEach(btn => {
+    btn.addEventListener('mouseover', () => {
+      const r = parseInt(btn.dataset.rating);
+      starBtns.forEach((b, i) => b.style.color = i < r ? 'var(--accent)' : '#ddd');
+    });
+    btn.addEventListener('click', () => {
+      ratingInput.value = btn.dataset.rating;
+      starBtns.forEach((b, i) => b.style.color = i < parseInt(btn.dataset.rating) ? 'var(--accent)' : '#ddd');
+    });
+  });
+  document.querySelector('.star-rating-btn')?.parentElement?.addEventListener('mouseleave', () => {
+    const selected = parseInt(ratingInput?.value || 0);
+    starBtns.forEach((b, i) => b.style.color = i < selected ? 'var(--accent)' : '#ddd');
+  });
+</script>
 {% endblock %}
 
 {% block content %}
@@ -359,23 +377,3 @@ dataLayer.push({
 
 {% endblock %}
 
-{% block extra_js %}
-<script>
-  const starBtns = document.querySelectorAll('.star-rating-btn');
-  const ratingInput = document.getElementById('ratingInput');
-  starBtns.forEach(btn => {
-    btn.addEventListener('mouseover', () => {
-      const r = parseInt(btn.dataset.rating);
-      starBtns.forEach((b, i) => b.style.color = i < r ? 'var(--accent)' : '#ddd');
-    });
-    btn.addEventListener('click', () => {
-      ratingInput.value = btn.dataset.rating;
-      starBtns.forEach((b, i) => b.style.color = i < parseInt(btn.dataset.rating) ? 'var(--accent)' : '#ddd');
-    });
-  });
-  document.querySelector('.star-rating-btn')?.parentElement?.addEventListener('mouseleave', () => {
-    const selected = parseInt(ratingInput?.value || 0);
-    starBtns.forEach((b, i) => b.style.color = i < selected ? 'var(--accent)' : '#ddd');
-  });
-</script>
-{% endblock %}
