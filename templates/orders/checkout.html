@@ -3,6 +3,31 @@
 {% load humanize %}
 
 {% block title %}Commande — ThiamStreetwear{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+{% if META_PIXEL_ID %}
+<script>
+fbq('track', 'InitiateCheckout', {
+  value: {{ cart_total }},
+  currency: 'XOF',
+  num_items: {{ cart|length }}
+});
+</script>
+{% endif %}
+{% if GTM_ID %}
+<script>
+dataLayer.push({
+  event: 'begin_checkout',
+  ecommerce: {
+    currency: 'XOF',
+    value: {{ cart_total }}
+  }
+});
+</script>
+{% endif %}
+{% endblock %}
 
 {% block content %}
 <div class="page-header">

@@ -4,6 +4,74 @@
 
 {% block title %}{{ product.name }} — ThiamStreetwear{% endblock %}
 {% block meta_description %}{{ product.description|truncatechars:160 }}{% endblock %}
+{% block meta_keywords %}{{ product.name }}, {{ product.category.name }}, streetwear dakar, thiamstreetwear{% endblock %}
+{% block og_type %}product{% endblock %}
+{% block og_title %}{{ product.name }} — ThiamStreetwear{% endblock %}
+{% block og_description %}{{ product.description|truncatechars:160 }}{% endblock %}
+{% if product.image %}{% block og_image %}{{ SITE_URL }}{{ product.image.url }}{% endblock %}{% endif %}
+{% block twitter_title %}{{ product.name }} — ThiamStreetwear{% endblock %}
+{% block twitter_description %}{{ product.description|truncatechars:160 }}{% endblock %}
+{% if product.image %}{% block twitter_image %}{{ SITE_URL }}{{ product.image.url }}{% endblock %}{% endif %}
+
+{% block schema_org %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ product.name }}",
+  "description": "{{ product.description|escapejs }}",
+  "image": "{{ SITE_URL }}{% if product.image %}{{ product.image.url }}{% endif %}",
+  "url": "{{ SITE_URL }}{{ product.get_absolute_url }}",
+  "brand": {"@type": "Brand", "name": "ThiamStreetwear"},
+  "offers": {
+    "@type": "Offer",
+    "price": "{{ product.current_price }}",
+    "priceCurrency": "XOF",
+    "availability": "{% if product.is_in_stock %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+    "seller": {"@type": "Organization", "name": "ThiamStreetwear"}
+  }{% if product.average_rating > 0 %},
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ product.average_rating }}",
+    "reviewCount": "{{ product.reviews.count }}"
+  }{% endif %}
+}
+</script>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+{% if META_PIXEL_ID %}
+<script>
+fbq('track', 'ViewContent', {
+  content_ids: ['{{ product.id }}'],
+  content_name: '{{ product.name|escapejs }}',
+  content_type: 'product',
+  value: {{ product.current_price }},
+  currency: 'XOF'
+});
+</script>
+{% endif %}
+{% if GTM_ID %}
+<script>
+window.dataLayer = window.dataLayer || [];
+dataLayer.push({
+  event: 'view_item',
+  ecommerce: {
+    currency: 'XOF',
+    value: {{ product.current_price }},
+    items: [{
+      item_id: '{{ product.id }}',
+      item_name: '{{ product.name|escapejs }}',
+      item_category: '{{ product.category.name|escapejs }}',
+      price: {{ product.current_price }},
+      quantity: 1
+    }]
+  }
+});
+</script>
+{% endif %}
+{% endblock %}
 
 {% block content %}
 

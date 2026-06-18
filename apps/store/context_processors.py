@@ -34,4 +34,8 @@ def boutique_info(request):
         'boutique_whatsapp_url': wa,
         'boutique_instagram_url': settings.INSTAGRAM_URL,
         'boutique_snapchat_url': settings.SNAPCHAT_URL,
+        # SEA
+        'GTM_ID': getattr(settings, 'GTM_ID', ''),
+        'META_PIXEL_ID': getattr(settings, 'META_PIXEL_ID', ''),
+        'SITE_URL': getattr(settings, 'SITE_URL', 'https://thiamstreetwear.com'),
     }

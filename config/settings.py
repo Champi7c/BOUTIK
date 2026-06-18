@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.humanize',
+    'django.contrib.sitemaps',
     # Third party
     'allauth',
     'allauth.account',
@@ -160,6 +161,11 @@ BOUTIQUE_MAPS_EMBED = (
 )
 BOUTIQUE_ADRESSES = ['Guediawaye', 'Colobane']
 BOUTIQUE_HORAIRES = 'Lundi – Samedi : 9h00 – 19h00'
+# SEO / SEA — remplis dans .env
+SITE_URL = os.environ.get('SITE_URL', 'https://thiamstreetwear.com')
+GTM_ID = os.environ.get('GTM_ID', '')            # ex: GTM-XXXXXXX
+META_PIXEL_ID = os.environ.get('META_PIXEL_ID', '')  # ex: 1234567890
+
 WHATSAPP_NUMBER = '221785309874'
 WHATSAPP_URL = 'https://wa.me/221785309874'
 INSTAGRAM_URL = 'https://www.instagram.com/thiamstreetwear/'
