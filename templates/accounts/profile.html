@@ -13,7 +13,7 @@
 </div>
 
 <div class="container" style="padding:3rem 2rem 5rem">
-  <div style="display:grid;grid-template-columns:280px 1fr;gap:3rem;align-items:start">
+  <div class="profile-grid" style="align-items:start">
 
     <!-- SIDEBAR -->
     <div>
@@ -63,7 +63,7 @@
         </h2>
         <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div class="form-grid-2">
             <div class="form-group">
               <label class="form-label">Prénom</label>
               <input type="text" name="first_name" class="form-control" value="{{ user.first_name }}">
@@ -135,7 +135,7 @@
         <h2 style="font-family:var(--font-title);font-size:1.5rem;letter-spacing:2px;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:1px solid var(--gray-border)">
           MES FAVORIS
         </h2>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem">
+        <div class="wishlist-grid">
           {% for item in wishlist %}
           <a href="{{ item.product.get_absolute_url }}" style="display:block">
             <div style="aspect-ratio:3/4;overflow:hidden;background:var(--gray-light)">

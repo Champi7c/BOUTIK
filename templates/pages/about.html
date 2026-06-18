@@ -3,6 +3,20 @@
 
 {% block title %}À Propos — ThiamStreetwear{% endblock %}
 
+{% block extra_css %}
+<style>
+.about-story { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; margin-bottom:5rem; }
+.about-values-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2.5rem; }
+@media (max-width:900px) {
+  .about-story { grid-template-columns:1fr; gap:2.5rem; }
+  .about-values-grid { grid-template-columns:1fr 1fr; gap:1.5rem; }
+}
+@media (max-width:600px) {
+  .about-values-grid { grid-template-columns:1fr; }
+}
+</style>
+{% endblock %}
+
 {% block content %}
 
 <!-- HERO À PROPOS -->
@@ -20,7 +34,7 @@
 <div class="container" style="padding:5rem 2rem">
 
   <!-- HISTOIRE -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:5rem">
+  <div class="about-story">
     <div>
       <div class="section-subtitle">Notre Histoire</div>
       <h2 class="section-title" style="margin-bottom:1.5rem">La Naissance de ThiamStreetwear</h2>
@@ -59,7 +73,7 @@
   <div style="background:var(--black);color:white;padding:4rem;margin-bottom:5rem;text-align:center">
     <div class="section-subtitle" style="color:rgba(255,255,255,.4)">Ce qui nous définit</div>
     <h2 class="section-title" style="color:white;margin-bottom:3rem">Nos Valeurs</h2>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem">
+    <div class="about-values-grid">
       <div>
         <div style="width:60px;height:60px;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:1.5rem;color:var(--accent)">
           <i class="fas fa-award"></i>
