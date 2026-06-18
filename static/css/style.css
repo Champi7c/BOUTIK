@@ -1,6 +1,6 @@
 /* ============================================
    THIAMSTREETWEAR — CSS Principal
-   Noir & Or (#c8a96e)
+   Noir & Jaune (#F5C518)
    ============================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap');
@@ -12,9 +12,9 @@
   --gray-medium: #333333;
   --gray-light: #f5f5f5;
   --gray-border: #e0e0e0;
-  --accent: #c8a96e;
-  --accent-light: #d4b896;
-  --accent-dark: #a8894f;
+  --accent: #F5C518;
+  --accent-light: #F8D848;
+  --accent-dark: #D4A800;
   --danger: #dc3545;
   --success: #28a745;
   --font-title: 'Bebas Neue', sans-serif;
@@ -27,7 +27,7 @@
   /* alias compatibilité templates */
   --mauve: var(--accent);
   --mauve-light: var(--accent-light);
-  --mauve-soft: #faf6ef;
+  --mauve-soft: #FFFBEB;
   --mauve-medium: var(--accent);
   --mauve-dark: var(--black);
   --mauve-deep: var(--black);

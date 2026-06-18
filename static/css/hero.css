@@ -45,7 +45,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--accent, #c8a96e);
+  color: var(--accent, #F5C518);
   margin-bottom: 1rem;
   font-weight: 600;
 }
@@ -60,7 +60,7 @@
 }
 
 .hero-brand__title .accent {
-  color: var(--accent, #c8a96e);
+  color: var(--accent, #F5C518);
   display: block;
 }
 
@@ -93,7 +93,7 @@
   font-family: var(--font-title, 'Bebas Neue', sans-serif);
   font-size: 2rem;
   letter-spacing: 0.05em;
-  color: var(--accent, #c8a96e);
+  color: var(--accent, #F5C518);
 }
 
 .hero-brand__stat strong span {
@@ -143,7 +143,7 @@
   position: absolute;
   inset: 22%;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, var(--accent-light, #d4b896), var(--accent-dark, #a8894f));
+  background: radial-gradient(circle at 35% 35%, var(--accent-light, #F8D848), var(--accent-dark, #D4A800));
   opacity: 0.25;
 }
 
@@ -159,18 +159,18 @@
   height: 140px;
   object-fit: contain;
   border-radius: 50%;
-  border: 3px solid var(--accent, #c8a96e);
+  border: 3px solid var(--accent, #F5C518);
   background: rgba(0, 0, 0, 0.4);
   padding: 8px;
 }
 
 .hero-orbit__logo span {
-  color: var(--accent, #c8a96e);
+  color: var(--accent, #F5C518);
 }
 
 .hero-orbit__star {
   position: absolute;
-  color: var(--accent, #c8a96e);
+  color: var(--accent, #F5C518);
   font-size: 0.65rem;
   animation: heroPulse 2.5s ease-in-out infinite;
 }
@@ -183,7 +183,7 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  background: var(--accent, #c8a96e);
+  background: var(--accent, #F5C518);
   color: var(--black);
   padding: 0.65rem 1rem;
   font-size: 0.68rem;
@@ -214,19 +214,19 @@
   align-items: center;
   gap: 0.6rem;
   padding: 1rem 2.2rem;
-  background: var(--accent, #c8a96e);
+  background: var(--accent, #F5C518);
   color: var(--black);
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  border: 2px solid var(--accent, #c8a96e);
+  border: 2px solid var(--accent, #F5C518);
   transition: all 0.3s ease;
 }
 
 .btn-hero-primary:hover {
   background: transparent;
-  color: var(--accent, #c8a96e);
+  color: var(--accent, #F5C518);
 }
 
 .btn-hero-ghost {
@@ -244,8 +244,8 @@
 }
 
 .btn-hero-ghost:hover {
-  color: var(--accent, #c8a96e);
-  border-color: var(--accent, #c8a96e);
+  color: var(--accent, #F5C518);
+  border-color: var(--accent, #F5C518);
 }
 
 @media (max-width: 1024px) {
