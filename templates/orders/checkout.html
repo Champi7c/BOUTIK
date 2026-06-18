@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %}Commande — Bright Looks{% endblock %}
+{% block title %}Commande — ThiamStreetwear{% endblock %}
 
 {% block content %}
 <div class="page-header">
@@ -41,7 +41,7 @@
         <div class="form-group">
           <label class="form-label">Téléphone *</label>
           <input type="tel" class="form-control" name="phone" required
-                 value="{{ user.profile.phone }}"
+                 value="{{ profile.phone }}"
                  placeholder="Ex: 77 000 00 00">
         </div>
 
@@ -60,10 +60,18 @@
             </div>
           </label>
           <label class="payment-option">
-            <input type="radio" name="delivery_type" value="ouest_foire">
+            <input type="radio" name="delivery_type" value="guediawaye">
             <div style="text-align:center">
               <i class="fas fa-store" style="font-size:1.5rem;margin-bottom:.5rem"></i>
-              <div style="font-weight:600;font-size:.85rem">Retrait Ouest Foire</div>
+              <div style="font-weight:600;font-size:.85rem">Retrait Guediawaye</div>
+              <div style="font-size:.75rem;color:#28a745;margin-top:.25rem">Gratuit</div>
+            </div>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="delivery_type" value="colobane">
+            <div style="text-align:center">
+              <i class="fas fa-store" style="font-size:1.5rem;margin-bottom:.5rem"></i>
+              <div style="font-weight:600;font-size:.85rem">Retrait Colobane</div>
               <div style="font-size:.75rem;color:#28a745;margin-top:.25rem">Gratuit</div>
             </div>
           </label>
@@ -74,7 +82,7 @@
             <label class="form-label">Adresse de livraison *</label>
             <textarea class="form-control" name="delivery_address" rows="3"
                       placeholder="Numéro, rue, quartier, ville..."
-                      >{{ user.profile.address }}</textarea>
+                      >{{ profile.address }}</textarea>
           </div>
         </div>
 

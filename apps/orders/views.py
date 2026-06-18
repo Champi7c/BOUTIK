@@ -85,14 +85,35 @@ def checkout(request):
 
     if request.method == 'POST':
         delivery_type = request.POST.get('delivery_type', 'livraison')
-        delivery_address = request.POST.get('delivery_address', '')
-        phone = request.POST.get('phone', '')
+        delivery_address = request.POST.get('delivery_address', '').strip()
+        phone = request.POST.get('phone', '').strip()
         payment_method = request.POST.get('payment_method', 'cash')
         notes = request.POST.get('notes', '')
+        first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
 
-        delivery_fee = 0
+        if delivery_type == 'livraison' and not delivery_address:
+            messages.error(request, 'Veuillez indiquer votre adresse de livraison.')
+            return redirect('orders:checkout')
+
+        if not phone:
+            messages.error(request, 'Le numéro de téléphone est obligatoire.')
+            return redirect('orders:checkout')
+
+        delivery_fee = 1500 if delivery_type == 'livraison' else 0
+
+        # Mettre à jour le profil client
+        from apps.accounts.models import Profile
+        profile, _ = Profile.objects.get_or_create(user=request.user)
+        profile.phone = phone
         if delivery_type == 'livraison':
-            delivery_fee = 1500  # frais livraison Dakar
+            profile.address = delivery_address
+        profile.save()
+        if first_name:
+            request.user.first_name = first_name
+        if last_name:
+            request.user.last_name = last_name
+        request.user.save(update_fields=['first_name', 'last_name'])
 
         # Créer la commande
         order = Order.objects.create(
@@ -132,10 +153,13 @@ def checkout(request):
         return redirect('orders:confirmation', order_number=order.order_number)
 
     DELIVERY_FEE = 1500
+    from apps.accounts.models import Profile
+    profile, _ = Profile.objects.get_or_create(user=request.user)
     context = {
         'cart': cart,
         'cart_total': cart.get_total(),
         'delivery_fee': DELIVERY_FEE,
+        'profile': profile,
         'page': 'checkout',
     }
     return render(request, 'orders/checkout.html', context)

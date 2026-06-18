@@ -1,4 +1,4 @@
-# Bright Looks — Guide d'Installation
+# ThiamStreetwear — Guide d'Installation
 
 ## Prérequis
 - Python 3.10+
@@ -142,6 +142,6 @@ static/
 
 ## Contact / Support
 
-- **Tél :** 77 212 43 19
+- **Tél :** 78 530 98 74
 - **Email :** thiambusiness44@gmail.com
-- **WhatsApp :** wa.me/221772124319
+- **WhatsApp :** wa.me/221785309874

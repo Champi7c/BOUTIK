@@ -200,8 +200,9 @@ def search(request):
         } for p in products]
         return JsonResponse({'results': data})
 
-    return render(request, 'store/search.html', {
-        'products': products, 'query': query
+    return render(request, 'store/product_list.html', {
+        'products': products, 'query': query, 'categories': Category.objects.filter(is_active=True),
+        'page': 'catalogue',
     })
 
 

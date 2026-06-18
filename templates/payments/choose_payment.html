@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Paiement — Commande #{{ order.order_number }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1 class="page-header-title">Paiement</h1>
+    <p class="page-header-sub">Commande #{{ order.order_number }}</p>
+  </div>
+</div>
+
+<div class="container" style="padding:3rem 2rem 5rem;max-width:640px">
+  <div style="border:1px solid var(--gray-border);padding:2rem;margin-bottom:2rem">
+    <p style="font-size:.9rem;color:#666;margin-bottom:1rem">
+      Montant à payer : <strong>{{ order.grand_total|intcomma }} FCFA</strong>
+    </p>
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="form-label">Mode de paiement</label>
+        <select name="provider" class="form-control">
+          <option value="wave">Wave</option>
+          <option value="orange_money">Orange Money</option>
+          <option value="cash">Paiement à la livraison</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Numéro de téléphone</label>
+        <input type="tel" name="phone" class="form-control" value="{{ order.phone }}" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Continuer</button>
+    </form>
+  </div>
+
+  <a href="{% url 'orders:confirmation' order.order_number %}" class="btn btn-outline">
+    Retour à la confirmation
+  </a>
+</div>
+{% endblock %}

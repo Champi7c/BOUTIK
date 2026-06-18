@@ -68,7 +68,7 @@ def dashboard(request):
 @manager_required
 def export_orders_csv(request):
     response = HttpResponse(content_type='text/csv; charset=utf-8')
-    response['Content-Disposition'] = 'attachment; filename="commandes_brightlooks.csv"'
+    response['Content-Disposition'] = 'attachment; filename="commandes_thiamstreetwear.csv"'
     response.write('\ufeff')
 
     writer = csv.writer(response, delimiter=';')

@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}À Propos — Bright Looks{% endblock %}
+{% block title %}À Propos — ThiamStreetwear{% endblock %}
 
 {% block content %}
 
 <!-- HERO À PROPOS -->
-<div style="height:60vh;min-height:400px;background:var(--ink, #1a1a1a);display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden">
+<div style="height:60vh;min-height:400px;background:var(--black);display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden">
   <div style="position:absolute;inset:0;background:url('{% static 'images/about-bg.jpg' %}') center/cover no-repeat;opacity:.2"></div>
   <div style="position:relative;z-index:1;padding:0 2rem">
     <div class="section-subtitle" style="color:rgba(255,255,255,.5)">Notre Histoire</div>
@@ -23,14 +23,14 @@
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:5rem">
     <div>
       <div class="section-subtitle">Notre Histoire</div>
-      <h2 class="section-title" style="margin-bottom:1.5rem">La Naissance de Bright Looks</h2>
+      <h2 class="section-title" style="margin-bottom:1.5rem">La Naissance de ThiamStreetwear</h2>
       <p style="line-height:1.9;color:#444;margin-bottom:1rem;font-size:.95rem">
-        Bright Looks est née d'une passion profonde pour la mode urbaine et le streetwear authentique.
+        ThiamStreetwear est née d'une passion profonde pour la mode urbaine et le streetwear authentique.
         Fondée à Dakar, au cœur du Sénégal, notre marque s'est donné pour mission de proposer
         des pièces de qualité qui reflètent l'identité urbaine africaine contemporaine.
       </p>
       <p style="line-height:1.9;color:#444;margin-bottom:1.5rem;font-size:.95rem">
-        Depuis Ouest Foire, notre boutique est devenue un point de rencontre pour
+        Depuis Guediawaye & Colobane, notre boutique est devenue un point de rencontre pour
         tous ceux qui aiment s'habiller avec style, sans compromis sur la qualité.
       </p>
       <div style="display:flex;gap:2rem">
@@ -48,14 +48,15 @@
         </div>
       </div>
     </div>
-    <div style="background:var(--ink, #1a1a1a);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:2rem">
-      <img src="{% static 'images/logo.jpg' %}" alt="Bright Looks"
-           style="width:100%;max-width:320px;height:auto;object-fit:contain">
+    <div style="background:var(--black);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:2rem">
+      <div style="font-family:var(--font-title);font-size:clamp(3rem,8vw,5rem);color:var(--white);letter-spacing:0.08em;text-transform:uppercase;text-align:center">
+        Thiam<span style="color:var(--accent)">SW</span>
+      </div>
     </div>
   </div>
 
   <!-- VALEURS -->
-  <div style="background:var(--ink, #1a1a1a);color:white;padding:4rem;margin-bottom:5rem;text-align:center">
+  <div style="background:var(--black);color:white;padding:4rem;margin-bottom:5rem;text-align:center">
     <div class="section-subtitle" style="color:rgba(255,255,255,.4)">Ce qui nous définit</div>
     <h2 class="section-title" style="color:white;margin-bottom:3rem">Nos Valeurs</h2>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem">
@@ -83,7 +84,7 @@
         </div>
         <h3 style="font-family:var(--font-title);font-size:1.3rem;letter-spacing:2px;margin-bottom:.75rem">Communauté</h3>
         <p style="color:rgba(255,255,255,.6);font-size:.875rem;line-height:1.8">
-          Bright Looks, c'est avant tout une communauté de passionnés de mode à Dakar.
+          ThiamStreetwear, c'est avant tout une communauté de passionnés de mode à Dakar.
         </p>
       </div>
     </div>

@@ -1,2 +1,5 @@
 {% load static %}
-<img src="{% static 'images/logo.jpg' %}" alt="Bright Looks" class="site-logo{% if logo_class %} {{ logo_class }}{% endif %}">
+<img src="{% static 'images/thiam.jpeg' %}"
+     alt="ThiamStreetwear"
+     class="site-logo {{ logo_class|default:'' }}"
+     width="220" height="62">

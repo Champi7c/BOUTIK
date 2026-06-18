@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %}Bright Looks — Mode Streetwear Dakar{% endblock %}
+{% block title %}ThiamStreetwear — Mode Streetwear Dakar{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/hero.css' %}">
@@ -28,7 +28,7 @@
   font-size: .7rem;
   letter-spacing: 5px;
   text-transform: uppercase;
-  color: var(--mauve-dark);
+  color: var(--accent);
   font-weight: 600;
   margin-bottom: .75rem;
 }
@@ -40,14 +40,14 @@
   text-transform: uppercase;
   line-height: 1;
 }
-.new-section-title span { color: var(--mauve-dark); }
+.new-section-title span { color: var(--accent); }
 .new-section-right {
   text-align: right;
 }
 .new-section-count {
   font-family: var(--font-title);
   font-size: 5rem;
-  color: rgba(123, 94, 167, 0.08);
+  color: rgba(200, 169, 110, 0.08);
   letter-spacing: 3px;
   line-height: 1;
   margin-bottom: -.5rem;
@@ -110,7 +110,7 @@
   position: absolute;
   top: 1rem;
   left: 1rem;
-  background: var(--mauve-dark);
+  background: var(--accent);
   color: var(--white);
   font-size: .6rem;
   font-weight: 800;
@@ -217,7 +217,7 @@
   stroke: var(--mauve-deep);
 }
 .cap-crown { fill: var(--mauve-deep); transition: fill .25s; }
-.cap-brim  { fill: var(--mauve-dark); transition: fill .25s; }
+.cap-brim  { fill: var(--accent); transition: fill .25s; }
 .cap-arrow { stroke: var(--white); transition: stroke .25s; }
 
 /* ===== DARK MODE — sections home ===== */
@@ -252,22 +252,22 @@
 {% block content %}
 
 <!-- ===== HERO — visuel original (sans photo) ===== -->
-<section class="hero-brand" aria-label="Bright Looks">
+<section class="hero-brand" aria-label="ThiamStreetwear">
   <div class="hero-brand__bg" aria-hidden="true"></div>
   <div class="hero-brand__grid" aria-hidden="true"></div>
 
   <div class="hero-brand__inner">
     <div class="hero-brand__content">
-      <p class="hero-brand__eyebrow">Ouest Foire · Dakar · Livraison mondiale</p>
+      <p class="hero-brand__eyebrow">Guediawaye · Colobane · Dakar</p>
 
       <h1 class="hero-brand__title">
-        Bright
-        <span class="accent">Looks</span>
+        Urban
+        <span class="accent">Style Dakar</span>
       </h1>
 
       <p class="hero-brand__desc">
-        Streetwear urbain authentique. Paiement Wave &amp; Orange Money,
-        retrait à Ouest Foire ou livraison rapide partout à Dakar.
+        Streetwear authentique ThiamSW. Paiement Wave &amp; Orange Money,
+        retrait Guediawaye ou Colobane, livraison rapide dans tout Dakar.
       </p>
 
       <div class="hero-brand__ctas">
@@ -290,8 +290,8 @@
           <small>Clients</small>
         </div>
         <div class="hero-brand__stat">
-          <strong>1</strong>
-          <small>Boutique · Ouest Foire</small>
+          <strong>2<span>+</span></strong>
+          <small>Boutiques · Guediawaye &amp; Colobane</small>
         </div>
       </div>
     </div>
@@ -300,8 +300,9 @@
       <div class="hero-orbit">
         <div class="hero-orbit__ring"></div>
         <div class="hero-orbit__ring hero-orbit__ring--2"></div>
-        <div class="hero-orbit__globe"></div>
-        <img src="{% static 'images/logo.jpg' %}" alt="" class="hero-orbit__logo">
+        <div class="hero-orbit__logo">
+          <img src="{% static 'images/thiam.jpeg' %}" alt="ThiamStreetwear" class="hero-orbit__logo-img">
+        </div>
         <i class="fas fa-star hero-orbit__star hero-orbit__star--1"></i>
         <i class="fas fa-star hero-orbit__star hero-orbit__star--2"></i>
         <i class="fas fa-star hero-orbit__star hero-orbit__star--3"></i>
@@ -439,13 +440,13 @@
   <div class="container">
     <div class="section-header">
       <div class="section-subtitle">Pourquoi nous choisir</div>
-      <h2 class="section-title">Bright Looks</h2>
+      <h2 class="section-title">ThiamStreetwear</h2>
     </div>
     <div class="info-grid">
       <div class="info-card">
         <div class="info-icon"><i class="fas fa-shipping-fast"></i></div>
         <h4>Livraison Rapide</h4>
-        <p>Livraison à domicile dans tout Dakar. Retrait boutique à Ouest Foire.</p>
+        <p>Livraison à domicile dans tout Dakar. Retrait boutique à Guediawaye & Colobane.</p>
       </div>
       <div class="info-card">
         <div class="info-icon"><i class="fas fa-mobile-alt"></i></div>
@@ -460,7 +461,7 @@
       <div class="info-card">
         <div class="info-icon"><i class="fas fa-headset"></i></div>
         <h4>Support Client</h4>
-        <p><a href="{{ boutique_whatsapp_url }}?text=Bonjour Bright Looks, " target="_blank" rel="noopener">+221 77 212 43 19</a> (WhatsApp)<br>Lun – Sam : 9h – 19h</p>
+        <p><a href="{{ boutique_whatsapp_url }}?text=Bonjour ThiamStreetwear, " target="_blank" rel="noopener">+221 78 530 98 74</a> (WhatsApp)<br>Lun – Sam : 9h – 19h</p>
       </div>
     </div>
   </div>

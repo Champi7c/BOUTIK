@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from .models import Category
+from .models import Category, Wishlist
 from apps.orders.cart import Cart
 
 
@@ -14,10 +14,17 @@ def categories_menu(request):
     return {'menu_categories': categories}
 
 
+def wishlist_ids(request):
+    if request.user.is_authenticated and not request.user.is_staff:
+        ids = Wishlist.objects.filter(user=request.user).values_list('product_id', flat=True)
+        return {'wishlist_ids': set(ids)}
+    return {'wishlist_ids': set()}
+
+
 def boutique_info(request):
     wa = getattr(settings, 'WHATSAPP_URL', f"https://wa.me/{settings.WHATSAPP_NUMBER}")
     return {
-        'boutique_name': 'Bright Looks',
+        'boutique_name': 'ThiamStreetwear',
         'boutique_tel': settings.BOUTIQUE_TEL,
         'boutique_location': settings.BOUTIQUE_LOCATION,
         'boutique_plus_code': getattr(settings, 'BOUTIQUE_PLUS_CODE', ''),

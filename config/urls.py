@@ -14,6 +14,6 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Personnalisation de l'admin
-admin.site.site_header = 'Bright Looks Admin'
-admin.site.site_title = 'Bright Looks'
+admin.site.site_header = 'ThiamStreetwear Admin'
+admin.site.site_title = 'ThiamSW'
 admin.site.index_title = 'Panneau de gestion'

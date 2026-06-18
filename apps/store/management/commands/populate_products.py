@@ -233,7 +233,7 @@ class Command(BaseCommand):
 
             prod = Product.objects.create(
                 slug=slug,
-                description=f"{p['name']} — Collection Bright Looks. Style urbain authentique pour les rues de Dakar.",
+                description=f"{p['name']} — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.",
                 is_active=True,
                 **p
             )

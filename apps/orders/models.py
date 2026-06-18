@@ -32,7 +32,6 @@ class Order(models.Model):
         ('cancelled', 'Annulée'),
     ]
     DELIVERY_CHOICES = [
-        ('ouest_foire', 'Retrait Ouest Foire'),
         ('guediawaye', 'Retrait Guediawaye'),
         ('colobane', 'Retrait Colobane'),
         ('livraison', 'Livraison à domicile'),
@@ -101,6 +100,16 @@ class Order(models.Model):
     @property
     def grand_total(self):
         return self.total + self.delivery_fee
+
+    @property
+    def status_step_index(self):
+        steps = [code for code, _ in self.STATUS if code != 'cancelled']
+        if self.status == 'cancelled':
+            return 0
+        try:
+            return steps.index(self.status) + 1
+        except ValueError:
+            return 0
 
     def get_status_color(self):
         colors = {

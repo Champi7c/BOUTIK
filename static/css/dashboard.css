@@ -1,10 +1,10 @@
 /* ===== BRIGHT LOOKS — DASHBOARD ADMIN ===== */
 
 :root {
-  --dash-sidebar: #1a1a1a;
+  --dash-sidebar: #000000;
   --dash-sidebar-hover: #252525;
-  --dash-accent: #6A5294;
-  --dash-accent-light: #9B7BB8;
+  --dash-accent: #c8a96e;
+  --dash-accent-light: #d4b896;
   --dash-bg: #f4f4f6;
   --dash-card: #ffffff;
   --dash-border: #e8e8ec;

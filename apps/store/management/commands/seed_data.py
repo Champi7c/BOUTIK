@@ -1,5 +1,5 @@
 """
-Commande pour créer les données initiales de Bright Looks.
+Commande pour créer les données initiales de ThiamStreetwear.
 Usage: python manage.py seed_data
 """
 from django.core.management.base import BaseCommand
@@ -10,7 +10,7 @@ class Command(BaseCommand):
     help = 'Crée les catégories, tailles et couleurs initiales'
 
     def handle(self, *args, **kwargs):
-        self.stdout.write('Création des données initiales Bright Looks...')
+        self.stdout.write('Création des données initiales ThiamStreetwear...')
 
         # ===== CATÉGORIES PARENTES =====
         cats_data = [

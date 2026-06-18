@@ -24,7 +24,7 @@ def initiate_payment(request, order_number):
 
         # Simulation — en production, appeler l'API Wave/Orange Money
         if provider == 'wave':
-            payment_url = f"https://pay.wave.com/m/brightlooks?amount={order.grand_total}"
+            payment_url = f"https://pay.wave.com/m/thiamstreetwear?amount={order.grand_total}"
         elif provider == 'orange_money':
             payment_url = f"https://orangemoney.sn/pay?amount={order.grand_total}"
         else:

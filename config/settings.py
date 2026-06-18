@@ -1,5 +1,5 @@
 """
-Django settings for Bright Looks project.
+Django settings for ThiamStreetwear project.
 """
 import os
 from pathlib import Path
@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'django.contrib.humanize',
     # Third party
     'allauth',
@@ -59,6 +60,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'apps.store.context_processors.cart_count',
                 'apps.store.context_processors.categories_menu',
+                'apps.store.context_processors.wishlist_ids',
                 'apps.store.context_processors.boutique_info',
             ],
         },
@@ -128,22 +130,20 @@ DEFAULT_FROM_EMAIL = 'thiambusiness44@gmail.com'
 CART_SESSION_ID = 'cart'
 
 # Business info
-BOUTIQUE_TEL = '77 212 43 19'
+BOUTIQUE_TEL = '78 530 98 74'
 BOUTIQUE_EMAIL = 'thiambusiness44@gmail.com'
-BOUTIQUE_LOCATION = 'Ouest Foire, Dakar, Sénégal'
-BOUTIQUE_PLUS_CODE = 'QG4H+4F9'
-BOUTIQUE_MAPS_LAT = 14.7520
-BOUTIQUE_MAPS_LNG = -17.4497
+BOUTIQUE_LOCATION = 'Guediawaye & Colobane, Dakar, Sénégal'
+BOUTIQUE_PLUS_CODE = ''
 BOUTIQUE_MAPS_URL = (
-    'https://www.google.com/maps/search/?api=1&query=QG4H%2B4F9%2C+Ouest+Foire%2C+Dakar%2C+S%C3%A9n%C3%A9gal'
+    'https://www.google.com/maps/search/?api=1&query=Guediawaye%2C+Dakar%2C+S%C3%A9n%C3%A9gal'
 )
 BOUTIQUE_MAPS_EMBED = (
-    'https://www.google.com/maps?q=QG4H%2B4F9%2C+Ouest+Foire%2C+Dakar%2C+S%C3%A9n%C3%A9gal'
-    '&hl=fr&z=17&output=embed'
+    'https://www.google.com/maps?q=Guediawaye%2C+Dakar%2C+S%C3%A9n%C3%A9gal'
+    '&hl=fr&z=14&output=embed'
 )
-BOUTIQUE_ADRESSES = ['Ouest Foire']
+BOUTIQUE_ADRESSES = ['Guediawaye', 'Colobane']
 BOUTIQUE_HORAIRES = 'Lundi – Samedi : 9h00 – 19h00'
-WHATSAPP_NUMBER = '221772124319'
-WHATSAPP_URL = 'https://wa.me/221772124319'
-INSTAGRAM_URL = 'https://www.instagram.com/bright_look_221/'
-SNAPCHAT_URL = 'https://www.snapchat.com/add/elzobright'
+WHATSAPP_NUMBER = '221785309874'
+WHATSAPP_URL = 'https://wa.me/221785309874'
+INSTAGRAM_URL = 'https://www.instagram.com/thiamstreetwear/'
+SNAPCHAT_URL = 'https://www.snapchat.com/add/thiamstreetwear'

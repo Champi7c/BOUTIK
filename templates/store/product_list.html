@@ -3,15 +3,17 @@
 {% load humanize %}
 {% load store_tags %}
 
-{% block title %}Catalogue — Bright Looks{% endblock %}
+{% block title %}Catalogue — ThiamStreetwear{% endblock %}
 
 {% block content %}
 
 <!-- PAGE HEADER -->
 <div class="page-header">
   <div class="container">
-    <h1 class="page-header-title">Catalogue</h1>
-    <p class="page-header-sub">{{ products|length }} produit{{ products|length|pluralize }}</p>
+    <h1 class="page-header-title">{% if query %}Recherche{% else %}Catalogue{% endif %}</h1>
+    <p class="page-header-sub">
+      {% if query %}« {{ query }} » — {% endif %}{{ products|length }} produit{{ products|length|pluralize }}
+    </p>
   </div>
 </div>
 

@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block dash_title %}Dashboard{% endblock %} — Bright Looks Admin</title>
-  <link rel="icon" href="{% static 'images/logo.jpg' %}" type="image/jpeg">
+  <title>{% block dash_title %}Dashboard{% endblock %} — ThiamSW Admin</title>
+  <link rel="icon" href="data:,">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
@@ -17,7 +17,7 @@
   <!-- Sidebar -->
   <aside class="dash-sidebar" id="dashSidebar">
     <div class="dash-sidebar-brand">
-      <a href="{% url 'dashboard:index' %}">Bright Looks</a>
+      <a href="{% url 'dashboard:index' %}">Thiam<span style="color:var(--dash-accent)">SW</span></a>
       <small>Panneau gérant</small>
     </div>
 

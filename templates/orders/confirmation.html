@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %}Commande Confirmée #{{ order.order_number }} — Bright Looks{% endblock %}
+{% block title %}Commande Confirmée #{{ order.order_number }} — ThiamStreetwear{% endblock %}
 
 {% block content %}
 <div class="container" style="padding:5rem 2rem;max-width:700px">
@@ -88,7 +88,7 @@
   </div>
 
   <!-- Paiement mobile -->
-  {% if order.payment_method in 'wave,orange_money' %}
+  {% if order.payment_method == 'wave' or order.payment_method == 'orange_money' %}
   <div style="background:var(--gray-light);border-left:4px solid var(--accent);padding:1.5rem;margin-bottom:2rem">
     <div style="font-weight:700;font-size:.9rem;margin-bottom:.5rem">
       <i class="fas fa-mobile-alt" style="color:var(--accent)"></i>
@@ -98,12 +98,12 @@
     <p style="font-size:.85rem;color:#555;margin-bottom:.75rem">
       Envoyez <strong>{{ order.grand_total|intcomma }} FCFA</strong> via <strong>Wave</strong> au numéro :
     </p>
-    <div style="font-family:var(--font-title);font-size:2rem;letter-spacing:3px">77 212 43 19</div>
+    <div style="font-family:var(--font-title);font-size:2rem;letter-spacing:3px">78 530 98 74</div>
     {% else %}
     <p style="font-size:.85rem;color:#555;margin-bottom:.75rem">
       Envoyez <strong>{{ order.grand_total|intcomma }} FCFA</strong> via <strong>Orange Money</strong> au numéro :
     </p>
-    <div style="font-family:var(--font-title);font-size:2rem;letter-spacing:3px">77 212 43 19</div>
+    <div style="font-family:var(--font-title);font-size:2rem;letter-spacing:3px">78 530 98 74</div>
     {% endif %}
     <p style="font-size:.78rem;color:#888;margin-top:.75rem">
       Mentionnez votre numéro de commande : <strong>{{ order.order_number }}</strong>
@@ -119,7 +119,7 @@
     <a href="{% url 'store:product_list' %}" class="btn btn-primary">
       <i class="fas fa-shopping-bag"></i> Continuer mes achats
     </a>
-    <a href="https://wa.me/221772124319?text=Bonjour, ma commande est le N° {{ order.order_number }}"
+    <a href="https://wa.me/221785309874?text=Bonjour, ma commande est le N° {{ order.order_number }}"
        class="btn btn-outline" style="border-color:#25D366;color:#25D366" target="_blank" rel="noopener">
       <i class="fab fa-whatsapp"></i> Contacter
     </a>
