@@ -18,7 +18,10 @@
       "Bash(python manage.py shell -c ' *)",
       "Bash(python manage.py migrate --fake sites)",
       "Bash(python manage.py makemigrations orders payments)",
-      "Bash(python generate_sql.py)"
+      "Bash(python generate_sql.py)",
+      "PowerShell([System.Environment]::GetEnvironmentVariable\\('DB_HOST', 'User'\\); [System.Environment]::GetEnvironmentVariable\\('DB_HOST', 'Machine'\\); $env:DB_HOST)",
+      "PowerShell([System.Environment]::SetEnvironmentVariable\\('DB_HOST', $null, 'User'\\); [System.Environment]::SetEnvironmentVariable\\('DB_HOST', $null, 'Machine'\\); Write-Output \"DB_HOST supprime\")",
+      "PowerShell([System.Environment]::GetEnvironmentVariable\\('DB_HOST', 'User'\\); [System.Environment]::GetEnvironmentVariable\\('DB_HOST', 'Machine'\\))"
     ]
   }
 }
