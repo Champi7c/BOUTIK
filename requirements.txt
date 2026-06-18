@@ -6,3 +6,4 @@ django-crispy-forms==2.1
 crispy-bootstrap5==0.7
 python-dotenv==1.0.0
 stripe==15.2.0
+gunicorn==21.2.0

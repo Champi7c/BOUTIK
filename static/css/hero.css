@@ -179,10 +179,8 @@
 .hero-orbit__star--2 { bottom: 15%; left: 10%; animation-delay: 0.8s; }
 .hero-orbit__star--3 { top: 40%; left: 0; animation-delay: 1.5s; }
 
+/* Badge commun */
 .hero-brand__badge {
-  position: absolute;
-  bottom: 0;
-  right: 0;
   background: var(--accent, #F5C518);
   color: var(--black);
   padding: 0.65rem 1rem;
@@ -198,6 +196,19 @@
   font-style: normal;
   letter-spacing: 0.08em;
   color: var(--black);
+}
+
+/* Desktop : badge positionné en absolu sur le visuel */
+.hero-badge--desktop {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: block;
+}
+
+/* Mobile : badge dans le content, caché par défaut */
+.hero-badge--mobile {
+  display: none;
 }
 
 @keyframes heroSpin {
@@ -251,14 +262,22 @@
 @media (max-width: 1024px) {
   .hero-brand__inner {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
+    gap: 2rem;
     padding: 2.5rem 1.5rem 3rem;
   }
+  /* Cacher le visuel orbital sur mobile */
   .hero-brand__visual {
-    order: -1;
-    min-height: 300px;
+    display: none;
   }
   .hero-brand__desc { max-width: none; }
+
+  /* Sur mobile : cacher le badge desktop, afficher le badge mobile */
+  .hero-badge--desktop { display: none; }
+  .hero-badge--mobile {
+    display: inline-block;
+    margin-top: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
 }
 
 @media (max-width: 600px) {
@@ -273,10 +292,5 @@
   }
   .hero-brand__stats { gap: 1.25rem; }
   .hero-brand__stat { flex: 1 1 40%; }
-  .hero-orbit { width: min(100%, 300px); }
-  .hero-brand__badge {
-    position: static;
-    margin-top: 1rem;
-    display: inline-block;
-  }
+  .hero-orbit { width: min(100%, 280px); }
 }

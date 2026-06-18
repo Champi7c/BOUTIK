@@ -1232,6 +1232,8 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   color: var(--white);
   padding: 3rem 2rem 2.5rem;
   margin-top: 0;
+  position: relative;
+  overflow: hidden;
 }
 .page-header-title {
   font-family: var(--font-title);

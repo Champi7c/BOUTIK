@@ -7,6 +7,52 @@ from .cart import Cart
 from .models import Order, OrderItem
 from apps.store.models import Product, Size, Color
 import json
+import urllib.parse
+
+WHATSAPP_NUMBER = '221785309874'
+
+
+def build_whatsapp_url(order):
+    """Construit l'URL WhatsApp avec le récapitulatif complet de la commande."""
+    def fmt(amount):
+        return f"{int(amount):,}".replace(',', ' ')
+
+    lines = [
+        f"🛍️ NOUVELLE COMMANDE #{order.order_number}",
+        "",
+        f"👤 Client : {order.user.get_full_name() or order.user.username}",
+        f"📞 Tél : {order.phone}",
+        "",
+        "📦 ARTICLES :",
+    ]
+    for item in order.items.all():
+        details = []
+        if item.size:
+            details.append(f"Taille: {item.size}")
+        if item.color:
+            details.append(f"Couleur: {item.color}")
+        suffix = f" ({', '.join(details)})" if details else ""
+        lines.append(f"  • {item.product.name} × {item.quantity}{suffix} — {fmt(item.subtotal)} FCFA")
+
+    lines += [
+        "",
+        f"Sous-total : {fmt(order.total)} FCFA",
+    ]
+    if order.delivery_fee:
+        lines.append(f"🚚 Livraison : {fmt(order.delivery_fee)} FCFA")
+    lines.append(f"💰 TOTAL : {fmt(order.grand_total)} FCFA")
+    lines += [
+        "",
+        f"🚚 {order.get_delivery_type_display()}",
+    ]
+    if order.delivery_address:
+        lines.append(f"📍 {order.delivery_address}")
+    lines.append(f"💵 Paiement : {order.get_payment_method_display()}")
+    if order.notes:
+        lines += ["", f"📝 Notes : {order.notes}"]
+
+    message = "\n".join(lines)
+    return f"https://wa.me/{WHATSAPP_NUMBER}?text={urllib.parse.quote(message)}"
 
 
 def cart_detail(request):
@@ -151,9 +197,6 @@ def checkout(request):
 
         request.session['last_order_id'] = order.id
 
-        if payment_method == 'stripe':
-            return redirect('payments:stripe_checkout', order_number=order.order_number)
-
         return redirect('orders:confirmation', order_number=order.order_number)
 
     DELIVERY_FEE = 1500
@@ -172,8 +215,11 @@ def checkout(request):
 @login_required
 def order_confirmation(request, order_number):
     order = get_object_or_404(Order, order_number=order_number, user=request.user)
+    wa_url = build_whatsapp_url(order)
     return render(request, 'orders/confirmation.html', {
-        'order': order, 'page': 'confirmation'
+        'order': order,
+        'page': 'confirmation',
+        'wa_url': wa_url,
     })
 
 

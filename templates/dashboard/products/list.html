@@ -1,36 +1,47 @@
 {% extends 'dashboard/base_admin.html' %}
 {% load humanize static %}
 
+{% block dash_title %}Produits{% endblock %}
 {% block page_title %}Produits{% endblock %}
 
 {% block topbar_actions %}
 <a href="{% url 'dashboard:product_create' %}" class="dash-btn dash-btn-primary dash-btn-sm">
-  <i class="fas fa-plus"></i> Ajouter
+  <i class="fas fa-plus"></i> Ajouter un produit
 </a>
 {% endblock %}
 
 {% block dash_content %}
 
+<!-- Filtres -->
 <form method="get" class="dash-filters">
-  <input type="text" name="q" value="{{ q }}" placeholder="Rechercher..." class="dash-input">
-  <select name="category" class="dash-input">
-    <option value="">Toutes catégories</option>
+  <input type="text" name="q" value="{{ q }}" placeholder="Rechercher un produit..." class="dash-input">
+  <select name="category" class="dash-input" style="max-width:200px">
+    <option value="">Toutes les catégories</option>
     {% for cat in categories %}
     <option value="{{ cat.id }}" {% if category_id == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.name }}</option>
     {% endfor %}
   </select>
-  <select name="stock" class="dash-input">
-    <option value="">Tous stocks</option>
-    <option value="low" {% if stock_filter == 'low' %}selected{% endif %}>Stock bas</option>
-    <option value="out" {% if stock_filter == 'out' %}selected{% endif %}>Rupture</option>
+  <select name="stock" class="dash-input" style="max-width:160px">
+    <option value="">Tous les stocks</option>
+    <option value="low" {% if stock_filter == 'low' %}selected{% endif %}>Stock bas (≤5)</option>
+    <option value="out" {% if stock_filter == 'out' %}selected{% endif %}>Rupture de stock</option>
   </select>
-  <button type="submit" class="dash-btn dash-btn-primary dash-btn-sm"><i class="fas fa-search"></i> Filtrer</button>
-  {% if q or category_id or stock_filter %}<a href="{% url 'dashboard:product_list' %}" class="dash-btn dash-btn-outline dash-btn-sm">Réinitialiser</a>{% endif %}
+  <button type="submit" class="dash-btn dash-btn-primary dash-btn-sm">
+    <i class="fas fa-search"></i> Filtrer
+  </button>
+  {% if q or category_id or stock_filter %}
+  <a href="{% url 'dashboard:product_list' %}" class="dash-btn dash-btn-outline dash-btn-sm">
+    <i class="fas fa-times"></i> Réinitialiser
+  </a>
+  {% endif %}
 </form>
 
 <div class="dash-panel">
   <div class="dash-panel-header">
-    <h2>{{ total_count }} produit{{ total_count|pluralize }}</h2>
+    <h2><i class="fas fa-tshirt" style="color:var(--dash-accent);margin-right:.4rem"></i>{{ total_count }} produit{{ total_count|pluralize }}</h2>
+    <a href="{% url 'dashboard:stock_list' %}" class="dash-btn dash-btn-outline dash-btn-sm">
+      <i class="fas fa-boxes"></i> Gérer le stock
+    </a>
   </div>
   <div class="dash-panel-body no-pad">
     <div class="dash-table-wrap">
@@ -38,12 +49,12 @@
         <thead>
           <tr>
             <th>Image</th>
-            <th>Nom</th>
+            <th>Produit</th>
             <th>Catégorie</th>
             <th>Prix</th>
             <th>Stock</th>
             <th>Statut</th>
-            <th>Actions</th>
+            <th style="text-align:right">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -51,53 +62,101 @@
           <tr>
             <td>
               {% if product.image %}
-              <img src="{{ product.image.url }}" class="product-thumb" alt="">
+              <img src="{{ product.image.url }}" class="product-thumb" alt="{{ product.name }}">
               {% else %}
-              <img src="{% static 'images/placeholder.jpg' %}" class="product-thumb" alt="">
+              <div style="width:44px;height:52px;background:#f3f4f6;border:1px solid var(--dash-border);border-radius:2px;display:flex;align-items:center;justify-content:center;color:#d1d5db">
+                <i class="fas fa-tshirt"></i>
+              </div>
               {% endif %}
             </td>
             <td>
-              <div style="font-weight:600">{{ product.name }}</div>
-              <div style="font-size:.72rem;color:#888">{{ product.slug }}</div>
+              <div style="font-weight:600;margin-bottom:.15rem">{{ product.name }}</div>
+              <div style="font-size:.72rem;color:var(--dash-muted)">{{ product.slug }}</div>
             </td>
-            <td>{{ product.category.name }}</td>
+            <td style="font-size:.85rem">{{ product.category.name }}</td>
             <td>
-              <strong>{{ product.current_price|intcomma }}</strong> FCFA
-              {% if product.discount_price %}<div style="font-size:.72rem;color:var(--dash-danger)">-{{ product.discount_percent }}%</div>{% endif %}
-            </td>
-            <td>
-              <span class="dash-badge {% if product.stock == 0 %}danger{% elif product.stock <= 5 %}warning{% else %}success{% endif %}">{{ product.stock }}</span>
-            </td>
-            <td>
-              {% if product.is_active %}<span class="dash-badge success">Actif</span>{% else %}<span class="dash-badge muted">Inactif</span>{% endif %}
-              {% if product.is_new %}<span class="dash-badge purple">New</span>{% endif %}
+              <div style="font-weight:600">{{ product.current_price|intcomma }} <span style="font-size:.72rem;font-weight:400;color:var(--dash-muted)">FCFA</span></div>
+              {% if product.discount_price %}
+              <div style="font-size:.72rem;color:var(--dash-danger)">-{{ product.discount_percent }}% promo</div>
+              {% endif %}
             </td>
             <td>
-              <div style="display:flex;gap:.35rem;flex-wrap:wrap">
-                <a href="{% url 'dashboard:product_edit' product.pk %}" class="dash-btn dash-btn-outline dash-btn-sm dash-btn-icon" title="Modifier"><i class="fas fa-edit"></i></a>
-                <a href="{{ product.get_absolute_url }}" target="_blank" class="dash-btn dash-btn-outline dash-btn-sm dash-btn-icon" title="Voir"><i class="fas fa-eye"></i></a>
-                <form method="post" action="{% url 'dashboard:product_toggle' product.pk %}" style="display:inline">{% csrf_token %}
-                  <button type="submit" class="dash-btn dash-btn-outline dash-btn-sm dash-btn-icon" title="Activer/Désactiver"><i class="fas fa-{% if product.is_active %}eye-slash{% else %}eye{% endif %}"></i></button>
+              <span class="dash-badge {% if product.stock == 0 %}danger{% elif product.stock <= 5 %}warning{% else %}success{% endif %}">
+                {% if product.stock == 0 %}
+                  <i class="fas fa-times-circle"></i> Rupture
+                {% elif product.stock <= 5 %}
+                  <i class="fas fa-exclamation-circle"></i> {{ product.stock }} restants
+                {% else %}
+                  {{ product.stock }}
+                {% endif %}
+              </span>
+            </td>
+            <td>
+              <div style="display:flex;flex-direction:column;gap:.25rem">
+                {% if product.is_active %}
+                  <span class="dash-badge success"><i class="fas fa-check"></i> Actif</span>
+                {% else %}
+                  <span class="dash-badge muted"><i class="fas fa-pause"></i> Inactif</span>
+                {% endif %}
+                {% if product.is_new %}<span class="dash-badge accent">Nouveau</span>{% endif %}
+                {% if product.is_featured %}<span class="dash-badge info">Vedette</span>{% endif %}
+              </div>
+            </td>
+            <td>
+              <div style="display:flex;gap:.3rem;justify-content:flex-end;flex-wrap:nowrap">
+                <a href="{% url 'dashboard:product_edit' product.pk %}"
+                   class="dash-btn dash-btn-outline dash-btn-sm dash-btn-icon" title="Modifier">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a href="{{ product.get_absolute_url }}" target="_blank"
+                   class="dash-btn dash-btn-outline dash-btn-sm dash-btn-icon" title="Voir sur le site">
+                  <i class="fas fa-eye"></i>
+                </a>
+                <form method="post" action="{% url 'dashboard:product_toggle' product.pk %}" style="display:inline">
+                  {% csrf_token %}
+                  <button type="submit"
+                          class="dash-btn dash-btn-outline dash-btn-sm dash-btn-icon"
+                          title="{% if product.is_active %}Désactiver{% else %}Activer{% endif %}">
+                    <i class="fas fa-{% if product.is_active %}eye-slash{% else %}eye{% endif %}"></i>
+                  </button>
                 </form>
-                <form method="post" action="{% url 'dashboard:product_delete' product.pk %}" style="display:inline" onsubmit="return confirm('Supprimer « {{ product.name }} » ?')">{% csrf_token %}
-                  <button type="submit" class="dash-btn dash-btn-danger dash-btn-sm dash-btn-icon" title="Supprimer"><i class="fas fa-trash"></i></button>
+                <form method="post" action="{% url 'dashboard:product_delete' product.pk %}" style="display:inline"
+                      onsubmit="return confirm('Supprimer « {{ product.name }} » définitivement ?')">
+                  {% csrf_token %}
+                  <button type="submit" class="dash-btn dash-btn-danger dash-btn-sm dash-btn-icon" title="Supprimer">
+                    <i class="fas fa-trash"></i>
+                  </button>
                 </form>
               </div>
             </td>
           </tr>
           {% empty %}
-          <tr><td colspan="7" style="text-align:center;padding:3rem;color:#888">Aucun produit trouvé</td></tr>
+          <tr>
+            <td colspan="7" style="text-align:center;padding:3.5rem;color:var(--dash-muted)">
+              <i class="fas fa-tshirt" style="display:block;font-size:2rem;margin-bottom:.75rem;opacity:.2"></i>
+              <div style="font-weight:600;margin-bottom:.5rem">Aucun produit trouvé</div>
+              <a href="{% url 'dashboard:product_create' %}" class="dash-btn dash-btn-primary dash-btn-sm">
+                <i class="fas fa-plus"></i> Ajouter le premier produit
+              </a>
+            </td>
+          </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
+
     {% if products.has_other_pages %}
     <div class="dash-pagination">
-      {% if products.has_previous %}<a href="?page={{ products.previous_page_number }}&q={{ q }}&category={{ category_id }}&stock={{ stock_filter }}">‹</a>{% endif %}
+      {% if products.has_previous %}
+        <a href="?page={{ products.previous_page_number }}&q={{ q }}&category={{ category_id }}&stock={{ stock_filter }}">‹ Précédent</a>
+      {% endif %}
       <span class="current">{{ products.number }} / {{ products.paginator.num_pages }}</span>
-      {% if products.has_next %}<a href="?page={{ products.next_page_number }}&q={{ q }}&category={{ category_id }}&stock={{ stock_filter }}">›</a>{% endif %}
+      {% if products.has_next %}
+        <a href="?page={{ products.next_page_number }}&q={{ q }}&category={{ category_id }}&stock={{ stock_filter }}">Suivant ›</a>
+      {% endif %}
     </div>
     {% endif %}
+
   </div>
 </div>
 

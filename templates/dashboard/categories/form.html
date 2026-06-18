@@ -1,27 +1,65 @@
 {% extends 'dashboard/base_admin.html' %}
 
+{% block dash_title %}{{ title }}{% endblock %}
 {% block page_title %}{{ title }}{% endblock %}
 
+{% block topbar_actions %}
+<a href="{% url 'dashboard:category_list' %}" class="dash-btn dash-btn-outline dash-btn-sm">
+  <i class="fas fa-arrow-left"></i> Retour aux catégories
+</a>
+{% endblock %}
+
 {% block dash_content %}
-<div class="dash-panel">
-  <div class="dash-panel-header"><h2>{{ title }}</h2></div>
-  <div class="dash-panel-body">
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <div class="dash-form-grid">
-        {% for field in form %}
-        <div class="dash-field {% if field.name == 'description' %}full{% endif %}">
-          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-          {{ field }}
-          {{ field.errors }}
+
+<div style="max-width:600px">
+  <div class="dash-panel">
+    <div class="dash-panel-header">
+      <h2><i class="fas fa-tags" style="color:var(--dash-accent);margin-right:.4rem"></i>{{ title }}</h2>
+    </div>
+    <div class="dash-panel-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="dash-form-grid">
+          {% for field in form %}
+          <div class="dash-field {% if field.name == 'description' or field.name == 'image' %}full{% endif %}">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <div style="margin-top:.35rem">
+              {% for error in field.errors %}
+              <div style="color:var(--dash-danger);font-size:.78rem"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+          {% endfor %}
         </div>
-        {% endfor %}
+        <div style="margin-top:1.5rem;display:flex;gap:.75rem">
+          <button type="submit" class="dash-btn dash-btn-primary" style="padding:.7rem 2rem">
+            <i class="fas fa-save"></i> Enregistrer
+          </button>
+          <a href="{% url 'dashboard:category_list' %}" class="dash-btn dash-btn-outline">
+            <i class="fas fa-times"></i> Annuler
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Aide -->
+  <div class="dash-panel" style="border-left:4px solid var(--dash-accent)">
+    <div class="dash-panel-body" style="padding:.9rem 1.25rem">
+      <div style="display:flex;gap:.6rem;align-items:flex-start;font-size:.82rem;color:var(--dash-muted)">
+        <i class="fas fa-lightbulb" style="color:var(--dash-accent);flex-shrink:0;margin-top:.1rem"></i>
+        <div>
+          <strong style="color:var(--dash-text)">Conseil :</strong>
+          Laissez « Catégorie parente » vide pour créer une catégorie principale (ex: Homme, Accessoires).
+          Pour une sous-catégorie (ex: T-shirts dans Homme), choisissez la catégorie parente.
+          L'<strong>ordre</strong> détermine la position d'affichage dans le menu (0 = premier).
+        </div>
       </div>
-      <div style="margin-top:1.5rem;display:flex;gap:.75rem">
-        <button type="submit" class="dash-btn dash-btn-primary"><i class="fas fa-save"></i> Enregistrer</button>
-        <a href="{% url 'dashboard:category_list' %}" class="dash-btn dash-btn-outline">Annuler</a>
-      </div>
-    </form>
+    </div>
   </div>
 </div>
+
 {% endblock %}

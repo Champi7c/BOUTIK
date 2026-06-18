@@ -12,81 +12,107 @@
   {% block dash_extra_css %}{% endblock %}
 </head>
 <body>
+
+<!-- Backdrop mobile -->
+<div class="dash-backdrop" id="dashBackdrop"></div>
+
 <div class="dash-layout">
 
-  <!-- Sidebar -->
+  <!-- ═══ SIDEBAR ═══ -->
   <aside class="dash-sidebar" id="dashSidebar">
+
     <div class="dash-sidebar-brand">
-      <a href="{% url 'dashboard:index' %}">Thiam<span style="color:var(--dash-accent)">SW</span></a>
-      <small>Panneau gérant</small>
+      <a href="{% url 'dashboard:index' %}">Thiam<span>SW</span></a>
+      <small>Panneau gérant · accès réservé</small>
     </div>
 
     <nav class="dash-nav">
+
       <div class="dash-nav-section">Principal</div>
-      <a href="{% url 'dashboard:index' %}" class="dash-nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+      <a href="{% url 'dashboard:index' %}"
+         class="dash-nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}">
         <i class="fas fa-chart-pie"></i> Vue d'ensemble
       </a>
 
       <div class="dash-nav-section">Catalogue</div>
-      <a href="{% url 'dashboard:product_list' %}" class="dash-nav-link {% if 'product' in request.resolver_match.url_name %}active{% endif %}">
+      <a href="{% url 'dashboard:product_list' %}"
+         class="dash-nav-link {% if 'product' in request.resolver_match.url_name %}active{% endif %}">
         <i class="fas fa-tshirt"></i> Produits
       </a>
       <a href="{% url 'dashboard:product_create' %}" class="dash-nav-link">
-        <i class="fas fa-plus-circle"></i> Ajouter produit
+        <i class="fas fa-plus-circle"></i> Ajouter un produit
       </a>
-      <a href="{% url 'dashboard:stock_list' %}" class="dash-nav-link {% if request.resolver_match.url_name == 'stock_list' %}active{% endif %}">
-        <i class="fas fa-boxes"></i> Stock
+      <a href="{% url 'dashboard:stock_list' %}"
+         class="dash-nav-link {% if request.resolver_match.url_name == 'stock_list' %}active{% endif %}">
+        <i class="fas fa-boxes"></i> Gestion du stock
       </a>
-      <a href="{% url 'dashboard:category_list' %}" class="dash-nav-link {% if 'category' in request.resolver_match.url_name %}active{% endif %}">
+      <a href="{% url 'dashboard:category_list' %}"
+         class="dash-nav-link {% if 'category' in request.resolver_match.url_name %}active{% endif %}">
         <i class="fas fa-tags"></i> Catégories
       </a>
-      <a href="{% url 'dashboard:variants_list' %}" class="dash-nav-link {% if 'variant' in request.resolver_match.url_name or 'size' in request.resolver_match.url_name or 'color' in request.resolver_match.url_name %}active{% endif %}">
+      <a href="{% url 'dashboard:variants_list' %}"
+         class="dash-nav-link {% if 'variant' in request.resolver_match.url_name or 'size' in request.resolver_match.url_name or 'color' in request.resolver_match.url_name %}active{% endif %}">
         <i class="fas fa-palette"></i> Tailles &amp; couleurs
       </a>
 
       <div class="dash-nav-section">Ventes</div>
-      <a href="{% url 'dashboard:order_list' %}" class="dash-nav-link {% if 'order' in request.resolver_match.url_name %}active{% endif %}">
+      <a href="{% url 'dashboard:order_list' %}"
+         class="dash-nav-link {% if 'order' in request.resolver_match.url_name %}active{% endif %}">
         <i class="fas fa-shopping-bag"></i> Commandes
       </a>
-      <a href="{% url 'dashboard:customer_list' %}" class="dash-nav-link {% if 'customer' in request.resolver_match.url_name %}active{% endif %}">
+      <a href="{% url 'dashboard:customer_list' %}"
+         class="dash-nav-link {% if 'customer' in request.resolver_match.url_name %}active{% endif %}">
         <i class="fas fa-users"></i> Clients
       </a>
 
       <div class="dash-nav-section">Contenu</div>
-      <a href="{% url 'dashboard:review_list' %}" class="dash-nav-link {% if 'review' in request.resolver_match.url_name %}active{% endif %}">
+      <a href="{% url 'dashboard:review_list' %}"
+         class="dash-nav-link {% if 'review' in request.resolver_match.url_name %}active{% endif %}">
         <i class="fas fa-star"></i> Avis clients
       </a>
-      <a href="{% url 'dashboard:banner_list' %}" class="dash-nav-link {% if 'banner' in request.resolver_match.url_name %}active{% endif %}">
+      <a href="{% url 'dashboard:banner_list' %}"
+         class="dash-nav-link {% if 'banner' in request.resolver_match.url_name %}active{% endif %}">
         <i class="fas fa-image"></i> Bannières
       </a>
+
     </nav>
 
     <div class="dash-sidebar-footer">
-      <a href="/" target="_blank"><i class="fas fa-external-link-alt"></i> Voir le site</a>
+      <a href="/" target="_blank"><i class="fas fa-external-link-alt"></i> Voir la boutique</a>
       <a href="{% url 'admin:index' %}" target="_blank"><i class="fas fa-cog"></i> Admin Django</a>
       <a href="{% url 'dashboard:logout' %}"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
     </div>
+
   </aside>
 
-  <!-- Main -->
+  <!-- ═══ MAIN ═══ -->
   <div class="dash-main">
+
+    <!-- Topbar -->
     <header class="dash-topbar">
-      <div style="display:flex;align-items:center;gap:1rem">
-        <button class="dash-mobile-toggle" id="dashToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+      <div class="dash-topbar-left">
+        <button class="dash-mobile-toggle" id="dashToggle" aria-label="Menu">
+          <i class="fas fa-bars"></i>
+        </button>
         <h1>{% block page_title %}Dashboard{% endblock %}</h1>
       </div>
       <div class="dash-topbar-actions">
         {% block topbar_actions %}{% endblock %}
-        <span style="font-size:.8rem;color:#888">{{ request.user.get_full_name|default:request.user.username }}</span>
+        <div class="dash-topbar-user">
+          <div class="avatar">{{ request.user.first_name|first|upper|default:request.user.username|first|upper }}</div>
+          <span class="username">{{ request.user.get_full_name|default:request.user.username }}</span>
+        </div>
       </div>
     </header>
 
+    <!-- Content -->
     <div class="dash-content">
+
       {% if messages %}
       <div class="dash-messages">
         {% for message in messages %}
         <div class="dash-alert {% if message.tags == 'error' %}error{% elif message.tags == 'warning' %}warning{% else %}success{% endif %}">
-          <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% else %}check-circle{% endif %}"></i>
+          <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}check-circle{% endif %}"></i>
           {{ message }}
         </div>
         {% endfor %}
@@ -94,15 +120,25 @@
       {% endif %}
 
       {% block dash_content %}{% endblock %}
+
     </div>
   </div>
 </div>
 
 <script>
-document.getElementById('dashToggle')?.addEventListener('click', () => {
-  document.getElementById('dashSidebar').classList.toggle('open');
-});
+(function () {
+  const sidebar  = document.getElementById('dashSidebar');
+  const toggle   = document.getElementById('dashToggle');
+  const backdrop = document.getElementById('dashBackdrop');
+
+  function openSidebar()  { sidebar.classList.add('open'); backdrop.classList.add('open'); }
+  function closeSidebar() { sidebar.classList.remove('open'); backdrop.classList.remove('open'); }
+
+  toggle?.addEventListener('click', () => sidebar.classList.contains('open') ? closeSidebar() : openSidebar());
+  backdrop?.addEventListener('click', closeSidebar);
+})();
 </script>
+
 {% block dash_extra_js %}{% endblock %}
 </body>
 </html>

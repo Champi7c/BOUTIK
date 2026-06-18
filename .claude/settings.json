@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git stash *)",
+      "Bash(git fetch *)",
+      "Bash(git reset *)",
+      "Bash(git restore *)",
+      "Bash(git rebase *)",
+      "Bash(xargs git checkout origin/main --)",
+      "Bash(git checkout *)",
+      "Bash(awk '{print $2}')",
+      "Bash(git add *)",
+      "Bash(git pull *)",
+      "Bash(git cherry-pick *)",
+      "Bash(python -c *)",
+      "Bash(git rm *)",
+      "Bash(git commit -m ' *)",
+      "Bash(python manage.py shell -c ' *)",
+      "Bash(python manage.py migrate --fake sites)",
+      "Bash(python manage.py makemigrations orders payments)"
+    ]
+  }
+}

@@ -98,12 +98,33 @@ def category_detail(request, slug):
         Q(category=category) | Q(category__parent=category)
     )
 
-    sort = request.GET.get('tri', '-created_at')
+    # Filtres
+    price_min = request.GET.get('prix_min')
+    price_max = request.GET.get('prix_max')
+    size_filter = request.GET.get('taille')
+    color_filter = request.GET.get('couleur')
+    is_new = request.GET.get('nouveau')
+    is_promo = request.GET.get('promo')
+    sort = request.GET.get('tri', 'nouveau')
+
+    if price_min:
+        products = products.filter(price__gte=price_min)
+    if price_max:
+        products = products.filter(price__lte=price_max)
+    if size_filter:
+        products = products.filter(sizes__name=size_filter)
+    if color_filter:
+        products = products.filter(colors__name=color_filter)
+    if is_new:
+        products = products.filter(is_new=True)
+    if is_promo:
+        products = products.filter(discount_price__isnull=False)
+
     sort_options = {
         'prix_asc': 'price', 'prix_desc': '-price',
         'nouveau': '-created_at', 'populaire': '-sales_count',
     }
-    products = products.order_by(sort_options.get(sort, '-created_at'))
+    products = products.order_by(sort_options.get(sort, '-created_at')).distinct()
 
     context = {
         'category': category,

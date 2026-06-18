@@ -1,47 +1,115 @@
 {% extends 'dashboard/base_admin.html' %}
 
+{% block dash_title %}Catégories{% endblock %}
 {% block page_title %}Catégories{% endblock %}
 
 {% block topbar_actions %}
-<a href="{% url 'dashboard:category_create' %}" class="dash-btn dash-btn-primary dash-btn-sm"><i class="fas fa-plus"></i> Ajouter</a>
+<a href="{% url 'dashboard:category_create' %}" class="dash-btn dash-btn-primary dash-btn-sm">
+  <i class="fas fa-folder-plus"></i> Ajouter une catégorie
+</a>
 {% endblock %}
 
 {% block dash_content %}
 
 <div class="dash-panel">
+  <div class="dash-panel-header">
+    <h2><i class="fas fa-tags" style="color:var(--dash-accent);margin-right:.4rem"></i>{{ categories|length }} catégorie{{ categories|length|pluralize }}</h2>
+    <a href="{% url 'dashboard:category_create' %}" class="dash-btn dash-btn-outline dash-btn-sm">
+      <i class="fas fa-plus"></i> Nouvelle catégorie
+    </a>
+  </div>
   <div class="dash-panel-body no-pad">
     <div class="dash-table-wrap">
       <table class="dash-table">
         <thead>
           <tr>
             <th>Nom</th>
-            <th>Parent</th>
-            <th>Produits</th>
-            <th>Ordre</th>
+            <th>Catégorie parente</th>
+            <th>Produits liés</th>
+            <th>Ordre d'affichage</th>
             <th>Statut</th>
-            <th>Actions</th>
+            <th style="text-align:right">Actions</th>
           </tr>
         </thead>
         <tbody>
           {% for cat in categories %}
           <tr>
-            <td style="font-weight:600">{{ cat.name }}</td>
-            <td>{{ cat.parent.name|default:"—" }}</td>
-            <td>{{ cat.products.count }}</td>
-            <td>{{ cat.order }}</td>
-            <td>{% if cat.is_active %}<span class="dash-badge success">Active</span>{% else %}<span class="dash-badge muted">Inactive</span>{% endif %}</td>
             <td>
-              <a href="{% url 'dashboard:category_edit' cat.pk %}" class="dash-btn dash-btn-outline dash-btn-sm"><i class="fas fa-edit"></i></a>
-              <form method="post" action="{% url 'dashboard:category_delete' cat.pk %}" style="display:inline" onsubmit="return confirm('Supprimer « {{ cat.name }} » ?')">{% csrf_token %}
-                <button type="submit" class="dash-btn dash-btn-danger dash-btn-sm"><i class="fas fa-trash"></i></button>
-              </form>
+              <div style="display:flex;align-items:center;gap:.6rem">
+                {% if cat.parent %}
+                <span style="color:var(--dash-muted);font-size:.8rem;margin-left:.75rem">
+                  <i class="fas fa-level-up-alt fa-rotate-90" style="font-size:.65rem"></i>
+                </span>
+                {% else %}
+                <div style="width:8px;height:8px;background:var(--dash-accent);border-radius:50%;flex-shrink:0"></div>
+                {% endif %}
+                <span style="font-weight:600">{{ cat.name }}</span>
+              </div>
+            </td>
+            <td style="color:var(--dash-muted);font-size:.85rem">
+              {% if cat.parent %}
+                <i class="fas fa-folder" style="color:var(--dash-warning);margin-right:.35rem"></i>{{ cat.parent.name }}
+              {% else %}
+                <span style="color:#d1d5db">— Principale</span>
+              {% endif %}
+            </td>
+            <td>
+              <span class="dash-badge {% if cat.products.count > 0 %}info{% else %}muted{% endif %}">
+                {{ cat.products.count }} produit{{ cat.products.count|pluralize }}
+              </span>
+            </td>
+            <td style="color:var(--dash-muted);font-size:.85rem">{{ cat.order }}</td>
+            <td>
+              {% if cat.is_active %}
+                <span class="dash-badge success"><i class="fas fa-check"></i> Active</span>
+              {% else %}
+                <span class="dash-badge muted"><i class="fas fa-pause"></i> Inactive</span>
+              {% endif %}
+            </td>
+            <td>
+              <div style="display:flex;gap:.35rem;justify-content:flex-end">
+                <a href="{% url 'dashboard:category_edit' cat.pk %}"
+                   class="dash-btn dash-btn-outline dash-btn-sm">
+                  <i class="fas fa-edit"></i> Modifier
+                </a>
+                <form method="post" action="{% url 'dashboard:category_delete' cat.pk %}" style="display:inline"
+                      onsubmit="return confirm('Supprimer « {{ cat.name }} » ? (seulement si aucun produit lié)')">
+                  {% csrf_token %}
+                  <button type="submit" class="dash-btn dash-btn-danger dash-btn-sm dash-btn-icon" title="Supprimer">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </form>
+              </div>
             </td>
           </tr>
           {% empty %}
-          <tr><td colspan="6" style="text-align:center;padding:3rem;color:#888">Aucune catégorie</td></tr>
+          <tr>
+            <td colspan="6" style="text-align:center;padding:3.5rem;color:var(--dash-muted)">
+              <i class="fas fa-tags" style="display:block;font-size:2rem;margin-bottom:.75rem;opacity:.2"></i>
+              <div style="font-weight:600;margin-bottom:.5rem">Aucune catégorie créée</div>
+              <a href="{% url 'dashboard:category_create' %}" class="dash-btn dash-btn-primary dash-btn-sm">
+                <i class="fas fa-folder-plus"></i> Créer la première catégorie
+              </a>
+            </td>
+          </tr>
           {% endfor %}
         </tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+<!-- Aide rapide -->
+<div class="dash-panel" style="border-left:4px solid var(--dash-accent)">
+  <div class="dash-panel-body" style="padding:1rem 1.5rem">
+    <div style="display:flex;gap:.75rem;align-items:flex-start">
+      <i class="fas fa-info-circle" style="color:var(--dash-accent);margin-top:.1rem;flex-shrink:0"></i>
+      <div style="font-size:.85rem;color:var(--dash-muted)">
+        <strong style="color:var(--dash-text);display:block;margin-bottom:.25rem">Comment organiser les catégories ?</strong>
+        Les catégories <strong>principales</strong> (sans parent) apparaissent dans le menu de navigation.
+        Les <strong>sous-catégories</strong> s'affichent en dessous. Pour supprimer une catégorie,
+        assurez-vous qu'aucun produit n'y est lié.
+      </div>
     </div>
   </div>
 </div>

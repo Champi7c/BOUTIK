@@ -87,41 +87,35 @@
     </div>
   </div>
 
-  <!-- Paiement mobile -->
-  {% if order.payment_method == 'wave' or order.payment_method == 'orange_money' %}
-  <div style="background:var(--gray-light);border-left:4px solid var(--accent);padding:1.5rem;margin-bottom:2rem">
-    <div style="font-weight:700;font-size:.9rem;margin-bottom:.5rem">
-      <i class="fas fa-mobile-alt" style="color:var(--accent)"></i>
-      Effectuer votre paiement
+  <!-- WhatsApp CTA -->
+  <div style="background:#f0fdf4;border:2px solid #25D366;border-radius:4px;padding:1.75rem;margin-bottom:2rem;text-align:center">
+    <div style="font-size:2.5rem;color:#25D366;margin-bottom:.5rem">
+      <i class="fab fa-whatsapp"></i>
     </div>
-    {% if order.payment_method == 'wave' %}
-    <p style="font-size:.85rem;color:#555;margin-bottom:.75rem">
-      Envoyez <strong>{{ order.grand_total|intcomma }} FCFA</strong> via <strong>Wave</strong> au numéro :
+    <h3 style="font-family:var(--font-title);font-size:1.3rem;letter-spacing:2px;margin-bottom:.5rem;color:#166534">
+      FINALISER VOTRE COMMANDE
+    </h3>
+    <p style="font-size:.88rem;color:#555;margin-bottom:1.25rem">
+      Cliquez ci-dessous pour nous envoyer votre commande sur WhatsApp.<br>
+      Votre panier complet est déjà pré-rempli dans le message.
     </p>
-    <div style="font-family:var(--font-title);font-size:2rem;letter-spacing:3px">78 530 98 74</div>
-    {% else %}
-    <p style="font-size:.85rem;color:#555;margin-bottom:.75rem">
-      Envoyez <strong>{{ order.grand_total|intcomma }} FCFA</strong> via <strong>Orange Money</strong> au numéro :
-    </p>
-    <div style="font-family:var(--font-title);font-size:2rem;letter-spacing:3px">78 530 98 74</div>
-    {% endif %}
-    <p style="font-size:.78rem;color:#888;margin-top:.75rem">
-      Mentionnez votre numéro de commande : <strong>{{ order.order_number }}</strong>
+    <a href="{{ wa_url }}" target="_blank" rel="noopener"
+       style="display:inline-flex;align-items:center;gap:.75rem;background:#25D366;color:white;padding:1rem 2.5rem;font-weight:700;font-size:1rem;letter-spacing:1px;text-transform:uppercase;border-radius:4px;text-decoration:none">
+      <i class="fab fa-whatsapp" style="font-size:1.4rem"></i>
+      Envoyer ma commande
+    </a>
+    <p style="font-size:.75rem;color:#888;margin-top:.85rem">
+      WhatsApp s'ouvrira avec tous les détails · N° {{ order.order_number }}
     </p>
   </div>
-  {% endif %}
 
-  <!-- Actions -->
+  <!-- Actions secondaires -->
   <div style="display:flex;gap:1rem;flex-wrap:wrap">
     <a href="{% url 'orders:order_list' %}" class="btn btn-outline">
       <i class="fas fa-list"></i> Mes commandes
     </a>
     <a href="{% url 'store:product_list' %}" class="btn btn-primary">
       <i class="fas fa-shopping-bag"></i> Continuer mes achats
-    </a>
-    <a href="https://wa.me/221785309874?text=Bonjour, ma commande est le N° {{ order.order_number }}"
-       class="btn btn-outline" style="border-color:#25D366;color:#25D366" target="_blank" rel="noopener">
-      <i class="fab fa-whatsapp"></i> Contacter
     </a>
   </div>
 </div>
