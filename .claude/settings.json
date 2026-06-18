@@ -17,7 +17,8 @@
       "Bash(git commit -m ' *)",
       "Bash(python manage.py shell -c ' *)",
       "Bash(python manage.py migrate --fake sites)",
-      "Bash(python manage.py makemigrations orders payments)"
+      "Bash(python manage.py makemigrations orders payments)",
+      "Bash(python generate_sql.py)"
     ]
   }
 }

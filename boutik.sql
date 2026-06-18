@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : mer. 10 juin 2026 à 23:37
+-- Genere le : Thu. 18 Jun 2026 a 13:39
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.0.28
 
@@ -24,6 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `accounts_profile`
 --
 
@@ -38,13 +42,15 @@ CREATE TABLE `accounts_profile` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `accounts_profile`
+-- Chargement des donnees de la table `accounts_profile`
 --
 
 INSERT INTO `accounts_profile` (`id`, `phone`, `address`, `city`, `avatar`, `created_at`, `user_id`) VALUES
 (1, '', '', 'Dakar', '', '2026-03-26 01:10:08.071162', 1),
 (2, '', '', 'Dakar', '', '2026-03-26 03:42:09.667507', 2),
-(3, '', '', 'Dakar', '', '2026-06-06 21:52:34.415199', 3);
+(3, '', '', 'Dakar', '', '2026-06-06 21:52:34.415199', 3),
+(4, '', '', 'Dakar', '', '2026-06-10 23:53:50.916839', 4),
+(5, '', '', 'Dakar', '', '2026-06-18 11:55:50.139150', 5);
 
 -- --------------------------------------------------------
 
@@ -60,6 +66,11 @@ CREATE TABLE `account_emailaddress` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Chargement des donnees de la table `account_emailaddress`
+--
+
+
 -- --------------------------------------------------------
 
 --
@@ -74,6 +85,11 @@ CREATE TABLE `account_emailconfirmation` (
   `email_address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Chargement des donnees de la table `account_emailconfirmation`
+--
+
+
 -- --------------------------------------------------------
 
 --
@@ -84,6 +100,11 @@ CREATE TABLE `auth_group` (
   `id` int(11) NOT NULL,
   `name` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Chargement des donnees de la table `auth_group`
+--
+
 
 -- --------------------------------------------------------
 
@@ -96,6 +117,11 @@ CREATE TABLE `auth_group_permissions` (
   `group_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Chargement des donnees de la table `auth_group_permissions`
+--
+
 
 -- --------------------------------------------------------
 
@@ -111,106 +137,112 @@ CREATE TABLE `auth_permission` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `auth_permission`
+-- Chargement des donnees de la table `auth_permission`
 --
 
-INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES
-(1, 'Can add log entry', 1, 'add_logentry'),
-(2, 'Can change log entry', 1, 'change_logentry'),
-(3, 'Can delete log entry', 1, 'delete_logentry'),
-(4, 'Can view log entry', 1, 'view_logentry'),
-(5, 'Can add permission', 2, 'add_permission'),
-(6, 'Can change permission', 2, 'change_permission'),
-(7, 'Can delete permission', 2, 'delete_permission'),
-(8, 'Can view permission', 2, 'view_permission'),
-(9, 'Can add group', 3, 'add_group'),
-(10, 'Can change group', 3, 'change_group'),
-(11, 'Can delete group', 3, 'delete_group'),
-(12, 'Can view group', 3, 'view_group'),
-(13, 'Can add user', 4, 'add_user'),
-(14, 'Can change user', 4, 'change_user'),
-(15, 'Can delete user', 4, 'delete_user'),
-(16, 'Can view user', 4, 'view_user'),
-(17, 'Can add content type', 5, 'add_contenttype'),
-(18, 'Can change content type', 5, 'change_contenttype'),
-(19, 'Can delete content type', 5, 'delete_contenttype'),
-(20, 'Can view content type', 5, 'view_contenttype'),
-(21, 'Can add session', 6, 'add_session'),
-(22, 'Can change session', 6, 'change_session'),
-(23, 'Can delete session', 6, 'delete_session'),
-(24, 'Can view session', 6, 'view_session'),
-(25, 'Can add email address', 7, 'add_emailaddress'),
-(26, 'Can change email address', 7, 'change_emailaddress'),
-(27, 'Can delete email address', 7, 'delete_emailaddress'),
-(28, 'Can view email address', 7, 'view_emailaddress'),
-(29, 'Can add email confirmation', 8, 'add_emailconfirmation'),
-(30, 'Can change email confirmation', 8, 'change_emailconfirmation'),
-(31, 'Can delete email confirmation', 8, 'delete_emailconfirmation'),
-(32, 'Can view email confirmation', 8, 'view_emailconfirmation'),
-(33, 'Can add social account', 9, 'add_socialaccount'),
-(34, 'Can change social account', 9, 'change_socialaccount'),
-(35, 'Can delete social account', 9, 'delete_socialaccount'),
-(36, 'Can view social account', 9, 'view_socialaccount'),
-(37, 'Can add social application', 10, 'add_socialapp'),
-(38, 'Can change social application', 10, 'change_socialapp'),
-(39, 'Can delete social application', 10, 'delete_socialapp'),
-(40, 'Can view social application', 10, 'view_socialapp'),
-(41, 'Can add social application token', 11, 'add_socialtoken'),
-(42, 'Can change social application token', 11, 'change_socialtoken'),
-(43, 'Can delete social application token', 11, 'delete_socialtoken'),
-(44, 'Can view social application token', 11, 'view_socialtoken'),
-(45, 'Can add Bannière', 12, 'add_banner'),
-(46, 'Can change Bannière', 12, 'change_banner'),
-(47, 'Can delete Bannière', 12, 'delete_banner'),
-(48, 'Can view Bannière', 12, 'view_banner'),
-(49, 'Can add Catégorie', 13, 'add_category'),
-(50, 'Can change Catégorie', 13, 'change_category'),
-(51, 'Can delete Catégorie', 13, 'delete_category'),
-(52, 'Can view Catégorie', 13, 'view_category'),
-(53, 'Can add Couleur', 14, 'add_color'),
-(54, 'Can change Couleur', 14, 'change_color'),
-(55, 'Can delete Couleur', 14, 'delete_color'),
-(56, 'Can view Couleur', 14, 'view_color'),
-(57, 'Can add Taille', 15, 'add_size'),
-(58, 'Can change Taille', 15, 'change_size'),
-(59, 'Can delete Taille', 15, 'delete_size'),
-(60, 'Can view Taille', 15, 'view_size'),
-(61, 'Can add Produit', 16, 'add_product'),
-(62, 'Can change Produit', 16, 'change_product'),
-(63, 'Can delete Produit', 16, 'delete_product'),
-(64, 'Can view Produit', 16, 'view_product'),
-(65, 'Can add Favori', 17, 'add_wishlist'),
-(66, 'Can change Favori', 17, 'change_wishlist'),
-(67, 'Can delete Favori', 17, 'delete_wishlist'),
-(68, 'Can view Favori', 17, 'view_wishlist'),
-(69, 'Can add Avis', 18, 'add_productreview'),
-(70, 'Can change Avis', 18, 'change_productreview'),
-(71, 'Can delete Avis', 18, 'delete_productreview'),
-(72, 'Can view Avis', 18, 'view_productreview'),
-(73, 'Can add Panier', 19, 'add_cart'),
-(74, 'Can change Panier', 19, 'change_cart'),
-(75, 'Can delete Panier', 19, 'delete_cart'),
-(76, 'Can view Panier', 19, 'view_cart'),
-(77, 'Can add Article', 20, 'add_orderitem'),
-(78, 'Can change Article', 20, 'change_orderitem'),
-(79, 'Can delete Article', 20, 'delete_orderitem'),
-(80, 'Can view Article', 20, 'view_orderitem'),
-(81, 'Can add Commande', 21, 'add_order'),
-(82, 'Can change Commande', 21, 'change_order'),
-(83, 'Can delete Commande', 21, 'delete_order'),
-(84, 'Can view Commande', 21, 'view_order'),
-(85, 'Can add Article panier', 22, 'add_cartitem'),
-(86, 'Can change Article panier', 22, 'change_cartitem'),
-(87, 'Can delete Article panier', 22, 'delete_cartitem'),
-(88, 'Can view Article panier', 22, 'view_cartitem'),
-(89, 'Can add Profil', 23, 'add_profile'),
-(90, 'Can change Profil', 23, 'change_profile'),
-(91, 'Can delete Profil', 23, 'delete_profile'),
-(92, 'Can view Profil', 23, 'view_profile'),
-(93, 'Can add Paiement', 24, 'add_payment'),
-(94, 'Can change Paiement', 24, 'change_payment'),
-(95, 'Can delete Paiement', 24, 'delete_payment'),
-(96, 'Can view Paiement', 24, 'view_payment');
+INSERT INTO `auth_permission` (`id`, `content_type_id`, `codename`, `name`) VALUES
+(1, 1, 'add_logentry', 'Can add log entry'),
+(2, 1, 'change_logentry', 'Can change log entry'),
+(3, 1, 'delete_logentry', 'Can delete log entry'),
+(4, 1, 'view_logentry', 'Can view log entry'),
+(5, 2, 'add_permission', 'Can add permission'),
+(6, 2, 'change_permission', 'Can change permission'),
+(7, 2, 'delete_permission', 'Can delete permission'),
+(8, 2, 'view_permission', 'Can view permission'),
+(9, 3, 'add_group', 'Can add group'),
+(10, 3, 'change_group', 'Can change group'),
+(11, 3, 'delete_group', 'Can delete group'),
+(12, 3, 'view_group', 'Can view group'),
+(13, 4, 'add_user', 'Can add user'),
+(14, 4, 'change_user', 'Can change user'),
+(15, 4, 'delete_user', 'Can delete user'),
+(16, 4, 'view_user', 'Can view user'),
+(17, 5, 'add_contenttype', 'Can add content type'),
+(18, 5, 'change_contenttype', 'Can change content type'),
+(19, 5, 'delete_contenttype', 'Can delete content type'),
+(20, 5, 'view_contenttype', 'Can view content type'),
+(21, 6, 'add_session', 'Can add session'),
+(22, 6, 'change_session', 'Can change session'),
+(23, 6, 'delete_session', 'Can delete session'),
+(24, 6, 'view_session', 'Can view session'),
+(25, 7, 'add_emailaddress', 'Can add email address'),
+(26, 7, 'change_emailaddress', 'Can change email address'),
+(27, 7, 'delete_emailaddress', 'Can delete email address'),
+(28, 7, 'view_emailaddress', 'Can view email address'),
+(29, 8, 'add_emailconfirmation', 'Can add email confirmation'),
+(30, 8, 'change_emailconfirmation', 'Can change email confirmation'),
+(31, 8, 'delete_emailconfirmation', 'Can delete email confirmation'),
+(32, 8, 'view_emailconfirmation', 'Can view email confirmation'),
+(33, 9, 'add_socialaccount', 'Can add social account'),
+(34, 9, 'change_socialaccount', 'Can change social account'),
+(35, 9, 'delete_socialaccount', 'Can delete social account'),
+(36, 9, 'view_socialaccount', 'Can view social account'),
+(37, 10, 'add_socialapp', 'Can add social application'),
+(38, 10, 'change_socialapp', 'Can change social application'),
+(39, 10, 'delete_socialapp', 'Can delete social application'),
+(40, 10, 'view_socialapp', 'Can view social application'),
+(41, 11, 'add_socialtoken', 'Can add social application token'),
+(42, 11, 'change_socialtoken', 'Can change social application token'),
+(43, 11, 'delete_socialtoken', 'Can delete social application token'),
+(44, 11, 'view_socialtoken', 'Can view social application token'),
+(45, 12, 'add_banner', 'Can add Bannière'),
+(46, 12, 'change_banner', 'Can change Bannière'),
+(47, 12, 'delete_banner', 'Can delete Bannière'),
+(48, 12, 'view_banner', 'Can view Bannière'),
+(49, 13, 'add_category', 'Can add Catégorie'),
+(50, 13, 'change_category', 'Can change Catégorie');
+
+INSERT INTO `auth_permission` (`id`, `content_type_id`, `codename`, `name`) VALUES
+(51, 13, 'delete_category', 'Can delete Catégorie'),
+(52, 13, 'view_category', 'Can view Catégorie'),
+(53, 14, 'add_color', 'Can add Couleur'),
+(54, 14, 'change_color', 'Can change Couleur'),
+(55, 14, 'delete_color', 'Can delete Couleur'),
+(56, 14, 'view_color', 'Can view Couleur'),
+(57, 15, 'add_size', 'Can add Taille'),
+(58, 15, 'change_size', 'Can change Taille'),
+(59, 15, 'delete_size', 'Can delete Taille'),
+(60, 15, 'view_size', 'Can view Taille'),
+(61, 16, 'add_product', 'Can add Produit'),
+(62, 16, 'change_product', 'Can change Produit'),
+(63, 16, 'delete_product', 'Can delete Produit'),
+(64, 16, 'view_product', 'Can view Produit'),
+(65, 17, 'add_wishlist', 'Can add Favori'),
+(66, 17, 'change_wishlist', 'Can change Favori'),
+(67, 17, 'delete_wishlist', 'Can delete Favori'),
+(68, 17, 'view_wishlist', 'Can view Favori'),
+(69, 18, 'add_productreview', 'Can add Avis'),
+(70, 18, 'change_productreview', 'Can change Avis'),
+(71, 18, 'delete_productreview', 'Can delete Avis'),
+(72, 18, 'view_productreview', 'Can view Avis'),
+(73, 19, 'add_cart', 'Can add Panier'),
+(74, 19, 'change_cart', 'Can change Panier'),
+(75, 19, 'delete_cart', 'Can delete Panier'),
+(76, 19, 'view_cart', 'Can view Panier'),
+(77, 20, 'add_orderitem', 'Can add Article'),
+(78, 20, 'change_orderitem', 'Can change Article'),
+(79, 20, 'delete_orderitem', 'Can delete Article'),
+(80, 20, 'view_orderitem', 'Can view Article'),
+(81, 21, 'add_order', 'Can add Commande'),
+(82, 21, 'change_order', 'Can change Commande'),
+(83, 21, 'delete_order', 'Can delete Commande'),
+(84, 21, 'view_order', 'Can view Commande'),
+(85, 22, 'add_cartitem', 'Can add Article panier'),
+(86, 22, 'change_cartitem', 'Can change Article panier'),
+(87, 22, 'delete_cartitem', 'Can delete Article panier'),
+(88, 22, 'view_cartitem', 'Can view Article panier'),
+(89, 23, 'add_profile', 'Can add Profil'),
+(90, 23, 'change_profile', 'Can change Profil'),
+(91, 23, 'delete_profile', 'Can delete Profil'),
+(92, 23, 'view_profile', 'Can view Profil'),
+(93, 24, 'add_payment', 'Can add Paiement'),
+(94, 24, 'change_payment', 'Can change Paiement'),
+(95, 24, 'delete_payment', 'Can delete Paiement'),
+(96, 24, 'view_payment', 'Can view Paiement'),
+(97, 25, 'add_site', 'Can add site'),
+(98, 25, 'change_site', 'Can change site'),
+(99, 25, 'delete_site', 'Can delete site'),
+(100, 25, 'view_site', 'Can view site');
 
 -- --------------------------------------------------------
 
@@ -233,13 +265,15 @@ CREATE TABLE `auth_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `auth_user`
+-- Chargement des donnees de la table `auth_user`
 --
 
-INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(1, 'pbkdf2_sha256$600000$tBgFHov9dMY7uO7TvMXuk5$e+LtXBNGmvntJm/KLPrx24fHzwcZvf/YPBUQlD/NZNg=', '2026-06-07 20:10:53.402569', 1, 'admin', '', '', 'thiambusiness44@gmail.com', 1, 1, '2026-03-26 01:10:07.771112'),
-(2, 'pbkdf2_sha256$600000$cI3rpRGoEZiWGzaOKAZpGX$TY8yfK7FZhT/4ivItKFPyHA9cKPHwY+nmD8uOMxdpmQ=', '2026-03-26 03:42:33.337616', 0, 'omzi', '', '', '', 0, 1, '2026-03-26 03:42:09.438282'),
-(3, 'pbkdf2_sha256$600000$6HOukyN8vfplZxm6aSAXg2$i5ieJ1CI++o278cvE8l99uYk3Lbzetmpala1CxaoDhs=', '2026-06-06 22:21:04.741696', 1, 'administrateur', '', '', 'a@gmail.com', 1, 1, '2026-06-06 21:52:34.286986');
+INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`, `first_name`) VALUES
+(1, 'pbkdf2_sha256$600000$tBgFHov9dMY7uO7TvMXuk5$e+LtXBNGmvntJm/KLPrx24fHzwcZvf/YPBUQlD/NZNg=', '2026-06-07 20:10:53.402569', 1, 'admin', '', 'thiambusiness44@gmail.com', 1, 1, '2026-03-26 01:10:07.771112', ''),
+(2, 'pbkdf2_sha256$600000$cI3rpRGoEZiWGzaOKAZpGX$TY8yfK7FZhT/4ivItKFPyHA9cKPHwY+nmD8uOMxdpmQ=', '2026-03-26 03:42:33.337616', 0, 'omzi', '', '', 0, 1, '2026-03-26 03:42:09.438282', ''),
+(3, 'pbkdf2_sha256$600000$6HOukyN8vfplZxm6aSAXg2$i5ieJ1CI++o278cvE8l99uYk3Lbzetmpala1CxaoDhs=', '2026-06-06 22:21:04.741696', 1, 'administrateur', '', 'a@gmail.com', 1, 1, '2026-06-06 21:52:34.286986', ''),
+(4, 'pbkdf2_sha256$600000$EjOOPhJEe5kuxJhLJUyjRk$8wVffDUEbxc1IvZk9at+We8ORyN513e13dp7MFZba60=', '2026-06-10 23:53:51.000547', 0, 'bosse', 'ndoye', 'Bossendoye0@gmail.com', 0, 1, '2026-06-10 23:53:50.458161', 'momar'),
+(5, 'pbkdf2_sha256$600000$hkfiWIGNFEZK55xbyhXJwk$PNLJpnYJJn+4/6Ae+A415IEenTYVT8EA1mgjkAuxLjI=', '2026-06-18 11:56:18.335980', 1, 'momar', '', 'mo@gmail.com', 1, 1, '2026-06-18 11:55:49.771128', '');
 
 -- --------------------------------------------------------
 
@@ -253,6 +287,11 @@ CREATE TABLE `auth_user_groups` (
   `group_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Chargement des donnees de la table `auth_user_groups`
+--
+
+
 -- --------------------------------------------------------
 
 --
@@ -264,6 +303,11 @@ CREATE TABLE `auth_user_user_permissions` (
   `user_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Chargement des donnees de la table `auth_user_user_permissions`
+--
+
 
 -- --------------------------------------------------------
 
@@ -283,14 +327,14 @@ CREATE TABLE `django_admin_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `django_admin_log`
+-- Chargement des donnees de la table `django_admin_log`
 --
 
-INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`, `action_flag`, `change_message`, `content_type_id`, `user_id`) VALUES
-(1, '2026-03-26 03:41:21.161701', '68', 'JEAN FLARED', 2, '[{\"changed\": {\"fields\": [\"Nom\"]}}]', 16, 1),
-(2, '2026-03-26 03:42:09.670438', '2', 'omzi', 1, '[{\"added\": {}}]', 4, 1),
-(3, '2026-06-06 21:57:08.833113', '98', 'hoodie', 1, '[{\"added\": {}}]', 16, 3),
-(4, '2026-06-06 22:29:54.300459', '98', 'hoodie', 3, '', 16, 3);
+INSERT INTO `django_admin_log` (`id`, `object_id`, `object_repr`, `action_flag`, `change_message`, `content_type_id`, `user_id`, `action_time`) VALUES
+(1, '68', 'JEAN FLARED', 2, '[{\\"changed\\": {\\"fields\\": [\\"Nom\\"]}}]', 16, 1, '2026-03-26 03:41:21.161701'),
+(2, '2', 'omzi', 1, '[{\\"added\\": {}}]', 4, 1, '2026-03-26 03:42:09.670438'),
+(3, '98', 'hoodie', 1, '[{\\"added\\": {}}]', 16, 3, '2026-06-06 21:57:08.833113'),
+(4, '98', 'hoodie', 3, '', 16, 3, '2026-06-06 22:29:54.300459');
 
 -- --------------------------------------------------------
 
@@ -305,34 +349,35 @@ CREATE TABLE `django_content_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `django_content_type`
+-- Chargement des donnees de la table `django_content_type`
 --
 
 INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
-(7, 'account', 'emailaddress'),
-(8, 'account', 'emailconfirmation'),
-(23, 'accounts', 'profile'),
 (1, 'admin', 'logentry'),
-(3, 'auth', 'group'),
 (2, 'auth', 'permission'),
+(3, 'auth', 'group'),
 (4, 'auth', 'user'),
 (5, 'contenttypes', 'contenttype'),
-(19, 'orders', 'cart'),
-(22, 'orders', 'cartitem'),
-(21, 'orders', 'order'),
-(20, 'orders', 'orderitem'),
-(24, 'payments', 'payment'),
 (6, 'sessions', 'session'),
+(7, 'account', 'emailaddress'),
+(8, 'account', 'emailconfirmation'),
 (9, 'socialaccount', 'socialaccount'),
 (10, 'socialaccount', 'socialapp'),
 (11, 'socialaccount', 'socialtoken'),
 (12, 'store', 'banner'),
 (13, 'store', 'category'),
 (14, 'store', 'color'),
-(16, 'store', 'product'),
-(18, 'store', 'productreview'),
 (15, 'store', 'size'),
-(17, 'store', 'wishlist');
+(16, 'store', 'product'),
+(17, 'store', 'wishlist'),
+(18, 'store', 'productreview'),
+(19, 'orders', 'cart'),
+(20, 'orders', 'orderitem'),
+(21, 'orders', 'order'),
+(22, 'orders', 'cartitem'),
+(23, 'accounts', 'profile'),
+(24, 'payments', 'payment'),
+(25, 'sites', 'site');
 
 -- --------------------------------------------------------
 
@@ -348,47 +393,51 @@ CREATE TABLE `django_migrations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `django_migrations`
+-- Chargement des donnees de la table `django_migrations`
 --
 
 INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
-(1, 'contenttypes', '0001_initial', '2026-03-26 01:09:50.262232'),
-(2, 'auth', '0001_initial', '2026-03-26 01:09:50.508232'),
-(3, 'account', '0001_initial', '2026-03-26 01:09:50.589213'),
-(4, 'account', '0002_email_max_length', '2026-03-26 01:09:50.608330'),
-(5, 'account', '0003_alter_emailaddress_create_unique_verified_email', '2026-03-26 01:09:50.635788'),
-(6, 'account', '0004_alter_emailaddress_drop_unique_email', '2026-03-26 01:09:51.130856'),
-(7, 'account', '0005_emailaddress_idx_upper_email', '2026-03-26 01:09:51.142727'),
-(8, 'account', '0006_emailaddress_lower', '2026-03-26 01:09:51.151130'),
-(9, 'account', '0007_emailaddress_idx_email', '2026-03-26 01:09:51.166844'),
-(10, 'account', '0008_emailaddress_unique_primary_email_fixup', '2026-03-26 01:09:51.174311'),
-(11, 'account', '0009_emailaddress_unique_primary_email', '2026-03-26 01:09:51.179023'),
-(12, 'accounts', '0001_initial', '2026-03-26 01:09:51.207961'),
-(13, 'admin', '0001_initial', '2026-03-26 01:09:51.250529'),
-(14, 'admin', '0002_logentry_remove_auto_add', '2026-03-26 01:09:51.260161'),
-(15, 'admin', '0003_logentry_add_action_flag_choices', '2026-03-26 01:09:51.265747'),
-(16, 'contenttypes', '0002_remove_content_type_name', '2026-03-26 01:09:51.292273'),
-(17, 'auth', '0002_alter_permission_name_max_length', '2026-03-26 01:09:51.313174'),
-(18, 'auth', '0003_alter_user_email_max_length', '2026-03-26 01:09:51.326514'),
-(19, 'auth', '0004_alter_user_username_opts', '2026-03-26 01:09:51.333511'),
-(20, 'auth', '0005_alter_user_last_login_null', '2026-03-26 01:09:51.352822'),
-(21, 'auth', '0006_require_contenttypes_0002', '2026-03-26 01:09:51.354320'),
-(22, 'auth', '0007_alter_validators_add_error_messages', '2026-03-26 01:09:51.362470'),
-(23, 'auth', '0008_alter_user_username_max_length', '2026-03-26 01:09:51.375655'),
-(24, 'auth', '0009_alter_user_last_name_max_length', '2026-03-26 01:09:51.390639'),
-(25, 'auth', '0010_alter_group_name_max_length', '2026-03-26 01:09:51.405684'),
-(26, 'auth', '0011_update_proxy_permissions', '2026-03-26 01:09:51.414562'),
-(27, 'auth', '0012_alter_user_first_name_max_length', '2026-03-26 01:09:51.431028'),
-(28, 'store', '0001_initial', '2026-03-26 01:09:51.804974'),
-(29, 'orders', '0001_initial', '2026-03-26 01:09:52.147675'),
-(30, 'payments', '0001_initial', '2026-03-26 01:09:52.207412'),
-(31, 'sessions', '0001_initial', '2026-03-26 01:09:52.227099'),
-(32, 'socialaccount', '0001_initial', '2026-03-26 01:09:52.397881'),
-(33, 'socialaccount', '0002_token_max_lengths', '2026-03-26 01:09:52.449450'),
-(34, 'socialaccount', '0003_extra_data_default_dict', '2026-03-26 01:09:52.465273'),
-(35, 'socialaccount', '0004_app_provider_id_settings', '2026-03-26 01:09:52.533378'),
-(36, 'socialaccount', '0005_socialtoken_nullable_app', '2026-03-26 01:09:52.712751'),
-(37, 'socialaccount', '0006_alter_socialaccount_extra_data', '2026-03-26 01:09:52.742529');
+(1, 'contenttypes', '0001_initial', '2026-06-10 23:03:10.097821'),
+(2, 'auth', '0001_initial', '2026-06-10 23:03:10.124972'),
+(3, 'account', '0001_initial', '2026-06-10 23:03:10.154037'),
+(4, 'account', '0002_email_max_length', '2026-06-10 23:03:10.175585'),
+(5, 'account', '0003_alter_emailaddress_create_unique_verified_email', '2026-06-10 23:03:10.197495'),
+(6, 'account', '0004_alter_emailaddress_drop_unique_email', '2026-06-10 23:03:10.299793'),
+(7, 'account', '0005_emailaddress_idx_upper_email', '2026-06-10 23:03:10.319699'),
+(8, 'account', '0006_emailaddress_lower', '2026-06-10 23:03:10.335861'),
+(9, 'account', '0007_emailaddress_idx_email', '2026-06-10 23:03:10.361307'),
+(10, 'account', '0008_emailaddress_unique_primary_email_fixup', '2026-06-10 23:03:10.378552'),
+(11, 'account', '0009_emailaddress_unique_primary_email', '2026-06-10 23:03:10.392786'),
+(12, 'accounts', '0001_initial', '2026-06-10 23:03:10.407247'),
+(13, 'admin', '0001_initial', '2026-06-10 23:03:10.427216'),
+(14, 'admin', '0002_logentry_remove_auto_add', '2026-06-10 23:03:10.466583'),
+(15, 'admin', '0003_logentry_add_action_flag_choices', '2026-06-10 23:03:10.485676'),
+(16, 'contenttypes', '0002_remove_content_type_name', '2026-06-10 23:03:10.513265'),
+(17, 'auth', '0002_alter_permission_name_max_length', '2026-06-10 23:03:10.531848'),
+(18, 'auth', '0003_alter_user_email_max_length', '2026-06-10 23:03:10.552265'),
+(19, 'auth', '0004_alter_user_username_opts', '2026-06-10 23:03:10.568766'),
+(20, 'auth', '0005_alter_user_last_login_null', '2026-06-10 23:03:10.587176'),
+(21, 'auth', '0006_require_contenttypes_0002', '2026-06-10 23:03:10.595758'),
+(22, 'auth', '0007_alter_validators_add_error_messages', '2026-06-10 23:03:10.614753'),
+(23, 'auth', '0008_alter_user_username_max_length', '2026-06-10 23:03:10.635660'),
+(24, 'auth', '0009_alter_user_last_name_max_length', '2026-06-10 23:03:10.653290'),
+(25, 'auth', '0010_alter_group_name_max_length', '2026-06-10 23:03:10.670390'),
+(26, 'auth', '0011_update_proxy_permissions', '2026-06-10 23:03:10.683077'),
+(27, 'auth', '0012_alter_user_first_name_max_length', '2026-06-10 23:03:10.746084'),
+(28, 'store', '0001_initial', '2026-06-10 23:03:10.904693'),
+(29, 'orders', '0001_initial', '2026-06-10 23:03:10.972319'),
+(30, 'payments', '0001_initial', '2026-06-10 23:03:10.999827'),
+(31, 'sessions', '0001_initial', '2026-06-10 23:03:11.024368'),
+(32, 'socialaccount', '0001_initial', '2026-06-10 23:03:11.093704'),
+(33, 'socialaccount', '0002_token_max_lengths', '2026-06-10 23:03:11.146477'),
+(34, 'socialaccount', '0003_extra_data_default_dict', '2026-06-10 23:03:11.161877'),
+(35, 'socialaccount', '0004_app_provider_id_settings', '2026-06-10 23:03:11.196688'),
+(36, 'socialaccount', '0005_socialtoken_nullable_app', '2026-06-10 23:03:11.367489'),
+(37, 'socialaccount', '0006_alter_socialaccount_extra_data', '2026-06-10 23:03:11.390048'),
+(38, 'sites', '0001_initial', '2026-06-18 11:52:25.161886'),
+(39, 'sites', '0002_alter_domain_unique', '2026-06-18 11:52:25.161886'),
+(40, 'orders', '0002_alter_order_payment_method', '2026-06-18 11:52:46.798007'),
+(41, 'payments', '0002_alter_payment_provider', '2026-06-18 11:52:46.812254');
 
 -- --------------------------------------------------------
 
@@ -403,49 +452,17 @@ CREATE TABLE `django_session` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `django_session`
+-- Chargement des donnees de la table `django_session`
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
-('0vzm7x0fnccdrz8oqjjmb1w1zmds2gp9', 'eyJjYXJ0Ijp7fX0:1w5aKV:K0PzlwwZVhcpI2TsKqoPBEG4-RjSi0EWGdgQ1_QkfeU', '2026-04-09 02:20:15.412916'),
-('20balwszn9dx4iylznvris3lhkr0mm1c', 'eyJjYXJ0Ijp7fX0:1w7MuP:fpLR7aVTVmmAWiYmAwHoYo7xGRfRKHRtbFLXLRLS5Bw', '2026-04-14 00:24:41.926321'),
-('7iozqkrpo6s74ytya1w4q15lkni2dn1n', 'eyJjYXJ0Ijp7fX0:1wUUTs:sDEqpZDfMP3MDUSP2uAFzCl7lKcycyZGBg5fZiUaxbQ', '2026-06-16 19:08:52.996789'),
-('7t1d4w4oaxc2mkno8jd2ee4n1h4r947m', 'eyJjYXJ0Ijp7fX0:1w5bPU:cnSHuO3WYt8e3SfVcnX3kLF1tRlILuvpNmvigMqmjuM', '2026-04-09 03:29:28.262362'),
-('7urm85et8e9igjogfkk9c45oq0i23c6k', '.eJxVjDsOgzAQBe-ydWT5E2NMmT5nsNa7diCJsGRDhbh7gkRD-2bmbUBYFxi2_QYB12UMa0s1TAwDKLhsEemT5gPwG-dXEVTmpU5RHIo4aRPPwun7ON3LwYht_NdJMzOhw56xR5u1NdypnFVEzyqRjNmrnDTR3XXWSB-9sTl2Bh1rchL2H27VPGc:1wWJm8:v8J70E8HCPJq7GWYhCIlaMnUIQZpTHji4Lm4XvrkMZY', '2026-06-21 20:07:16.754249'),
-('8795i9c9b9qfy00gckk7vnaa31nb3enm', 'eyJjYXJ0Ijp7fX0:1w5anT:4PqvO0NWcOh5npL4S5t2cqcF0eMySXdtECIDrFglH-k', '2026-04-09 02:50:11.494721'),
-('95o35de3qkcqfgu6fgn19hesb7a01pns', 'eyJjYXJ0Ijp7fX0:1w5bBh:JR0VjSyz6T0CK07k9BhBraFAiCSQHQtyH-qAsib-J4c', '2026-04-09 03:15:13.615142'),
-('9j2c60igrh2rbyuovc3xevfu6ajbzav4', 'eyJjYXJ0Ijp7fX0:1wXQc4:bCK-cyAgC9fYVU1jtj4ltmIC6w3aJ6F2KoSjchh7ygc', '2026-06-24 21:37:28.412691'),
-('a5kcvod1uaab3rlwogx61tfb3w14t5su', 'eyJjYXJ0Ijp7fX0:1w5ZfD:s3qyDr3d48bMvvNFCQ8ITbz5n42wce28osKE0ZEDbUM', '2026-04-09 01:37:35.437224'),
-('ad2pg7jx1jzp0jw0da0tztu8redec3ez', 'eyJjYXJ0Ijp7fX0:1wUUtm:D5ksLBJzjlwVyhomt_I-P1PPqg1nPJybcS5L3QjKIpc', '2026-06-16 19:35:38.531857'),
-('b6m5sym94j58d4ray2mrtwp6vnw91ygh', 'eyJjYXJ0Ijp7fX0:1w5aiJ:QP9UtwaQYFgqtmcVafuYMs27JNePWCcTSQYio5kFXuY', '2026-04-09 02:44:51.593847'),
-('bjfb23x4plguh02of7ml821eckltd08q', 'eyJjYXJ0Ijp7fX0:1w5bTW:rZZaWnTiLOb0O-BBfX1y_6jFfhZk2vDevoRZz_aE_tQ', '2026-04-09 03:33:38.301174'),
-('bz3t63dgtqx866hpjrfp0imtljek4cim', 'e30:1wWJmL:2TtNzPaV2gQ42oHYi1GCrLs-Nj6EOrJQPk-Rtq7-wjA', '2026-06-21 20:07:29.395979'),
-('dt9nqov2mrv6w9dklb61kr3icionmvtx', 'eyJjYXJ0Ijp7fX0:1w5b1p:6Wfefu91jmHR_ckUtyMlJrFz48dTBT7bPOpAz_71YdU', '2026-04-09 03:05:01.671695'),
-('emmvhopbxb4dfeco19wp8sq5dxpjlo8r', 'eyJjYXJ0Ijp7fX0:1wXQba:Nkg57AnNpHyaIYXyCwY4DJ8akoRN7_3S800u5ChRKmM', '2026-06-24 21:36:58.557021'),
-('faz0qjvcini0h9rsls2x4ldncb27vsfc', 'eyJjYXJ0Ijp7fX0:1wUUtj:jCGwE_P9L8bK7chzQ9upjHEB3Xwnm0CjHdYop5xOK4U', '2026-06-16 19:35:35.932305'),
-('fwnb8pzi6315u73b6x5smv1ebq1ik49v', 'eyJjYXJ0Ijp7fX0:1w5aiO:MCNn1_wGqsjfJ8WynQaJn_XefwRJHWY-tj2c-EZI6qQ', '2026-04-09 02:44:56.034455'),
-('fzmy7a6cf7em2shvczgmjb8spjhpev91', 'eyJjYXJ0Ijp7fX0:1w5aiD:b3mkW7jyQ1ycTnStO2rkrJOoupXMqoW7o72oQFFfLu0', '2026-04-09 02:44:45.163019'),
-('gqlvnkpldp7uykbta6jbq4t6772sebjm', 'eyJjYXJ0Ijp7fX0:1w5aAd:QXAK9g9t6oZeCMKmWOS4ZHbTP4yHEioZnhDxrBcdrFA', '2026-04-09 02:10:03.861680'),
-('grf0za8kutktw0t7t7cd500sjy5mufvn', 'eyJjYXJ0Ijp7fX0:1wWJmD:mn21ILKvvX7foUMY6QR7i35Ld2TEvjV3TW74dQMgnNo', '2026-06-21 20:07:21.365698'),
-('hln255lkj86cl90f5afn7gdwt335e1v5', 'eyJjYXJ0Ijp7fX0:1w5bDq:QSG_4-IpfKujABVzxDq8YlWTbKfsef-PNcwa6NYf47o', '2026-04-09 03:17:26.417091'),
-('ht7eaocoztl1zxll2x8txh1s42cg72tt', 'eyJjYXJ0Ijp7fX0:1wUUtj:jCGwE_P9L8bK7chzQ9upjHEB3Xwnm0CjHdYop5xOK4U', '2026-06-16 19:35:35.908501'),
-('ixj7wpndp9wv4105tggk16590cloetdi', '.eJxVjEEOwiAQRe_C2hAKBQaX7j0DmRlAqoYmpV0Z765NutDtf-_9l4i4rTVuPS9xSuIsnDj9boT8yG0H6Y7tNkue27pMJHdFHrTL65zy83K4fwcVe_3WQQ-eijMECAQcnNcafbIcOIFDXQpbsoYHR8bbwGNSUJQHZcwIKlvx_gDnUDeL:1wWJmt:ReMF2oAieyid_DHK-3G1fEIaSaVvnuO4Jd7S8-rZQkk', '2026-06-21 20:08:03.500387'),
-('je3s3spzk6kxrkun8bsoijdv05fpbii3', 'eyJjYXJ0Ijp7fX0:1w5aKV:K0PzlwwZVhcpI2TsKqoPBEG4-RjSi0EWGdgQ1_QkfeU', '2026-04-09 02:20:15.427125'),
-('lrsp49xj1s79s0uo3ydv8c836ls0s8rg', 'eyJjYXJ0Ijp7fX0:1w5aIG:5qA5DHF9Wlv0FzLoivwuFriHQHONpdhDeHm6o2gMBWU', '2026-04-09 02:17:56.398751'),
-('mntnmuofxx1533diuwtewxpe6bjfzeko', 'e30:1wWJmO:OfhIkeFGs1Ah9WJl54OcvVEiObfTCOZCzSf2jHXPtr0', '2026-06-21 20:07:32.974524'),
-('o8q1zp8vz4fvgw42ew3m6bjov6suwlia', 'eyJjYXJ0Ijp7fX0:1w6byW:bO7ZQMsqeaHjBq7FGRBtICPDsf7PAXpOhmLPhUCOBhI', '2026-04-11 22:17:48.250165'),
-('pp09ikjmn1bkm7xfyvpvm6j0dfem4rib', '.eJxVjDsOgzAQBe-ydWT5E2NMmT5nsNa7diCJsGRDhbh7gkRD-2bmbUBYFxi2_QYB12UMa0s1TAwDKLhsEemT5gPwG-dXEVTmpU5RHIo4aRPPwun7ON3LwYht_NdJMzOhw56xR5u1NdypnFVEzyqRjNmrnDTR3XXWSB-9sTl2Bh1rchL2H27VPGc:1wWJmf:OOnCiXSNQgbnD6ZDyex0KgRz--GXNAOtn2lA6-onN0s', '2026-06-21 20:07:49.886323'),
-('que6n05bv5arwpiuspgwwgkyyazclg0e', 'eyJjYXJ0Ijp7fX0:1wWJd5:0BXMPJley9939p61-inpAVCSUNRVTNEYnFLrDrgBJs0', '2026-06-21 19:57:55.233200'),
-('ressgag2lfpigppx7y3vsbrc6lot592w', 'eyJjYXJ0Ijp7fX0:1wUUAM:tdup1v_ZhvLqaYYdpuz8ZHicU3JRuLcSL8uRK74koAQ', '2026-06-16 18:48:42.144079'),
-('s8otl3vu41wr7qxm113fm22nr1ox28rf', 'eyJjYXJ0Ijp7fX0:1wUUlI:U2q_7hVeuTjVoONSOMgqYf0ykz--_yAklEunTJMnJOA', '2026-06-16 19:26:52.693775'),
-('sotezxgcqyp7zdhd88o5xdv7b8g6yxnz', 'eyJjYXJ0Ijp7fX0:1wUUPc:sUBncGC1OoK_k5Z3TyRbMbPep7vcIkxWMEqalI494bk', '2026-06-16 19:04:28.646352'),
-('ual3pmo81m80c4trof1aqlbpouy63pgh', 'eyJjYXJ0Ijp7fX0:1wWJml:DUnKkZX0eHlEOhYREHR9yghTMEtmXmgnC4M_-u0RcAk', '2026-06-21 20:07:55.477585'),
-('v04uh4jh0z8gs5ca7k2kjceo9k4lhuyl', 'eyJjYXJ0Ijp7fX0:1wWfLa:WnOg9T6Nyr7F8WgnaLbCkF-CUjgwqt_wVPrNN0Jf--c', '2026-06-22 19:09:18.417800'),
-('vcbxw2xob4x5u8aw6zq9iswgn78zjhzc', 'eyJjYXJ0Ijp7fX0:1wRceV:JEVT6s3lzcQK3QOepv0MnVxECmMHL-Dm0u_TdMj7rEQ', '2026-06-08 21:15:59.525349'),
-('vxvtdwc6g4hj9x2vbybcf80ocx1xwmud', '.eJxVjDsOgzAQBe-ydWThLzZles6AlvVuIImMxKdC3D1BoqF9M_N2IJxXaPbjAR1u69BtC8_dmKEBD7etR_pwOUF-Y3lNiqayzmOvTkVddFHtlPn7vNzbwYDL8K9ZtDUSWEcjgihBc7ZU11WyFRmOXrwOjoxxOjlLJOKZQs4xEUX0Bo4fP_Q7uw:1wWJmg:KBzxs963iaHycYUQGfcKPIRfx9vTEyDWYdoYmLwupT4', '2026-06-21 20:07:50.013884'),
-('yk25uok7nrl8kavqor0g1fx26asxkr16', 'eyJjYXJ0Ijp7fX0:1wWJm8:rxbdtZ3PDw8Rh47eGofbIs85pn2bqe_tVspzW5HCVPc', '2026-06-21 20:07:16.489221'),
-('yq22w01czs7xf7lkmvj2tu9ni5onjef7', 'eyJjYXJ0Ijp7fX0:1w7XpK:555x86gIcF8v2CgVyWuayO4R5hrAcJOU6hivUAMoiTo', '2026-04-14 12:04:10.114057'),
-('z62fzkkknj5ga5ifnldnyqap8xt8qwmo', 'eyJjYXJ0Ijp7fX0:1w7XpE:m8UiCSdEDjN21ZzLe9GDbefGLiJSYv8wu6eWcAjFOHM', '2026-04-14 12:04:04.353891');
+('n5w823bc4bn9n19qtkpidzsxkgd75c3n', '.eJw1jrsOwjAMRX8FRWLrw01FK7oxsrAwsCBFpo1KoE1DHgNU_XccUeTB9j1X155Zi9azZmb7WojYjZ260HqhOtaQyBL2Cqi98m_WFAlh1UoifAcABJ36xJWmdhom-xs1jlE8a4lPad3mdA0AN-AlMTViH2E-yk5hvp5zuVvNgpfickfvDsZsORyjnTpVlUKZ8ooW9FHhGa-zgmcPI_v4yRB6yv3npJrOLcvyBVMdREY:1wXSFE:ZAdNjLeN3l4rzFW0Vn39WLWpeXAw2AoWg2Fjr4Vs6ug', '2026-06-24 23:22:00.826022'),
+('91l4mt0mkgmyjvjjlg29nr8amh16b1qs', '.eJw1jrsOwjAMRX8FRWLrw01FK7oxsrAwsCBFpo1KoE1DHgNU_XccUeTB9j1X155Zi9azZmb7WojYjZ260HqhOtaQyBL2Cqi98m_WFAlh1UoifAcABJ36xJWmdhom-xs1jlE8a4lPad3mdA0AN-AlMTViH2E-yk5hvp5zuVvNgpfickfvDsZsORyjnTpVlUKZ8ooW9FHhGa-zgmcPI_v4yRB6yv3npJrOLcvyBVMdREY:1wXSGD:9LuJQuP0nK8qxfBb5e8QzSvXQQMCn4fZUj4-0ygN_Ic', '2026-06-24 23:23:01.063880'),
+('61hcbtmz7n7bm2hxuz91m1m6f6ot22nk', 'eyJjYXJ0Ijp7fX0:1wXSGt:8n61zY4uHjdtanw-BCs7iTZMTkeHo40AGRUo2OJ9zkA', '2026-06-24 23:23:43.126122'),
+('dzzivyu853stqayipub85g4ejp4nckp5', 'eyJjYXJ0Ijp7fX0:1wXSML:FDYReDIEeL7Up1UJDvS3-p0gFKvKK8tR9zc7sjOeiqc', '2026-06-24 23:29:21.033185'),
+('29wdbc0366v9asoour6t4zo9v4debluu', 'eyJjYXJ0Ijp7fX0:1wXSMl:ZyuUlWeGiX809-sY8sArRkiVP04I17FD_QLtkk-XBhs', '2026-06-24 23:29:47.193273'),
+('238swpzuqli83x1bd5w05ait3jm6mwsg', 'eyJjYXJ0Ijp7fX0:1wXSPx:llzglNE3CjsVxpNR4PjOvBUzFtVB4JGHoaSp8FMbH04', '2026-06-24 23:33:05.299931'),
+('oyhr6npo7o9lolbkjcbj2vm1n0a6ruo2', '.eJxVjj9vwyAQxb9KhdQtIUAC_rO1W4d26dClEjrgapM42DV4aKN894LiSq0Yjnu_d-_uQjQsqddLxFl7R1oiyeavZsCeMBTgjhC6kdoxpNkbWix0pZE-jw6Hx9X7L6CH2OfpGjlWtXXGAOOAsqoqzhxKZeAgjGqwASkkr1EgHCxDXn1YC3uunAOoAXOohTmR9kIapXWp0zy6xabb2Y3Kjs8FQvLpi7R8k7G3mImQjLEMo_8ubQkah3G-fQOci_gaEE44x7uX94Uxw4TIzJ-hK3B3Rudht66Lu7iatRD6rYcUH6bpXrCnYs81P7Vl-61QuYFUFEFFRVlDjxN25ZJh6XLub8425HXX6_UHzHV8jQ:1waBYw:LEyDKe1A3FDlTx0YSWmGRyxlRnuJ-0mZEcTOg2fdgMM', '2026-07-02 12:09:38.975736');
 
 -- --------------------------------------------------------
 
@@ -459,6 +476,11 @@ CREATE TABLE `orders_cart` (
   `updated_at` datetime(6) NOT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Chargement des donnees de la table `orders_cart`
+--
+
 
 -- --------------------------------------------------------
 
@@ -474,6 +496,11 @@ CREATE TABLE `orders_cartitem` (
   `product_id` bigint(20) NOT NULL,
   `size_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Chargement des donnees de la table `orders_cartitem`
+--
+
 
 -- --------------------------------------------------------
 
@@ -498,6 +525,13 @@ CREATE TABLE `orders_order` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Chargement des donnees de la table `orders_order`
+--
+
+INSERT INTO `orders_order` (`id`, `total`, `status`, `delivery_type`, `delivery_address`, `delivery_fee`, `phone`, `payment_method`, `payment_status`, `order_number`, `notes`, `created_at`, `updated_at`, `user_id`) VALUES
+(1, 25000, 'pending', 'livraison', '', 1500, '781576224', 'stripe', 'pending', 'TS171264', '', '2026-06-10 23:54:33.494379', '2026-06-10 23:54:33.576972', 4);
+
 -- --------------------------------------------------------
 
 --
@@ -513,6 +547,13 @@ CREATE TABLE `orders_orderitem` (
   `size_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Chargement des donnees de la table `orders_orderitem`
+--
+
+INSERT INTO `orders_orderitem` (`id`, `quantity`, `unit_price`, `color_id`, `product_id`, `size_id`) VALUES
+(1, 1, 25000, NULL, 92, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -524,6 +565,13 @@ CREATE TABLE `orders_order_items` (
   `order_id` bigint(20) NOT NULL,
   `orderitem_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Chargement des donnees de la table `orders_order_items`
+--
+
+INSERT INTO `orders_order_items` (`id`, `order_id`, `orderitem_id`) VALUES
+(1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -544,6 +592,11 @@ CREATE TABLE `payments_payment` (
   `order_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Chargement des donnees de la table `payments_payment`
+--
+
+
 -- --------------------------------------------------------
 
 --
@@ -559,6 +612,11 @@ CREATE TABLE `socialaccount_socialaccount` (
   `extra_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`extra_data`)),
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Chargement des donnees de la table `socialaccount_socialaccount`
+--
+
 
 -- --------------------------------------------------------
 
@@ -577,6 +635,11 @@ CREATE TABLE `socialaccount_socialapp` (
   `settings` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`settings`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Chargement des donnees de la table `socialaccount_socialapp`
+--
+
+
 -- --------------------------------------------------------
 
 --
@@ -591,6 +654,11 @@ CREATE TABLE `socialaccount_socialtoken` (
   `account_id` int(11) NOT NULL,
   `app_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Chargement des donnees de la table `socialaccount_socialtoken`
+--
+
 
 -- --------------------------------------------------------
 
@@ -608,6 +676,11 @@ CREATE TABLE `store_banner` (
   `is_active` tinyint(1) NOT NULL,
   `order` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Chargement des donnees de la table `store_banner`
+--
+
 
 -- --------------------------------------------------------
 
@@ -627,16 +700,13 @@ CREATE TABLE `store_category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `store_category`
+-- Chargement des donnees de la table `store_category`
 --
 
 INSERT INTO `store_category` (`id`, `name`, `slug`, `image`, `description`, `order`, `is_active`, `parent_id`) VALUES
 (1, 'Chaussures', 'chaussures', 'categories/chaussures.jpg', '', 1, 1, NULL),
 (2, 'Vêtements Homme', 'vetements-homme', 'categories/homme.jpg', '', 2, 1, NULL),
-(3, 'Vêtements Femme', 'vetements-femme', 'categories/femme.jpg', '', 3, 1, NULL),
 (4, 'Accessoires', 'accessoires', 'categories/accessoires.jpg', '', 4, 1, NULL),
-(5, 'Nouveautés', 'nouveautes', '', '', 5, 1, NULL),
-(6, 'Soldes', 'soldes', '', '', 6, 1, NULL),
 (7, 'Sneakers', 'sneakers', '', '', 1, 1, 1),
 (8, 'Baskets', 'baskets', '', '', 2, 1, 1),
 (9, 'Boots', 'boots', '', '', 3, 1, 1),
@@ -646,10 +716,6 @@ INSERT INTO `store_category` (`id`, `name`, `slug`, `image`, `description`, `ord
 (13, 'Pantalons', 'pantalons', '', '', 3, 1, 2),
 (14, 'Vestes Homme', 'vestes-homme', '', '', 4, 1, 2),
 (15, 'Shorts', 'shorts', '', '', 5, 1, 2),
-(16, 'Robes', 'robes', '', '', 1, 1, 3),
-(17, 'Tops', 'tops', '', '', 2, 1, 3),
-(18, 'Leggings', 'leggings', '', '', 3, 1, 3),
-(19, 'Vestes Femme', 'vestes-femme', '', '', 4, 1, 3),
 (20, 'Casquettes', 'casquettes', '', '', 1, 1, 4),
 (21, 'Sacs', 'sacs', '', '', 2, 1, 4),
 (22, 'Ceintures', 'ceintures', '', '', 3, 1, 4),
@@ -668,7 +734,7 @@ CREATE TABLE `store_color` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `store_color`
+-- Chargement des donnees de la table `store_color`
 --
 
 INSERT INTO `store_color` (`id`, `name`, `hex_code`) VALUES
@@ -716,7 +782,7 @@ CREATE TABLE `store_product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `store_product`
+-- Chargement des donnees de la table `store_product`
 --
 
 INSERT INTO `store_product` (`id`, `name`, `slug`, `description`, `price`, `discount_price`, `stock`, `image`, `image2`, `image3`, `is_featured`, `is_new`, `is_active`, `views_count`, `sales_count`, `created_at`, `updated_at`, `category_id`) VALUES
@@ -769,7 +835,9 @@ INSERT INTO `store_product` (`id`, `name`, `slug`, `description`, `price`, `disc
 (47, 'Hoodie Brodé Gold', 'hoodie-brode-gold', 'Hoodie Brodé Gold — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 35000, NULL, 10, 'products/hoodie3.jpg', '', '', 0, 1, 1, 1, 11, '2026-03-26 03:10:55.064509', '2026-03-26 03:10:55.064523', 12),
 (48, 'Pull Streetwear Logo', 'pull-streetwear-logo', 'Pull Streetwear Logo — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 24000, NULL, 22, 'products/hoodie4.jpg', '', '', 0, 0, 1, 0, 14, '2026-03-26 03:10:55.067316', '2026-03-26 03:10:55.067331', 12),
 (49, 'Sweat Capuche Oversize', 'sweat-capuche-oversize', 'Sweat Capuche Oversize — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 30000, NULL, 8, 'products/hoodie5.jpg', '', '', 0, 1, 1, 0, 5, '2026-03-26 03:10:55.070042', '2026-03-26 03:10:55.070056', 12),
-(50, 'Veste Coach Noir', 'veste-coach-noir', 'Veste Coach Noir — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 45000, NULL, 12, 'products/veste_h1.jpg', '', '', 1, 1, 1, 0, 17, '2026-03-26 03:10:55.073664', '2026-03-26 03:10:55.073681', 14),
+(50, 'Veste Coach Noir', 'veste-coach-noir', 'Veste Coach Noir — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 45000, NULL, 12, 'products/veste_h1.jpg', '', '', 1, 1, 1, 0, 17, '2026-03-26 03:10:55.073664', '2026-03-26 03:10:55.073681', 14);
+
+INSERT INTO `store_product` (`id`, `name`, `slug`, `description`, `price`, `discount_price`, `stock`, `image`, `image2`, `image3`, `is_featured`, `is_new`, `is_active`, `views_count`, `sales_count`, `created_at`, `updated_at`, `category_id`) VALUES
 (51, 'Bomber Urban TSW', 'bomber-urban-tsw', 'Bomber Urban TSW — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 52000, 44000, 8, 'products/veste_h2.jpg', '', '', 0, 0, 1, 0, 24, '2026-03-26 03:10:55.076573', '2026-03-26 03:10:55.076588', 14),
 (52, 'Veste Denim Streetwear', 'veste-denim-streetwear', 'Veste Denim Streetwear — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 38000, NULL, 10, 'products/veste_h3.jpg', '', '', 0, 1, 1, 0, 9, '2026-03-26 03:10:55.080458', '2026-03-26 03:10:55.080477', 14),
 (53, 'Jacket Militaire Kaki', 'jacket-militaire-kaki', 'Jacket Militaire Kaki — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 48000, NULL, 6, 'products/veste_h4.jpg', '', '', 0, 0, 1, 0, 13, '2026-03-26 03:10:55.083587', '2026-03-26 03:10:55.083602', 14),
@@ -777,20 +845,6 @@ INSERT INTO `store_product` (`id`, `name`, `slug`, `description`, `price`, `disc
 (55, 'Short Sport TSW', 'short-sport-tsw', 'Short Sport TSW — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 12000, 9500, 30, 'products/short2.jpg', '', '', 0, 0, 1, 1, 42, '2026-03-26 03:10:55.091370', '2026-03-26 03:10:55.091386', 15),
 (56, 'Bermuda Streetwear', 'bermuda-streetwear', 'Bermuda Streetwear — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 14000, NULL, 18, 'products/short3.jpg', '', '', 0, 1, 1, 2, 11, '2026-03-26 03:10:55.094573', '2026-03-26 03:10:55.094591', 15),
 (57, 'Short Jogging Urban', 'short-jogging-urban', 'Short Jogging Urban — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 11000, NULL, 22, 'products/short4.jpg', '', '', 0, 0, 1, 1, 16, '2026-03-26 03:10:55.097913', '2026-03-26 03:10:55.097928', 15),
-(58, 'Robe Streetwear Femme', 'robe-streetwear-femme', 'Robe Streetwear Femme — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 22000, NULL, 14, 'products/robe1.jpg', '', '', 1, 1, 1, 0, 19, '2026-03-26 03:10:55.101121', '2026-03-26 03:10:55.101134', 16),
-(59, 'Robe Mini Urban', 'robe-mini-urban', 'Robe Mini Urban — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 18500, 15000, 10, 'products/robe2.jpg', '', '', 0, 0, 1, 0, 23, '2026-03-26 03:10:55.104606', '2026-03-26 03:10:55.104624', 16),
-(60, 'Robe Longue Sport Chic', 'robe-longue-sport-chic', 'Robe Longue Sport Chic — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 26000, NULL, 8, 'products/robe3.jpg', '', '', 0, 1, 1, 0, 7, '2026-03-26 03:10:55.107998', '2026-03-26 03:10:55.108012', 16),
-(61, 'Crop Top TSW Gold', 'crop-top-tsw-gold', 'Crop Top TSW Gold — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 9500, NULL, 20, 'products/top1.jpg', '', '', 1, 1, 1, 0, 35, '2026-03-26 03:10:55.111322', '2026-03-26 03:10:55.111338', 17),
-(62, 'Top Oversize Femme', 'top-oversize-femme', 'Top Oversize Femme — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 13000, NULL, 18, 'products/top2.jpg', '', '', 0, 0, 1, 0, 27, '2026-03-26 03:10:55.114500', '2026-03-26 03:10:55.114512', 17),
-(63, 'Brassière Sport Urbaine', 'brassiere-sport-urbaine', 'Brassière Sport Urbaine — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 11000, 8500, 15, 'products/top3.jpg', '', '', 0, 1, 1, 1, 21, '2026-03-26 03:10:55.117333', '2026-03-26 03:10:55.117348', 17),
-(64, 'Top Crop Brodé', 'top-crop-brode', 'Top Crop Brodé — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 14500, NULL, 12, 'products/top4.jpg', '', '', 0, 1, 1, 0, 9, '2026-03-26 03:10:55.120119', '2026-03-26 03:10:55.120133', 17),
-(65, 'Legging Sport Noir', 'legging-sport-noir', 'Legging Sport Noir — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 14000, NULL, 20, 'products/legging1.jpg', '', '', 1, 1, 1, 0, 31, '2026-03-26 03:10:55.122564', '2026-03-26 03:10:55.122575', 18),
-(66, 'Legging Streetwear', 'legging-streetwear', 'Legging Streetwear — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 16500, NULL, 15, 'products/legging2.jpg', '', '', 0, 0, 1, 0, 18, '2026-03-26 03:10:55.125032', '2026-03-26 03:10:55.125044', 18),
-(67, 'Legging Taille Haute', 'legging-taille-haute', 'Legging Taille Haute — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 18000, 14000, 12, 'products/legging3.jpg', '', '', 0, 1, 1, 0, 14, '2026-03-26 03:10:55.129777', '2026-03-26 03:10:55.129795', 18),
-(68, 'JEAN FLARED', 'legging-sport-urban', 'Legging Sport Urban — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 12500, NULL, 18, 'products/legging4.jpg', '', '', 0, 0, 1, 2, 9, '2026-03-26 03:10:55.134362', '2026-03-26 03:41:21.158575', 18),
-(69, 'Bomber Femme Rose', 'bomber-femme-rose', 'Bomber Femme Rose — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 42000, NULL, 8, 'products/veste_f1.jpg', '', '', 1, 1, 1, 0, 14, '2026-03-26 03:10:55.137418', '2026-03-26 03:10:55.137435', 19),
-(70, 'Veste Denim Femme', 'veste-denim-femme', 'Veste Denim Femme — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 36000, 30000, 10, 'products/veste_f2.jpg', '', '', 0, 0, 1, 2, 11, '2026-03-26 03:10:55.141129', '2026-03-26 03:10:55.141147', 19),
-(71, 'Crop Jacket TSW', 'crop-jacket-tsw', 'Crop Jacket TSW — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 38000, NULL, 6, 'products/veste_f3.jpg', '', '', 0, 1, 1, 1, 8, '2026-03-26 03:10:55.147871', '2026-03-26 03:10:55.147888', 19),
 (72, 'Sac à Dos Urban TSW', 'sac-a-dos-urban-tsw', 'Sac à Dos Urban TSW — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 25000, NULL, 15, 'products/sac1.jpg', '', '', 1, 1, 1, 0, 22, '2026-03-26 03:10:55.150706', '2026-03-26 03:10:55.150720', 21),
 (73, 'Tote Bag Streetwear', 'tote-bag-streetwear', 'Tote Bag Streetwear — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 8500, NULL, 30, 'products/sac2.jpg', '', '', 0, 0, 1, 0, 47, '2026-03-26 03:10:55.153481', '2026-03-26 03:10:55.153497', 21),
 (74, 'Sacoche Waist Bag', 'sacoche-waist-bag', 'Sacoche Waist Bag — Collection ThiamStreetwear. Style urbain authentique pour les rues de Dakar.', 18000, 14000, 20, 'products/sac3.jpg', '', '', 0, 1, 1, 0, 19, '2026-03-26 03:10:55.156069', '2026-03-26 03:10:55.156081', 21),
@@ -808,13 +862,13 @@ INSERT INTO `store_product` (`id`, `name`, `slug`, `description`, `price`, `disc
 (86, 'Sneakers N°12', 'sneakers-n12', 'Sneakers de qualite premium, reference CHAUSSURES12. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 10, 'products/sneakers_12_WhatsApp Image 2026-03-26 at 22.13.04 (1).jpeg', 'products/sneakers_12_WhatsApp Image 2026-03-26 at 22.13.05 (1).jpeg', 'products/sneakers_12_WhatsApp Image 2026-03-26 at 22.13.05.jpeg', 0, 1, 1, 0, 0, '2026-03-31 00:34:59.609405', '2026-03-31 00:34:59.609417', 7),
 (87, 'Sneakers N°13', 'sneakers-n13', 'Sneakers de qualite premium, reference CHAUSSURES13. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 10, 'products/sneakers_13_WhatsApp Image 2026-03-26 at 22.13.06 (2).jpeg', 'products/sneakers_13_WhatsApp Image 2026-03-26 at 22.13.07 (1).jpeg', 'products/sneakers_13_WhatsApp Image 2026-03-26 at 22.13.07.jpeg', 0, 1, 1, 0, 0, '2026-03-31 00:34:59.619532', '2026-03-31 00:34:59.619546', 7),
 (88, 'Sneakers N°14', 'sneakers-n14', 'Sneakers de qualite premium, reference CHAUSSURES14. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 10, 'products/sneakers_14_WhatsApp Image 2026-03-26 at 22.13.08 (1).jpeg', 'products/sneakers_14_WhatsApp Image 2026-03-26 at 22.13.09 (2).jpeg', 'products/sneakers_14_WhatsApp Image 2026-03-26 at 22.13.09.jpeg', 0, 1, 1, 0, 0, '2026-03-31 00:34:59.631587', '2026-03-31 00:34:59.631596', 7),
-(89, 'Sneakers N°15', 'sneakers-n15', 'Sneakers de qualite premium, reference CHAUSSURES15. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 10, 'products/sneakers_15_WhatsApp Image 2026-03-26 at 22.26.53 (1).jpeg', 'products/sneakers_15_WhatsApp Image 2026-03-26 at 22.26.53.jpeg', 'products/sneakers_15_WhatsApp Image 2026-03-26 at 22.26.54 (1).jpeg', 0, 1, 1, 0, 0, '2026-03-31 00:34:59.646526', '2026-03-31 00:34:59.646539', 7),
-(90, 'Sneakers N°16', 'sneakers-n16', 'Sneakers de qualite premium, reference CHAUSSURES16. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 10, 'products/sneakers_16_WhatsApp Image 2026-03-26 at 22.26.55 (2).jpeg', 'products/sneakers_16_WhatsApp Image 2026-03-26 at 22.26.55 (3).jpeg', 'products/sneakers_16_WhatsApp Image 2026-03-26 at 22.26.55 (4).jpeg', 0, 1, 1, 0, 0, '2026-03-31 00:34:59.662363', '2026-03-31 00:34:59.662373', 7),
+(89, 'Sneakers N°15', 'sneakers-n15', 'Sneakers de qualite premium, reference CHAUSSURES15. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 10, 'products/sneakers_15_WhatsApp Image 2026-03-26 at 22.26.53 (1).jpeg', 'products/sneakers_15_WhatsApp Image 2026-03-26 at 22.26.53.jpeg', 'products/sneakers_15_WhatsApp Image 2026-03-26 at 22.26.54 (1).jpeg', 0, 1, 1, 1, 0, '2026-03-31 00:34:59.646526', '2026-03-31 00:34:59.646539', 7),
+(90, 'Sneakers N°16', 'sneakers-n16', 'Sneakers de qualite premium, reference CHAUSSURES16. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 10, 'products/sneakers_16_WhatsApp Image 2026-03-26 at 22.26.55 (2).jpeg', 'products/sneakers_16_WhatsApp Image 2026-03-26 at 22.26.55 (3).jpeg', 'products/sneakers_16_WhatsApp Image 2026-03-26 at 22.26.55 (4).jpeg', 0, 1, 1, 1, 0, '2026-03-31 00:34:59.662363', '2026-03-31 00:34:59.662373', 7),
 (91, 'Sneakers N°17', 'sneakers-n17', 'Sneakers de qualite premium, reference CHAUSSURES17. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 10, 'products/sneakers_17_WhatsApp Image 2026-03-26 at 22.26.58.jpeg', 'products/sneakers_17_WhatsApp Image 2026-03-26 at 22.26.59 (1).jpeg', 'products/sneakers_17_WhatsApp Image 2026-03-26 at 22.26.59.jpeg', 0, 1, 1, 0, 0, '2026-03-31 00:34:59.673613', '2026-03-31 00:34:59.673625', 7),
-(92, 'Sneakers N°18', 'sneakers-n18', 'Sneakers de qualite premium, reference CHAUSSURES18. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 10, 'products/sneakers_18_WhatsApp Image 2026-03-26 at 22.27.02 (1).jpeg', 'products/sneakers_18_WhatsApp Image 2026-03-26 at 22.27.02 (2).jpeg', 'products/sneakers_18_WhatsApp Image 2026-03-26 at 22.27.02.jpeg', 0, 1, 1, 0, 0, '2026-03-31 00:34:59.686919', '2026-03-31 00:34:59.686927', 7),
+(92, 'Sneakers N°18', 'sneakers-n18', 'Sneakers de qualite premium, reference CHAUSSURES18. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 9, 'products/sneakers_18_WhatsApp Image 2026-03-26 at 22.27.02 (1).jpeg', 'products/sneakers_18_WhatsApp Image 2026-03-26 at 22.27.02 (2).jpeg', 'products/sneakers_18_WhatsApp Image 2026-03-26 at 22.27.02.jpeg', 0, 1, 1, 0, 1, '2026-03-31 00:34:59.686919', '2026-03-31 00:34:59.686927', 7),
 (93, 'Sneakers N°19', 'sneakers-n19', 'Sneakers de qualite premium, reference CHAUSSURES19. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 10, 'products/sneakers_19_WhatsApp Image 2026-03-26 at 22.27.04 (1).jpeg', 'products/sneakers_19_WhatsApp Image 2026-03-26 at 22.27.05.jpeg', '', 0, 1, 1, 0, 0, '2026-03-31 00:34:59.695785', '2026-03-31 00:34:59.695795', 7),
 (94, 'Sneakers N°20', 'sneakers-n20', 'Sneakers de qualite premium, reference CHAUSSURES20. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 10, 'products/sneakers_20_WhatsApp Image 2026-03-26 at 22.27.06.jpeg', 'products/sneakers_20_WhatsApp Image 2026-03-26 at 22.27.07.jpeg', '', 0, 1, 1, 0, 0, '2026-03-31 00:34:59.708100', '2026-03-31 00:34:59.708109', 7),
-(95, 'Sneakers N°21', 'sneakers-n21', 'Sneakers de qualite premium, reference CHAUSSURES21. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 10, 'products/sneakers_21_WhatsApp Image 2026-03-26 at 22.27.08 (1).jpeg', 'products/sneakers_21_WhatsApp Image 2026-03-26 at 22.27.08.jpeg', '', 0, 1, 1, 0, 0, '2026-03-31 00:34:59.720432', '2026-03-31 00:34:59.720444', 7),
+(95, 'Sneakers N°21', 'sneakers-n21', 'Sneakers de qualite premium, reference CHAUSSURES21. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 10, 'products/sneakers_21_WhatsApp Image 2026-03-26 at 22.27.08 (1).jpeg', 'products/sneakers_21_WhatsApp Image 2026-03-26 at 22.27.08.jpeg', '', 0, 1, 1, 3, 0, '2026-03-31 00:34:59.720432', '2026-03-31 00:34:59.720444', 7),
 (96, 'Sneakers N°22', 'sneakers-n22', 'Sneakers de qualite premium, reference CHAUSSURES22. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 10, 'products/sneakers_22_WhatsApp Image 2026-03-26 at 22.27.09.jpeg', 'products/sneakers_22_WhatsApp Image 2026-03-26 at 22.27.10.jpeg', '', 0, 1, 1, 1, 0, '2026-03-31 00:34:59.730494', '2026-03-31 00:34:59.730504', 7),
 (97, 'Sneakers N°23', 'sneakers-n23', 'Sneakers de qualite premium, reference CHAUSSURES23. Disponible en plusieurs tailles. Livraison sur Dakar.', 25000, NULL, 10, 'products/sneakers_23_WhatsApp Image 2026-03-26 at 22.27.12.jpeg', 'products/sneakers_23_WhatsApp Image 2026-03-26 at 22.27.13 (1).jpeg', 'products/sneakers_23_WhatsApp Image 2026-03-26 at 22.27.13.jpeg', 0, 1, 1, 1, 0, '2026-03-31 00:34:59.747982', '2026-03-31 00:34:59.747993', 7);
 
@@ -833,6 +887,11 @@ CREATE TABLE `store_productreview` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Chargement des donnees de la table `store_productreview`
+--
+
+
 -- --------------------------------------------------------
 
 --
@@ -846,7 +905,7 @@ CREATE TABLE `store_product_colors` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `store_product_colors`
+-- Chargement des donnees de la table `store_product_colors`
 --
 
 INSERT INTO `store_product_colors` (`id`, `product_id`, `color_id`) VALUES
@@ -899,7 +958,9 @@ INSERT INTO `store_product_colors` (`id`, `product_id`, `color_id`) VALUES
 (47, 16, 2),
 (48, 16, 3),
 (49, 17, 1),
-(50, 17, 2),
+(50, 17, 2);
+
+INSERT INTO `store_product_colors` (`id`, `product_id`, `color_id`) VALUES
 (51, 17, 3),
 (52, 18, 1),
 (53, 18, 2),
@@ -949,7 +1010,9 @@ INSERT INTO `store_product_colors` (`id`, `product_id`, `color_id`) VALUES
 (97, 33, 1),
 (98, 33, 2),
 (99, 33, 3),
-(100, 34, 1),
+(100, 34, 1);
+
+INSERT INTO `store_product_colors` (`id`, `product_id`, `color_id`) VALUES
 (101, 34, 2),
 (102, 34, 3),
 (103, 35, 1),
@@ -976,19 +1039,19 @@ INSERT INTO `store_product_colors` (`id`, `product_id`, `color_id`) VALUES
 (124, 46, 1),
 (125, 46, 6),
 (126, 47, 1),
-(128, 48, 3),
 (127, 48, 9),
-(130, 49, 1),
+(128, 48, 3),
 (129, 49, 8),
+(130, 49, 1),
 (131, 50, 1),
-(133, 51, 1),
 (132, 51, 8),
+(133, 51, 1),
 (134, 52, 1),
 (135, 52, 5),
-(137, 53, 7),
 (136, 53, 8),
-(139, 54, 1),
+(137, 53, 7),
 (138, 54, 8),
+(139, 54, 1),
 (140, 55, 1),
 (141, 55, 3),
 (142, 55, 5),
@@ -996,42 +1059,15 @@ INSERT INTO `store_product_colors` (`id`, `product_id`, `color_id`) VALUES
 (144, 56, 9),
 (145, 57, 1),
 (146, 57, 4),
-(147, 58, 1),
-(148, 58, 2),
-(149, 59, 1),
-(150, 59, 4),
-(151, 60, 2),
-(152, 60, 3),
-(153, 61, 1),
-(154, 61, 2),
-(155, 62, 1),
-(156, 62, 3),
-(157, 62, 9),
-(158, 63, 1),
-(159, 63, 13),
-(161, 64, 2),
-(160, 64, 9),
-(162, 65, 1),
-(163, 66, 1),
-(164, 66, 3),
-(165, 66, 4),
-(166, 67, 1),
-(167, 67, 15),
-(168, 68, 1),
-(169, 68, 14),
-(170, 69, 1),
-(171, 69, 13),
-(172, 70, 1),
-(173, 70, 5),
-(174, 71, 1),
-(175, 71, 15),
 (176, 72, 1),
 (177, 72, 3),
 (178, 73, 1),
-(179, 73, 2),
+(179, 73, 2);
+
+INSERT INTO `store_product_colors` (`id`, `product_id`, `color_id`) VALUES
 (180, 73, 9),
-(182, 74, 1),
-(181, 74, 8);
+(181, 74, 8),
+(182, 74, 1);
 
 -- --------------------------------------------------------
 
@@ -1046,7 +1082,7 @@ CREATE TABLE `store_product_sizes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `store_product_sizes`
+-- Chargement des donnees de la table `store_product_sizes`
 --
 
 INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
@@ -1099,7 +1135,9 @@ INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (47, 10, 3),
 (48, 10, 4),
 (49, 10, 5),
-(50, 10, 6),
+(50, 10, 6);
+
+INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (51, 11, 2),
 (52, 11, 3),
 (53, 11, 4),
@@ -1149,7 +1187,9 @@ INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (97, 19, 12),
 (98, 19, 13),
 (99, 19, 14),
-(100, 19, 15),
+(100, 19, 15);
+
+INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (101, 19, 16),
 (102, 20, 9),
 (103, 20, 10),
@@ -1199,7 +1239,9 @@ INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (147, 27, 3),
 (148, 27, 4),
 (149, 27, 5),
-(150, 27, 6),
+(150, 27, 6);
+
+INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (151, 28, 2),
 (152, 28, 3),
 (153, 28, 4),
@@ -1249,7 +1291,9 @@ INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (197, 39, 11),
 (198, 39, 12),
 (199, 39, 13),
-(200, 39, 14),
+(200, 39, 14);
+
+INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (201, 39, 15),
 (202, 40, 11),
 (203, 40, 12),
@@ -1299,7 +1343,9 @@ INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (247, 49, 3),
 (248, 49, 4),
 (249, 49, 5),
-(250, 49, 6),
+(250, 49, 6);
+
+INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (251, 50, 2),
 (252, 50, 3),
 (253, 50, 4),
@@ -1332,64 +1378,6 @@ INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (280, 57, 4),
 (281, 57, 5),
 (282, 57, 6),
-(283, 58, 1),
-(284, 58, 2),
-(285, 58, 3),
-(286, 58, 4),
-(287, 59, 1),
-(288, 59, 2),
-(289, 59, 3),
-(290, 59, 4),
-(291, 60, 2),
-(292, 60, 3),
-(293, 60, 4),
-(294, 60, 5),
-(295, 61, 1),
-(296, 61, 2),
-(297, 61, 3),
-(298, 61, 4),
-(299, 62, 1),
-(300, 62, 2),
-(301, 62, 3),
-(302, 62, 4),
-(303, 62, 5),
-(304, 63, 1),
-(305, 63, 2),
-(306, 63, 3),
-(307, 63, 4),
-(308, 64, 1),
-(309, 64, 2),
-(310, 64, 3),
-(311, 65, 1),
-(312, 65, 2),
-(313, 65, 3),
-(314, 65, 4),
-(315, 65, 5),
-(316, 66, 1),
-(317, 66, 2),
-(318, 66, 3),
-(319, 66, 4),
-(320, 67, 1),
-(321, 67, 2),
-(322, 67, 3),
-(323, 67, 4),
-(324, 67, 5),
-(325, 68, 1),
-(326, 68, 2),
-(327, 68, 3),
-(328, 68, 4),
-(329, 69, 1),
-(330, 69, 2),
-(331, 69, 3),
-(332, 69, 4),
-(333, 70, 1),
-(334, 70, 2),
-(335, 70, 3),
-(336, 70, 4),
-(337, 71, 1),
-(338, 71, 2),
-(339, 71, 3),
-(340, 71, 4),
 (341, 72, 17),
 (342, 73, 17),
 (343, 74, 17),
@@ -1407,7 +1395,9 @@ INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (355, 76, 14),
 (356, 76, 15),
 (357, 76, 16),
-(358, 77, 10),
+(358, 77, 10);
+
+INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (359, 77, 11),
 (360, 77, 12),
 (361, 77, 13),
@@ -1457,7 +1447,9 @@ INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (405, 83, 15),
 (406, 83, 16),
 (407, 84, 10),
-(408, 84, 11),
+(408, 84, 11);
+
+INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (409, 84, 12),
 (410, 84, 13),
 (411, 84, 14),
@@ -1507,7 +1499,9 @@ INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (455, 90, 16),
 (456, 91, 10),
 (457, 91, 11),
-(458, 91, 12),
+(458, 91, 12);
+
+INSERT INTO `store_product_sizes` (`id`, `product_id`, `size_id`) VALUES
 (459, 91, 13),
 (460, 91, 14),
 (461, 91, 15),
@@ -1568,7 +1562,7 @@ CREATE TABLE `store_size` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `store_size`
+-- Chargement des donnees de la table `store_size`
 --
 
 INSERT INTO `store_size` (`id`, `name`, `order`) VALUES
@@ -1604,19 +1598,13 @@ CREATE TABLE `store_wishlist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `store_wishlist`
+-- Chargement des donnees de la table `store_wishlist`
 --
 
 INSERT INTO `store_wishlist` (`id`, `added_at`, `product_id`, `user_id`) VALUES
 (1, '2026-03-26 03:30:36.558705', 21, 1),
 (3, '2026-06-06 22:31:56.318709', 96, 3);
 
---
--- Index pour les tables déchargées
---
-
---
--- Index pour la table `accounts_profile`
 --
 ALTER TABLE `accounts_profile`
   ADD PRIMARY KEY (`id`),
