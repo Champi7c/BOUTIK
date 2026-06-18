@@ -8,14 +8,17 @@ from .models import Order, OrderItem
 from apps.store.models import Product, Size, Color
 import json
 import urllib.parse
+from django.conf import settings
 
 WHATSAPP_NUMBER = '221785309874'
 
 
 def build_whatsapp_url(order):
-    """Construit l'URL WhatsApp avec le récapitulatif complet de la commande."""
+    """Construit l'URL WhatsApp avec le récapitulatif complet + liens photos des articles."""
     def fmt(amount):
         return f"{int(amount):,}".replace(',', ' ')
+
+    site_url = getattr(settings, 'SITE_URL', '').rstrip('/')
 
     lines = [
         f"🛍️ NOUVELLE COMMANDE #{order.order_number}",
@@ -24,6 +27,7 @@ def build_whatsapp_url(order):
         f"📞 Tél : {order.phone}",
         "",
         "📦 ARTICLES :",
+        "",
     ]
     for item in order.items.all():
         details = []
@@ -32,15 +36,18 @@ def build_whatsapp_url(order):
         if item.color:
             details.append(f"Couleur: {item.color}")
         suffix = f" ({', '.join(details)})" if details else ""
-        lines.append(f"  • {item.product.name} × {item.quantity}{suffix} — {fmt(item.subtotal)} FCFA")
+        lines.append(f"  • {item.product.name} × {item.quantity}{suffix}")
+        lines.append(f"    Prix : {fmt(item.subtotal)} FCFA")
+        if site_url and item.product.image:
+            lines.append(f"    🖼️ {site_url}{item.product.image.url}")
+        lines.append("")
 
     lines += [
-        "",
-        f"Sous-total : {fmt(order.total)} FCFA",
+        f"💰 Sous-total : {fmt(order.total)} FCFA",
     ]
     if order.delivery_fee:
         lines.append(f"🚚 Livraison : {fmt(order.delivery_fee)} FCFA")
-    lines.append(f"💰 TOTAL : {fmt(order.grand_total)} FCFA")
+    lines.append(f"✅ TOTAL : {fmt(order.grand_total)} FCFA")
     lines += [
         "",
         f"🚚 {order.get_delivery_type_display()}",
